@@ -1,19 +1,8 @@
-int sensors[8] = {0};
-//int LINE_SENSOR[] = {2,3,4,5,6,7,8,9};             //arduino test rig
+ int sensors[8] = {0};
 int LINE_SENSOR[] = {PA4, PA5, PA6, PA7, PB3, PA15, PB10, PB11};
 int linelocation;
-int ts = 75;
-int strictness = 20; //percent reduction per sensor off
-
-/*
-int motora = 11;     // pwm pins for motors
-int motorb = PB1;
-
-int adir2 = A0;      //direction pins for motors
-int adir1 = A1;
-int bdir2 = A2;
-int bdir1 = A3;
-*/
+int ts = 255; //percentage
+int strictness = 10; //percent reduction per sensor off
 
 int motora = PB0;     // pwm pins for motors
 int motorb = PB1;
@@ -25,6 +14,7 @@ int bdir1 = PB15;
 
 void setup() {
   // put your setup code here, to run once:
+  //ts = 255*(ts/100);
   for(int i = 0; i<8;i++){
     pinMode(LINE_SENSOR[i],INPUT);
   }
@@ -33,7 +23,6 @@ void setup() {
   pinMode(bdir1,OUTPUT);
   pinMode(bdir2,OUTPUT);
   Serial.begin(9600);
-  Serial.println(ts);
 }
 
 void loop() {
@@ -74,7 +63,7 @@ int offcenter(){
   bool onleft = false;
   bool onright = false;
   int location = 0;                                 //what to assume if line is lost
-  if (sensors[0] + sensors[1] + sensors[2] > 0){
+  if (sensors[0] + sensors[1] + sensors[2] + sensors[3] > 1){
     onright = !onright; 
     if(sensors[2] == true){location = 1;}
     if(sensors[1] == true){location = 2;}
@@ -84,9 +73,8 @@ int offcenter(){
   else{
     onleft = !onleft;
     if(sensors[5] == true){location = 1;}
-    if(sensors[6] == true){location = 2;}
     if(sensors[7] == true){location = 3;}
-    if(location == 3 && !sensors[6]){location = 4;}
+    if(location == 3 && !sensors[7]){location = 4;}
     location *= -1;
   }
   return location;
@@ -99,11 +87,11 @@ void motorwrite(bool dir, int slow){
   digitalWrite(bdir2, LOW);               //set the direction as forward because we don't quit, we don't look back, #yolofam
 
   if (dir){
-    analogWrite(motora,ts);
-    analogWrite(motorb,slow);
+    //analogWrite(motora,ts);
+    //analogWrite(motorb,slow);
   }
   else{
-    analogWrite(motora,slow);
-    analogWrite(motorb,ts);
+    //analogWrite(motora,slow);
+    //analogWrite(motorb,ts);
   }
 }
