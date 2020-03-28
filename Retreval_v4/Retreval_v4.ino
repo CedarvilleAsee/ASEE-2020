@@ -9,11 +9,7 @@
 #include "turning.h"
 #include "subStates.h"
 #include "Time.h"
-//Testing Git Hub
-//Second Try
 
-//Is this comment still here
-//here's another one
 void setup() {
   display.initDisplay();
   display.sendNum(1234, 1);
@@ -36,9 +32,6 @@ void setup() {
   pinMode(BUTTON_1, INPUT_PULLUP);
   pinMode(BUTTON_2, INPUT_PULLUP);
 
-  pinMode(PUCK_RIGHT, INPUT_PULLUP);
-  pinMode(PUCK_LEFT, INPUT_PULLUP);
-  
   writeWheelDirection(WHEEL_FORWARDS, WHEEL_FORWARDS);
 
   afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY); //makes PB3 work
