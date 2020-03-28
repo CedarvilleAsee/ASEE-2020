@@ -9,7 +9,11 @@
 #include "turning.h"
 #include "subStates.h"
 #include "Time.h"
+//Testing Git Hub
+//Second Try
 
+//Is this comment still here
+//here's another one
 void setup() {
   display.initDisplay();
   display.sendNum(1234, 1);
@@ -53,15 +57,16 @@ void loop() {
   //-------------------------------Drive center of line and turn off the mothership-------------------------------
   else if(CurrentState == 2){
     display.sendNum(CurrentState);
-    if(amountSeen > 0){
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+    TimeInState += DeltaTime();
+    SetDelta();
+    if(TimeInState < 3){
+      //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+      writeToWheels(FULL_SPEED, FULL_SPEED/2);
     }
-    else if(sensors[4] == 0){
+    /*else if(sensors[4] == 0){
       TimeInState = 1;
-      
       writeToWheels(FULL_SPEED, 0);
-      
-    }
+    }*/
     //Exit conditions
     else{
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
