@@ -57,17 +57,14 @@ void loop() {
   //-------------------------------Drive center of line and turn off the mothership-------------------------------
   else if(CurrentState == 2){
     display.sendNum(CurrentState);
-    if(TimeInState == 0 && amountSeen > 0){
+    if(amountSeen > 0){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
     }
     else if(sensors[4] == 0){
       TimeInState = 1;
-      //if(LeftMode == true){
-      //  writeToWheels(0, FULL_SPEED);
-      //}
-      //else if(RightMode == true){
-        writeToWheels(FULL_SPEED, 0);
-      //}
+      
+      writeToWheels(FULL_SPEED, 0);
+      
     }
     //Exit conditions
     else{
