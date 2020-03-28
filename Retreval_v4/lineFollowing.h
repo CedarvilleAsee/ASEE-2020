@@ -63,7 +63,7 @@ void writeToWheels(int ls, int rs) {
 }
 
 bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
-  if (amountSeen == 0) {
+  if (amountSeen == 0) {//what to do if no line is seen
     //floor it and pray? Consider Circling 
     writeToWheels(ts, ts);
   }else{
