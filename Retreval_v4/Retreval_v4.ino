@@ -9,11 +9,7 @@
 #include "turning.h"
 #include "subStates.h"
 #include "Time.h"
-//Testing Git Hub
-//Second Try
 
-//Is this comment still here
-//here's another one
 void setup() {
   display.initDisplay();
   display.sendNum(1234, 1);
