@@ -57,7 +57,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    if(TimeInState < 3){
+    if(TimeInState < 2){
       //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       writeToWheels(FULL_SPEED, FULL_SPEED/2);
     }
