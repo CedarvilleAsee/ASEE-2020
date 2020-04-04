@@ -58,7 +58,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     if(TimeInState < 2000){
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+      //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       writeToWheels(FULL_SPEED, FULL_SPEED/2);
     }
     //Exit conditions
