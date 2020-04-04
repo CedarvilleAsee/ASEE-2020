@@ -57,12 +57,12 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    if(TimeInState < 2){
-      //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+    if(TimeInState < 2000){
+      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       writeToWheels(FULL_SPEED, FULL_SPEED/2);
     }
     //Exit conditions
-    else if(sensors[4] == 1){
+    if(sensors[4] == 1){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
