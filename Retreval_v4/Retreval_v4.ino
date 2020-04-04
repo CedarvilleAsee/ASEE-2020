@@ -59,18 +59,17 @@ void loop() {
       //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       writeToWheels(FULL_SPEED, FULL_SPEED/2);
     }
-    /*else if(sensors[4] == 0){
-      TimeInState = 1;
-      writeToWheels(FULL_SPEED, 0);
-    }*/
     //Exit conditions
-    else{
+    else if(sensors[4] == 1){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
       if (CurrentState == 2){
         CurrentState ++;
       }
+    }
+    else{
+      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
     }
   }
   //-------------------------------pick up the first puck. Stage should be short-------------------------------------
