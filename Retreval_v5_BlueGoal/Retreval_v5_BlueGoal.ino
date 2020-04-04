@@ -82,7 +82,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);
-    if (TimeInState >= 3100 || RIGHT_PUCK = 1){
+    if (TimeInState >= 3100 || RIGHT_PUCK == 1){
       if (CurrentState == 3){
         CurrentState ++;
       }
@@ -101,7 +101,7 @@ void loop() {
     //  lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
     //}
     //else{
-    if(TimeInState 3000 || LEFT_PUCK = 1){
+    if(TimeInState == 3000 || LEFT_PUCK == 1){
       TimeInState = 0;
       lineFollow(FULL_SPEED, LINE_STRICTNESS,3,4);
       CurrentState++;
