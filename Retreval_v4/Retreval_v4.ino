@@ -89,7 +89,7 @@ void loop() {
       TimeInState = 0;
     }
   }
-  //-----------------------------------------turn to miss the goal and pick up the next puck o the out side housing ---------------------------------------
+  //-----------------------------------------turn to miss the goal and pick up the next puck of the outside housing ---------------------------------------
   else if(CurrentState == 4){//(too short and tracking wrong side)
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
