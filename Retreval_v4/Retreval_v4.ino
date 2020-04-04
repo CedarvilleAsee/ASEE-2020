@@ -1,4 +1,4 @@
-// Retrieval bot 4/4/2020 10:01
+// Retrieval bot - drives by blue goalie, red puck in right hand
 
 #include <Arduino.h>
 #include <Servo.h>
