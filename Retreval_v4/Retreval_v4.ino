@@ -41,7 +41,7 @@ void setup() {
 
 void loop() {
   
-  static int state = 1;
+  //static int state = 1;
   readLine();
 
   //waiting state
@@ -75,11 +75,13 @@ void loop() {
     }
   }
   //-------------------------------pick up the first puck. Stage should be short-------------------------------------
+ //Venteral Side up: 0 is right sensor 7 is the left
+ //Top Down 0 on left, 7 on right.
   else if(CurrentState == 3){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-      lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);
     if (TimeInState >= 3100){
       if (CurrentState == 3){
         CurrentState ++;
