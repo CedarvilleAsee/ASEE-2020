@@ -74,7 +74,7 @@ void loop() {
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
     }
   }
-  //-------------------------------pick up the first puck. Stage should be short-------------------------------------
+  //-------------------------------pick up the first puck on the inside housing. Stage should be short-------------------------------------
  //Venteral Side up: 0 is right sensor 7 is the left
  //Top Down 0 on left, 7 on right.
   else if(CurrentState == 3){
