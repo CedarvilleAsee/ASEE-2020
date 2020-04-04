@@ -1,4 +1,4 @@
-// Retrieval bot 4/4/2020 10:01
+// Retrieval bot - drives by blue goalie, red puck in right hand
 
 #include <Arduino.h>
 #include <Servo.h>
@@ -101,7 +101,7 @@ void loop() {
     //  lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
     //}
     //else{
-    if(TimeInState 3000 || LEFT_PUCK = 1){
+    if(TimeInState 3000 || LEFT_PUCK == 1){
       TimeInState = 0;
       lineFollow(FULL_SPEED, LINE_STRICTNESS,3,4);
       CurrentState++;
