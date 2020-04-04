@@ -90,12 +90,12 @@ void loop() {
     }
   }
   //-----------------------------------------turn to miss the goal and pick up the next puck of the outside housing ---------------------------------------
-  else if(CurrentState == 4){//(too short and tracking wrong side)
+  else if(CurrentState == 4){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
     //if (TimeInState < 2000){  //haven't passed the goal yet
-      lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2);
     //}
     //else if (TimeInState < 3000){                   //has passed the goal
     //  lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
