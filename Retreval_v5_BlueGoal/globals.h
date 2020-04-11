@@ -8,6 +8,7 @@ int lastLineIndex  = -1;
 int amountSeen     = 0;
 float TimeInState = 0;
 int CurrentState = 1;
+int substate = 0;
 
 //booleans
 bool turning = false;
