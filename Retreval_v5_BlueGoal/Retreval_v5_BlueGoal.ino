@@ -44,6 +44,7 @@ void loop() {
   //static int state = 1;
   readLine();
   if(digitalRead(BUTTON_2) == 0){
+    writeToWheels(0,0);
     CurrentState = 1;  
   }
 
