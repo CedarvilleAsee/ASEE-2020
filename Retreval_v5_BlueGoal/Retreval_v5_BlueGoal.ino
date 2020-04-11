@@ -57,21 +57,32 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    if(TimeInState < 3){
-      //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
-      writeToWheels(FULL_SPEED, FULL_SPEED/2);
+    int substate = 0;
+    if(substate == 1){
+      writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
+      if(amountSeen >= 5){
+        substate++;
+        SetDelta();
+      }
+    }
+    else if (substate == 2){
+      writeToWheels(FULL_SPEED, 0);
+      if(sensor[1] == 1 && DeltaTime() > 1){
+        substate++;
+      }
     }
     //Exit conditions
-    else if(sensors[4] == 1){
+    else if(substate == 3){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
-      if (CurrentState == 2){
-        CurrentState ++;
-      }
+      CurrentState ++;
     }
     else{
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+      if(amountSeen == 0){
+        substate++;  
+      }
     }
   }
   //-------------------------------pick up the first puck on the inside housing. Stage should be short-------------------------------------
