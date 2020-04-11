@@ -59,18 +59,18 @@ void loop() {
   else if(CurrentState == 2){
     display.sendNum(CurrentState + 100 * substate);
     TimeInState += DeltaTime();
-    int looptime = DeltaTime();
     SetDelta();
     if(substate == 1){
       writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
       if(amountSeen >= 5){
+        TimeInState = 0;
         substate++;
         SetDelta();
       }
     }
     else if (substate == 2){
       writeToWheels(FULL_SPEED, 0);
-      if(sensors[1] == 1 &&  looptime > 1){
+      if(sensors[1] == 1 &&  TimeInSate > 1){
         substate++;
       }
     }
