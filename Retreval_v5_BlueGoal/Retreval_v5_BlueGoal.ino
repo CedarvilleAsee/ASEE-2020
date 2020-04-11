@@ -63,7 +63,7 @@ void loop() {
     SetDelta();
     if(substate == 1){
       writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
-      if(amountSeen >= 4){
+      if(amountSeen >= 3){
         TimeInState = 0;
         substate++;
         SetDelta();
