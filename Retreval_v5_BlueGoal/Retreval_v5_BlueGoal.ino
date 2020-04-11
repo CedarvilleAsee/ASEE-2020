@@ -70,7 +70,7 @@ void loop() {
       }
     }
     else if (substate == 2){
-      writeToWheels(FULL_SPEED, 0);
+      writeToWheels(0, FULL_SPEED);
       if(sensors[1] == 1 && sensors[2] == 1 && (sensors[4] == 0 || sensors[5] == 0)){
         substate++;
       }
