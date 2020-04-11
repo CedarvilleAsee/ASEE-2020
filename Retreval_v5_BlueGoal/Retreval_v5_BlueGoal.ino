@@ -70,7 +70,7 @@ void loop() {
     }
     else if (substate == 2){
       writeToWheels(FULL_SPEED, 0);
-      if(sensors[1] == 1 &&  TimeInSate > 1){
+      if(sensors[1] == 1 &&  TimeInState > 1){
         substate++;
       }
     }
