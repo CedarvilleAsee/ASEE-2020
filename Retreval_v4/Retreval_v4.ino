@@ -40,7 +40,9 @@ void setup() {
 }
 
 void loop() {
-  
+  if(digitalRead(BUTTON_2) == 0){
+    CurrentState = 0;
+  }
   //static int state = 1;
   readLine();
 
