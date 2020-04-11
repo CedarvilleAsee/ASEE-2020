@@ -44,7 +44,7 @@ void loop() {
   //static int state = 1;
   readLine();
   if(digitalRead(BUTTON_2) == 0){
-    CurrentState == 1;  
+    CurrentState = 1;  
   }
 
   //waiting state
@@ -60,7 +60,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    int substate = 0;
+    static int substate = 0;
     if(substate == 1){
       writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
       if(amountSeen >= 5){
@@ -70,7 +70,7 @@ void loop() {
     }
     else if (substate == 2){
       writeToWheels(FULL_SPEED, 0);
-      if(sensor[1] == 1 && DeltaTime() > 1){
+      if(sensors[1] == 1 && DeltaTime() > 1){
         substate++;
       }
     }
