@@ -57,10 +57,9 @@ void loop() {
   }
   //-------------------------------Drive center of line and turn off the mothership-------------------------------
   else if(CurrentState == 2){
-    display.sendNum(CurrentState);
+    display.sendNum(CurrentState + 100 * substate);
     TimeInState += DeltaTime();
     SetDelta();
-    static int substate = 0;
     if(substate == 1){
       writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
       if(amountSeen >= 5){
