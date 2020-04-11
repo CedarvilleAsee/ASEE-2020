@@ -27,8 +27,8 @@ int LINE_SENSOR[] = {PA4, PA5, PA6, PA7, PB3, PA15, PB10, PB11};
 //int LINE_SENSOR[] = {PB11, PB10, PA15, PB3, PA7, PA6, PA5, PA4};
 
 // Puck sensors
-const int RIGHT_PUCK = 1;
-const int LEFT_PUCK = 1;
+const int RIGHT_PUCK = 0;
+const int LEFT_PUCK = 0;
 
 //Analog
 
