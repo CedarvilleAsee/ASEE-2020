@@ -70,13 +70,19 @@ void loop() {
       }
     }
     else if (substate == 2){
+      writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
+      if(amountSeen == 0){
+        substate++;  
+      }
+    }
+    else if (substate == 3){
       writeToWheels(0, FULL_SPEED);
       if(sensors[1] == 1 && sensors[2] == 1 && (sensors[4] == 0 || sensors[5] == 0)){
         substate++;
       }
     }
     //Exit conditions
-    else if(substate == 3){
+    else if(substate == 4){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
