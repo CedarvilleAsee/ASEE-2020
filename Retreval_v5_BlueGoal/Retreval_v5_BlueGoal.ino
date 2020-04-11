@@ -43,6 +43,9 @@ void loop() {
   
   //static int state = 1;
   readLine();
+  if(digitalRead(BUTTON_2) == 0){
+    CurrentState == 1;  
+  }
 
   //waiting state
   if(CurrentState == 1){
