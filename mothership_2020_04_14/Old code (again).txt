@@ -1,0 +1,88 @@
+int selectRun()
+{
+  
+}
+
+
+//Needs revising
+void initGateSateRed(int distance){ //calibrate 
+  if(distance > GATE_OPEN_DIST){
+    isOpenRed = true; //catch it at least once open
+  }
+  else{
+  if(isOpenRed){
+    //had it open, it should have just closed
+     if(distance <= GATE_CLOSED_DIST){
+      redGateTime = millis();
+      isOpenRed = false;
+     }  
+    }
+  }
+}
+
+//Needs revising
+void initGateSateBlue(int distance){ //calibrate 
+  if(distance > GATE_OPEN_DIST){
+    isOpenBlue = true; //catch it at least once open
+  }else{if(isOpenBlue){
+    //had it open, it should have just closed
+     if(distance <= GATE_CLOSED_DIST){
+      blueGateTime = millis();
+      isOpenBlue = false;
+     }  
+    }
+  }
+}
+
+//add a confrim function to check that the above works. Also blink LEDs so can see if lines up properly
+
+//must always run or else will loose spot
+bool redGateState(){ //returns isOpen. Adjust later for canShoot; don't fire within 1/3 sec of closing
+//********* check this against the gate timming to make sure it is the same 
+  int howLong = millis() - redGateTime;
+  if(isOpenRed){
+    if(howLong > TIME_OPEN){ //see if open 3 seconds so far
+      redGateTime = millis() + (howLong - TIME_OPEN); //if it was longer than 3 sec, offset the time
+      isOpenRed = false; 
+    }
+  } else{ //it was closed
+    if(howLong > TIME_CLOSED){ //se if closed for 2 seconds so far
+      redGateTime = millis() + (howLong - TIME_CLOSED); //will be a bit off each time, so need to ofset by how much larger millis was than gameTime
+      isOpenRed = true;
+    }
+  }
+
+ return isOpenRed;
+}
+
+bool blueGateState(){ //returns isOpen. Adjust later for canShoot; don't fire within 1/3 sec of closing
+    int howLong = millis() - blueGateTime;
+  if(isOpenBlue){
+    if(howLong > TIME_OPEN){ //see if open 3 seconds so far
+      blueGateTime = millis() + (howLong - TIME_OPEN); //if it was longer than 3 sec, offset the time
+      isOpenBlue = false; 
+    }
+  } else{ //it was closed
+    if(howLong > TIME_CLOSED){ //se if closed for 2 seconds so far
+      blueGateTime = millis() + (howLong - TIME_CLOSED); //will be a bit off each time, so need to ofset by how much larger millis was than gameTime
+      isOpenBlue = true;
+    }
+  }
+
+ return isOpenBlue;
+}
+
+bool launchPucks(bool isRed){ //launch red or blue side. Returns true when they are launched
+  //servos defaulted to 90
+  if(isRed){
+    //this depends on servo orientation. adjust as needed 
+    rightServo.write(LAUNCH_RIGHT);
+//    leftServo.write(LAUNCH_LEFT);
+    
+    //launch black
+    centerServo.write(LAUNCH_RIGHT); //may need to delay this 
+    
+  }else{ //is blue
+    rightServo.write(LAUNCH_LEFT);
+//    leftServo.write(LAUNCH_RIGHT);
+  }
