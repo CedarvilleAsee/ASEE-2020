@@ -113,9 +113,21 @@ void selectRedOrBlue()
   }
 }
 
+
+void pushRamps() {
+  int start = millis();
+  while (millis() - start < 500){
+    digitalWrite(RAMP_SERVO_C, true);
+  }
+  timeElapsed = 0;
+  while (millis() - start < 1000) {
+    digitalWrite(RAMP_SERVO_CC, true);
+  }
+}
 void sendGoToGetters()                      //activate side robots
 {
-  
+  pushRamps();
+  // activate robots
 }
 
 void waitForReturn()

@@ -44,5 +44,8 @@
 #define SERVO_2_CLOCKWISE = 0
 #define SERVO_2_CCLOCKWISE = 0
 
+#define RAMP_SERVO_C = 0
+#define RAMP_SERVO_CC = 0
+
 //Servo Constants----------------------------------------------------------------------------------------------------------------------------------------------------
 #define rampLaunchServoAngle = 50
