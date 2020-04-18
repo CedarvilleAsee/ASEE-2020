@@ -62,11 +62,19 @@ void writeToWheels(int ls, int rs) {
   analogWrite(WHEEL_SPEED_R, abs(rs));
 }
 
-bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
+bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3, int lostMode = 0) {
   if (amountSeen == 0) {//what to do if no line is seen
-    //floor it and pray? Consider Circling 
-    writeToWheels(ts, ts);
-  }else{
+    if (lostMode == 0){
+      writeToWheels(ts, ts);
+    }
+    else if (lostMode == 1){
+      writeToWheels(ts/2, ts);
+    }
+    else if (lostMode == 2){
+      writeToWheels(ts, ts/2);
+    }
+  }
+  else{
     int rightSpeed = ts + (lastLineIndex - cen1) * strictness;
     int leftSpeed = ts - (firstLineIndex - cen2) * strictness;
     //display.sendNum( (leftSpeed*1000) + (rightSpeed * 100) + (lastLineIndex)*10 + firstLineIndex);
