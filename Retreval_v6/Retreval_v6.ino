@@ -62,25 +62,22 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     if(substate == 1){
-      writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
-      if(amountSeen >= 5){
+      splitFollow(FULL_SPEED/1.5, LINE_STRICTNESS, 4, 3, true);
+      if(amountSeen <= 2){
         TimeInState = 0;
         substate++;
         SetDelta();
       }
     }
     else if (substate == 2){
-      writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
-      if(amountSeen == 0){
-        substate++;  
+      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+      TimeInState += DeltaTime();
+      SetDelta();
+      if(TimeInState >= 500){
+        substate++
       }
     }
-    else if (substate == 3){
-      writeToWheels(0, FULL_SPEED);
-      if(sensors[1] == 1){
-        substate++;
-      }
-    }
+
     //Exit conditions
     else if(substate == 4){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
@@ -90,7 +87,7 @@ void loop() {
     }
     else{
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
-      if(amountSeen == 0){
+      if(amountSeen >= 3){
         substate++;  
       }
     }
