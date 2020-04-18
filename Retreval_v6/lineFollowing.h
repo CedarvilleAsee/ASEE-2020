@@ -76,21 +76,18 @@ bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
 }
 
 bool splitFollow (int ts, int strictness, int cen1 = 4, int cen2 = 3, bool side = true){
-    if (amountSeen == 0) {//what to do if no line is seen
-    //floor it and pray? Consider Circling 
-    writeToWheels(ts, ts);
-  }else{
-    int rightSpeed = ts + (lastLineIndex - cen1) * strictness;
-    int leftSpeed = ts - (firstLineIndex - cen2) * strictness;
+    int rightSpeed = ts;
+    int leftSpeed = ts;
+    //int rightSpeed = ts + (lastLineIndex - cen1) * strictness;
+    //int leftSpeed = ts - (firstLineIndex - cen2) * strictness;
     if (side){
-      rightSpeed = leftSpeed * 1.25;
+      rightSpeed = leftSpeed * 2.75;
     }
     else{
-      leftSpeed = rightSpeed * 1.25;
+      leftSpeed = rightSpeed * 2.75;
     }
     //display.sendNum( (leftSpeed*1000) + (rightSpeed * 100) + (lastLineIndex)*10 + firstLineIndex);
     writeToWheels(leftSpeed, rightSpeed);
-  }
   if (amountSeen > 3){
     return true;
   }
