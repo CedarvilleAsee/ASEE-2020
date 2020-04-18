@@ -73,7 +73,7 @@ void loop() {
       lineFollow(FULL_SPEED*1, LINE_STRICTNESS, 4, 3);
       TimeInState += DeltaTime();
       SetDelta();
-      if(TimeInState >= 1000){
+      if(TimeInState >= 750){
         substate++;
       }
     }
@@ -92,7 +92,7 @@ void loop() {
       }
     }
   }
-  //-------------------------------pick up the first puck on the inside housing. Stage should be short-------------------------------------
+  //-------------------------------pick up the first puck on the inside housing. State should be short-------------------------------------
  //Venteral Side up: 0 is right sensor 7 is the left
  //Top Down 0 on left, 7 on right.
   else if(CurrentState == 3){
