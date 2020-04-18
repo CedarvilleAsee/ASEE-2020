@@ -62,7 +62,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     if(substate == 1){
-      splitFollow(FULL_SPEED/1.5, LINE_STRICTNESS, 4, 3, true);
+      splitFollow(FULL_SPEED/2, LINE_STRICTNESS, 4, 3, true);
       if(amountSeen <= 2){
         TimeInState = 0;
         substate++;
@@ -70,24 +70,24 @@ void loop() {
       }
     }
     else if (substate == 2){
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+      lineFollow(FULL_SPEED*1, LINE_STRICTNESS, 4, 3);
       TimeInState += DeltaTime();
       SetDelta();
-      if(TimeInState >= 500){
-        substate++
+      if(TimeInState >= 1000){
+        substate++;
       }
     }
 
     //Exit conditions
-    else if(substate == 4){
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+    else if(substate == 3){
+      lineFollow(FULL_SPEED/2, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
       CurrentState ++;
     }
     else{
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
-      if(amountSeen >= 3){
+      lineFollow(FULL_SPEED*.75, LINE_STRICTNESS, 4, 3);
+      if(amountSeen >= 4){
         substate++;  
       }
     }
