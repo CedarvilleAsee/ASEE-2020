@@ -113,7 +113,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     //if (TimeInState < 2000){  //haven't passed the goal yet
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2,1);
     //}
     //else if (TimeInState < 3000){                   //has passed the goal
     //  lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
