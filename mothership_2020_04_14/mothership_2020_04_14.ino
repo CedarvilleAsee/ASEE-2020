@@ -26,6 +26,10 @@ void setup()
 //  Serial.begin(115200);
 //  Serial.println(F("Serial OK"));
     pinMode(LED_BUILTIN, OUTPUT);
+    SERVO_1.attach(9);
+    SERVO_CENTER.attach(10);
+    SERVO_2.attach(11);
+    RAMP_SERVO.attach(12)
 
   Wire.begin();                             //Open i2c for distance sensors
   redGate.begin();                          //Initialize red gate sensor

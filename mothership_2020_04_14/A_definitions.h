@@ -38,14 +38,12 @@
 #define RED_DISTANCE = 0
 #define BLUE_DISTANCE = 0
 
-#define SERVO_1_CLOCKWISE = 0
-#define SERVO_1_CCLOCKWISE = 0
-#define SERVO_CENTER_CLOCKWISE = 0
-#define SERVO_2_CLOCKWISE = 0
-#define SERVO_2_CCLOCKWISE = 0
+// Servo definitions
 
-#define RAMP_SERVO_C = xB9
-#define RAMP_SERVO_CC = 0
+Servo SERVO_1;
+Servo SERVO_CENTER;
+Servo SERVO_2;
+Servo RAMP_SERVO;
 
 //Servo Constants----------------------------------------------------------------------------------------------------------------------------------------------------
 #define rampLaunchServoAngle = 50

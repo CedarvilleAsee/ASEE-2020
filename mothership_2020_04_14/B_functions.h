@@ -115,13 +115,16 @@ void selectRedOrBlue()
 
 
 void pushRamps() {
-  int start = millis();
-  while (millis() - start < 500){
-    digitalWrite(RAMP_SERVO_C, true);
+  int pos;
+  for (pos = 0; pos <= 100; pos += 1) { // goes from 0 degrees to 180 degrees
+    // in steps of 1 degree
+    RAMP_SERVO.write(pos); // tell servo to go to position in variable 'pos'
+    delay(15);                       // waits 15ms for the servo to reach the position
   }
-  timeElapsed = 0;
-  while (millis() - start < 1000) {
-    digitalWrite(RAMP_SERVO_CC, true);
+
+  for (pos = 100; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+    RAMP_SERVO.write(pos);              // tell servo to go to position in variable 'pos'
+    delay(15);                       // waits 15ms for the servo to reach the position
   }
 }
 void sendGoToGetters()                      //activate side robots
@@ -143,11 +146,11 @@ void launchRedPuck()
 {
   while (puckSensor1 == 1 || puckSensor2 == 1) {
     if (redSafeToLaunch()) {
-      digitalWrite(SERVO_1_CLOCKWISE, true);
+      SERVO_1.write(150) // servos placed opposite directions, release at a delay of 10 ms
       delay(10);
-      digitalWrite(SERVO_2_CLOCKWISE, true);
+      SERVO_2.write(30);
       delay(10);
-      digitalWrite(SERVO_CENTER_CLOCKWISE, true); // launch with red pucks
+      SERVO_CENTER.write(150)
     }
   }
 }
@@ -156,15 +159,17 @@ void launchBluePuck()
 {
   while (puckSensor1 == 1 || puckSensor2 == 1) {
     if (blueSafeToLaunch()) {
-      digitalWrite(SERVO_1_CCLOCKWISE, true);
+      SERVO_1.write(30)
       delay(10);
-      digitalWrite(SERVO_2_CCLOCKWISE, true);
+      SERVO_2.write(150);
+      delay(10);
+
     }
   }
 }
 
 void launchProperPucks()
-{
+{ // calls functions to launch pucks
   waitForReturn();
   if(redRun)
   {
