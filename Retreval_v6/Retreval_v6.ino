@@ -62,40 +62,37 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     if(substate == 1){
-      writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
-      if(amountSeen >= 5){
+      splitFollow(FULL_SPEED/2, LINE_STRICTNESS, 4, 3, true);
+      if(amountSeen <= 2){
         TimeInState = 0;
         substate++;
         SetDelta();
       }
     }
     else if (substate == 2){
-      writeToWheels((FULL_SPEED * 3) / 4, (FULL_SPEED * 3) / 4);
-      if(amountSeen == 0){
-        substate++;  
-      }
-    }
-    else if (substate == 3){
-      writeToWheels(0, FULL_SPEED);
-      if(sensors[1] == 1){
+      lineFollow(FULL_SPEED*1, LINE_STRICTNESS, 4, 3);
+      TimeInState += DeltaTime();
+      SetDelta();
+      if(TimeInState >= 750){
         substate++;
       }
     }
+
     //Exit conditions
-    else if(substate == 4){
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
+    else if(substate == 3){
+      lineFollow(FULL_SPEED/2, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
       CurrentState ++;
     }
     else{
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
-      if(amountSeen == 0){
+      lineFollow(FULL_SPEED*.75, LINE_STRICTNESS, 4, 3);
+      if(amountSeen >= 4){
         substate++;  
       }
     }
   }
-  //-------------------------------pick up the first puck on the inside housing. Stage should be short-------------------------------------
+  //-------------------------------pick up the first puck on the inside housing. State should be short-------------------------------------
  //Venteral Side up: 0 is right sensor 7 is the left
  //Top Down 0 on left, 7 on right.
   else if(CurrentState == 3){
@@ -116,7 +113,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     //if (TimeInState < 2000){  //haven't passed the goal yet
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2,1);
     //}
     //else if (TimeInState < 3000){                   //has passed the goal
     //  lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
