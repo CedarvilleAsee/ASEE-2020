@@ -49,6 +49,9 @@ void initializePins()                           //Setup all pins
     
     pinMode(redMiniRobotStartLED, OUTPUT);
     pinMode(blueMiniRobotStartLED, OUTPUT);
+
+    redSensor.begin();
+    blueSensor.begin();
 }
 
 // Don't look at gates at all until prestart button is pressed. This prevents people setting up from getting in the way and causing a false reading.
@@ -66,30 +69,30 @@ void waitForPrestart()
 // Get the timing and state of the red gate
 void setupStateRed()
 {
-  int distance = redGate.getDistance();
+  int distance = redGate.readRange();
   while(distance <= RED_DISTANCE)                // Wait for the gate to open
   {
-    distance = redGate.getDistance();
+    distance = redGate.readRange();
   }
   while(distance > RED_DISTANCE)                // While gate is open
   {
     redTime = millis();
-    distance = redGate.getDistance();
+    distance = redGate.readRange();
   }
 }
 
 // Get the timing and state of the blue gate
 void setupStateBlue()
 {
-  int distance = blueGate.getDistance();
+  int distance = blueGate.readRange();
   while(distance < BLUE_DISTANCE)                // Wait for the gate to open
   {
-    distance = blueGate.getDistance();
+    distance = blueGate.readRange();
   }
   while(distance > BLUE_DISTANCE)                // While gate is open
   {
     blueTime = millis();
-    distance = blueGate.getDistance();
+    distance = blueGate.readRange();
   }
 }
 

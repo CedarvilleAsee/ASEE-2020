@@ -12,8 +12,8 @@
 #define redStatusLED  = 0                       //Shows the status of the red gate
 #define blueStatusLED = 0                      //Shows the status of the blue gate
 
-#define redDistanceSensorPin      = 0               //The pin holding the red side distance sensor
-#define blueDistanceSensorPin     = 0              //The pin holding the blue side distance sensor
+Adafruit_VL6180X redSensor = Adafruit_VL6180X();
+Adafruit_VL6180X blueSensor = Adafruit_VL6180X();
 
 #define puckSensor1  = 0                        //Sensor that sees puck 1 // NEED PIN NUMBERS
 #define puckSensor2  = 0                        //Sensor that sees puck 2
