@@ -130,7 +130,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2,1);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,3,4,2);
     if(TimeInState == 8000){
       CurrentState = 1; 
     }
