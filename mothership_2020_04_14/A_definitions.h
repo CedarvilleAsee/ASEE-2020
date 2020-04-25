@@ -15,20 +15,20 @@
 Adafruit_VL6180X redSensor = Adafruit_VL6180X();
 Adafruit_VL6180X blueSensor = Adafruit_VL6180X();
 
-#define puckSensor1  = 0                        //Sensor that sees puck 1 // NEED PIN NUMBERS
-#define puckSensor2  = 0                        //Sensor that sees puck 2
-#define puckSensor3  = 0                        //Sensor that sees puck 3
-#define puckSensor4  = 0                        //Sensor that sees puck 4
+int puckSensor1  = 0                        //Sensor that sees puck 1 // NEED PIN NUMBERSub  
+int puckSensor2  = 0                        //Sensor that sees puck 2
+int puckSensor3  = 0                        //Sensor that sees puck 3
+int puckSensor4  = 0                        //Sensor that sees puck 4
 
 
 //Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
-#define TIME_OPEN  = 3000                          //The amount of time in millis the gate stays open
-#define TIME_CLOSED  = 2000                        //The amount of time in millis the gate stays closed
-#define CLOSE_MARGIN  = 0010                       //The amount of time to wait after the gate begins opening
-#define OPEN_MARGIN  = 0010                        //The amount of time to not fire rigt before gate closes
+#define TIME_OPEN   3000                          //The amount of time in millis the gate stays open
+#define TIME_CLOSED   2000                        //The amount of time in millis the gate stays closed
+#define CLOSE_MARGIN   0010                       //The amount of time to wait after the gate begins opening
+#define OPEN_MARGIN   0010                        //The amount of time to not fire rigt before gate closes
 
-#define RED_LAUNCHED = 0
-#define BLUE_LAUNCHED = 0
+#define RED_LAUNCHED  0
+#define BLUE_LAUNCHED  0
 //#define RED_GATE_OPEN_DIST -1                 //The value the distance sensor will see when the gate is open
 //#define RED_GATE_CLOSED_DIST -1               //The value the distance sensor will see when the gate is closed
 

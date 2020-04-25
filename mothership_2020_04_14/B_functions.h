@@ -69,33 +69,40 @@ void waitForPrestart()
 // Get the timing and state of the red gate
 void setupStateRed()
 {
-  int distance = redGate.readRange();
-  while(distance <= RED_DISTANCE)                // Wait for the gate to open
+  int distance = redGate.getDistance();
+  while(distance > 270)     //open
   {
-    distance = redGate.readRange();
+    //Wait for gate to close
+    distance = blueGate.getDistance();
+    Serial.println(distance);
   }
-  while(distance > RED_DISTANCE)                // While gate is open
+  while(distance < 270)         //closed, wait for reopen
   {
-    redTime = millis();
-    distance = redGate.readRange();
+    distance = blueGate.getDistance();
+    Serial.println(distance);
   }
+  redTime = millis();
+  updateStateLED();
 }
 
 // Get the timing and state of the blue gate
 void setupStateBlue()
 {
-  int distance = blueGate.readRange();
-  while(distance < BLUE_DISTANCE)                // Wait for the gate to open
+  int distance = blueGate.getDistance();
+  while(distance > 270)     //open
   {
-    distance = blueGate.readRange();
+    //Wait for gate to close
+    distance = blueGate.getDistance();
+    Serial.println(distance);
   }
-  while(distance > BLUE_DISTANCE)                // While gate is open
+  while(distance < 270)         //closed, wait for reopen
   {
-    blueTime = millis();
-    distance = blueGate.readRange();
+    distance = blueGate.getDistance();
+    Serial.println(distance);
   }
+  blueTime = millis();
+  updateStateLED();
 }
-
 void selectRedOrBlue()
 {
   while(!choiceMade)                               // Run this code until a break. A break will happen when a selection is made.
@@ -148,24 +155,28 @@ void waitForReturn()
 void launchRedPuck()
 {
   while (puckSensor1 == 1 || puckSensor2 == 1) {
+    updateStateLED();
     if (redSafeToLaunch()) {
-      SERVO_1.write(150) // servos placed opposite directions, release at a delay of 10 ms
-      delay(10);
-      SERVO_2.write(30);
-      delay(10);
-      SERVO_CENTER.write(150)
+      SERVO_1.write(120); // servos placed opposite directions, release at a delay of 10 ms
+      delay(100);
+      SERVO_2.write(60);
+      delay(100);
+      SERVO_CENTER.write(120);
     }
   }
 }
 
 void launchBluePuck()
 {
+  updateStateLED();
   while (puckSensor1 == 1 || puckSensor2 == 1) {
+      updateStateLED();
+
     if (blueSafeToLaunch()) {
-      SERVO_1.write(30)
-      delay(10);
-      SERVO_2.write(150);
-      delay(10);
+      SERVO_1.write(60);
+      delay(100);
+      SERVO_2.write(120);
+      delay(100);
 
     }
   }
