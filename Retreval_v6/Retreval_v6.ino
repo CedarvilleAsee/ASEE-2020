@@ -125,26 +125,15 @@ void loop() {
       CurrentState++;
     }
   }
-  //---------------------------------------------------drive centered on the line back to mothership------------------------------------
+  //-------------------------------------------- Drive on curved path back to mothership and return to state 1------------------------------------
   else if(CurrentState == 5){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-
-    if(TimeInState < 5000){
-      lineFollow(FULL_SPEED, LINE_STRICTNESS, 2, 1);  
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2,1);
+    if(TimeInState == 8000){
+      CurrentState = 1; 
     }
-    else if(TimeInState < 6000){
-      writeToWheels(FULL_SPEED/4, FULL_SPEED/2);
-    }
-    else if(TimeInState < 8000){
-        lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
-    }
-    //if(TimeInState < 10000){
-    else{
-        writeToWheels(0, 0);
-    }
-    
   }
   // this stage should not be used emergency stage
   else{
@@ -152,19 +141,4 @@ void loop() {
   }
   
   //display.sendNum(digitalRead(BUTTON_1));
-  /*switch(state) {
-
-    case 0:
-      if(waitState()) {
-        state++; // button 1 to start
-      }
-      break;
-    case 1:
-      //display.sendNum(1);
-      //writeToWheels(100, 100);
-      
-      lineFollow(FULL_SPEED, LINE_STRICTNESS);
-      break;
-      
-  }*/
 }
