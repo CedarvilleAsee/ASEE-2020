@@ -86,6 +86,7 @@ void favorLineFollow(int ts,int strictness,bool favorRight, int cen=3){
   int diff;
   if(favorRight) diff=firstLineIndex-cen;
   else diff=lastLineIndex-cen; 
+  //If diff is negative, it will turn to the left, if postive: turn left
   int rightSpeed = ts - diff*strictness;
   int leftSpeed = ts + diff*strictness;
   writeToWheel(leftSpeed,rightSpeed);
