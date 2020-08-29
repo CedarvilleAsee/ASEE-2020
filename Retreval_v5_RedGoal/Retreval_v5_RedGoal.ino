@@ -97,13 +97,13 @@ void loop() {
     if(TimeInState < 3000){
       lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2);
     }
-    else{
-      lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);  
-    }
     else if(TimeInState == 4000 || RIGHT_PUCK == 0){
       TimeInState = 0;
       lineFollow(FULL_SPEED, LINE_STRICTNESS,3,4);
       CurrentState++;
+    }
+    else{
+      lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);  
     }
   }
   //---------------------------------------------------drive centered on the line back to mothership------------------------------------
