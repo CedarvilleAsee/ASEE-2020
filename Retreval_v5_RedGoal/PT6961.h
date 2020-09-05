@@ -38,7 +38,7 @@ class PT6961
 	
   private:
   
-	int _DIN;
+	  int _DIN;
     int _CLK;
     int _CS;
 	
