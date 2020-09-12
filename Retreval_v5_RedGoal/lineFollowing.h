@@ -18,13 +18,17 @@ void readLine() {
     }
   }
 
-  sensorCounter = 0;
-  
-  //for (int i = 0; i < 8; i++ ){
-  //  sensorCounter += sensors[i]<<i;
-  //}
-  
-    //display.sendNum((amountSeen * 100) +(lastLineIndex)*10 + firstLineIndex);
+  //Debug print out to display. Combides sensors into pairs and gives them each there own digit.
+  //a one means only one sensor in the pair is on, a 2 means both senors are on, and a 0 mean none of the sensors are on
+  if(false){
+    int readout = 0;
+    readout += sensors[0] + sensors[1];
+    readout += (sensors[2] + sensors[3])*10;
+    readout += (sensors[4] + sensors[5])*100;
+    readout += (sensors[6] + sensors[7])*1000;
+    display.sendNum(readout);
+    delay(1000);
+  }
 }
 
 void writeWheelDirection(bool ldir, bool rdir) {
@@ -88,8 +92,8 @@ void favorLineFollow(int ts,int strictness,bool favorRight, int cen=3){
   }
   //Diff is the difference between the central index (cen) and the index of the line it's following
   int diff;
-  if(favorRight) diff=firstLineIndex-cen;
-  else diff=lastLineIndex-cen; 
+  if(favorRight) diff=lastLineIndex-cen;
+  else diff=firstLineIndex-cen;
   //If diff is negative, it will turn to the left, if postive: turn left
   int rightSpeed = ts + diff*strictness;
   int leftSpeed = ts - diff*strictness;
