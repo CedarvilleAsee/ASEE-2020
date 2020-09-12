@@ -59,7 +59,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     
-    favorLineFollow(FULL_SPEED*6/7, LINE_STRICTNESS, true, 6);
+    favorLineFollow(FULL_SPEED*6/7, LINE_STRICTNESS, false, 3);
     if(TimeInState > 3000){
       TimeInState = 0;
       CurrentState++; 
@@ -72,7 +72,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,6,5);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
       CurrentState++;
       TimeInState = 0;
@@ -83,7 +83,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);  
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,6,5);  
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       TimeInState = 0;
@@ -96,7 +96,7 @@ void loop() {
     TimeInState += DeltaTime();
     SetDelta();
     
-    favorLineFollow(FULL_SPEED *7/8, LINE_STRICTNESS, true, 2);
+    favorLineFollow(FULL_SPEED *7/8, LINE_STRICTNESS, false, 3);
     if(amountSeen == 0){
       writeToWheels(0,0);
       TimeInState = 0;
