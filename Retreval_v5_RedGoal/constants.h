@@ -3,7 +3,7 @@
 #define CONSTANTS
 
 //Puck Constants
-const int PUCK_RECIEVED = 300;
+const int PUCK_RECIEVED = 250;
 
 //speed constants
 const int TURN_SPEED = 65;
