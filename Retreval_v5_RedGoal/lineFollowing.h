@@ -80,23 +80,24 @@ bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
 }
 
 //if (favorRight) cen=3 else cen=4 (that is, for getting the favored line to center)
-void favorLineFollow(int ts,int strictness,bool favorRight, int cen=3){
+void favorLineFollow(int ts, int strictness, bool favorRight, int cen1 = 4, int cen2 = 3){
   //Sees no lines, go straight
-  if(amountSeen==0){
+  if(amountSeen == 0){
     writeToWheels(ts,ts);
     return;
   }
-  if(amountSeen==1){
-    lineFollow(ts,strictness, cen);
-    return;
-  }
+
+  //if(amountSeen==1){
+  //  lineFollow(ts,strictness, cen);
+  //  return;
+  //}
   //Diff is the difference between the central index (cen) and the index of the line it's following
   int diff;
-  if(favorRight) diff=lastLineIndex-cen;
-  else diff=firstLineIndex-cen;
+  if(favorRight) diff = lastLineIndex - cen;
+  else diff = firstLineIndex - cen;
   //If diff is negative, it will turn to the left, if postive: turn left
-  int rightSpeed = ts + diff*strictness;
-  int leftSpeed = ts - diff*strictness;
+  int rightSpeed = ts + diff * strictness;
+  int leftSpeed  = ts - diff * strictness;
   writeToWheels(leftSpeed,rightSpeed);
 }
 
