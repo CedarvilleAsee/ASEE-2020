@@ -65,10 +65,22 @@ void loop() {
       CurrentState++; 
     }
   }
+  //Maybe state for in between the two pucks to carefully drive without surving
+  else if(CurrentState==3){
+    display.sendNum(CurrentState);
+    TimeInState += DeltaTime();
+    SetDelta();
+    if(lastLineIndex>3){
+      lineFollow(FULL_SPEED,LINE_STRICTNESS,lastLineIndex-1,firstLineIndex-1);
+    }else{
+      CurrentState++;
+      TimeInState = 0;
+    }
+  }
   //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
  //Venteral Side up: 0 is right sensor 7 is the left
  //Top Down 0 on left, 7 on right.
-  else if(CurrentState == 3){
+  else if(CurrentState == 4){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
@@ -83,7 +95,7 @@ void loop() {
     }
   }
   //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
-  else if(CurrentState == 4){
+  else if(CurrentState == 5){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
@@ -99,7 +111,7 @@ void loop() {
     }
   }
   //---------------------------------------------------drive centered on the line back to mothership------------------------------------
-  else if(CurrentState == 5){
+  else if(CurrentState == 6){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
@@ -113,6 +125,6 @@ void loop() {
   }
   // this stage should not be used emergency stage
   else{
-    display.sendNum(6);
+    display.sendNum(7);
   }
 }
