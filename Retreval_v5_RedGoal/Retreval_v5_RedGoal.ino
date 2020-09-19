@@ -74,12 +74,12 @@ void loop() {
     SetDelta();
     lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
-      if(lastLoopTime-millis()>=TIME_IN_HOLDER){
+      if(millis()-lastLoopTime>=TIME_IN_HOLDER){
         CurrentState++;
         TimeInState = 0;
       }
     }else{
-      lastLoopTime=millis().
+      lastLoopTime=millis();
     }
   }
   //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
@@ -87,15 +87,15 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,6,5);  
+    lineFollow(FULL_SPEED, LINE_STRICTNESS*2,6,5);  
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
-      if(lastLoopTime-millis()>=TIME_IN_HOLDER){
+      if(millis()-lastLoopTime>=TIME_IN_HOLDER){
         TimeInState = 0;
         CurrentState++;
       }
     }else{
-      lastLoopTime=millis().
+      lastLoopTime=millis();
     }
   }
   //---------------------------------------------------drive centered on the line back to mothership------------------------------------
