@@ -4,7 +4,7 @@
 
 //Puck Constants
 const int PUCK_RECIEVED = 300;
-const int TIME_IN_HOLDER = 500;
+const int TIME_IN_HOLDER = 777;
 
 
 //speed constants
