@@ -42,6 +42,6 @@ PT6961 display(DIN, CLOCK, CS);
 int mil = 0;
 
 //Puck Grabbing
-unsigned long lastLoopsTime = 0;
+unsigned long lastLoopTime = 0;
 
 #endif
