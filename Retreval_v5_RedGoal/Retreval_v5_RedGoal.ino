@@ -65,26 +65,13 @@ void loop() {
       CurrentState++; 
     }
   }
-  //Maybe state for in between the two pucks to carefully drive without surving
+  //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
   else if(CurrentState==3){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    if(lastLineIndex>3){
-      lineFollow(FULL_SPEED,LINE_STRICTNESS,lastLineIndex-1,firstLineIndex-1);
-    }else{
-      CurrentState++;
-      TimeInState = 0;
-    }
-  }
-  //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
- //Venteral Side up: 0 is right sensor 7 is the left
- //Top Down 0 on left, 7 on right.
-  else if(CurrentState == 4){
-    display.sendNum(CurrentState);
-    TimeInState += DeltaTime();
-    SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
+    //lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
       if(millis()-lastLoopTime>=TIME_IN_HOLDER){
         CurrentState++;
@@ -94,12 +81,30 @@ void loop() {
       lastLoopTime=millis();
     }
   }
+  //Maybe state for in between the two pucks to carefully drive without surving
+ //Venteral Side up: 0 is right sensor 7 is the left
+ //Top Down 0 on left, 7 on right.
+  else if(CurrentState == 4){
+    display.sendNum(CurrentState);
+    TimeInState += DeltaTime();
+    SetDelta();
+    if(amountSeen==0){
+     favorLineFollow(FULL_SPEED,LINE_STRICTNESS,false, 0); 
+    }else if(firstLineIndex<6){
+      //lineFollow(FULL_SPEED*3/4,LINE_STRICTNESS,lastLineIndex-1,lastLineIndex-1);
+      favorLineFollow(FULL_SPEED,LINE_STRICTNESS, false, firstLineIndex+1);
+    }else{
+      CurrentState++;
+      TimeInState = 0;
+    }
+  }
   //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
   else if(CurrentState == 5){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS*2,6,5);  
+    //lineFollow(FULL_SPEED, LINE_STRICTNESS,7,6);
+     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,6);
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       if(millis()-lastLoopTime>=TIME_IN_HOLDER){
@@ -111,12 +116,11 @@ void loop() {
     }
   }
   //---------------------------------------------------drive centered on the line back to mothership------------------------------------
-  else if(CurrentState == 6){
+  else if(CurrentState==6){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    
-    favorLineFollow(FULL_SPEED *7/8, LINE_STRICTNESS, false, 3);
+    favorLineFollow(FULL_SPEED *7/8, LINE_STRICTNESS*2, false, 3);
     if(amountSeen == 0){
       writeToWheels(0,0);
       TimeInState = 0;
