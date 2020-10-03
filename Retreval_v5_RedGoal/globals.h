@@ -15,6 +15,7 @@ bool pickingUp = false;
 bool atWall = false;
 bool doPickup = false;
 
+
 bool atNextLine = false;
 //bool LeftMode = true;
 //bool RightMode = false;
@@ -42,6 +43,8 @@ PT6961 display(DIN, CLOCK, CS);
 int mil = 0;
 
 //Puck Grabbing
-unsigned long lastLoopTime = 0;
+//unsigned long lastLoopTime = 0;
+Servo clawMotor;
+bool clawOpen = false;
 
 #endif
