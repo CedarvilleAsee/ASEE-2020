@@ -20,7 +20,6 @@ void setup() {
     pinMode(LINE_SENSOR[i], INPUT);
   }
   
-
  // initialize motor controllers
   pinMode(WHEEL_DIR_LB, OUTPUT);
   pinMode(WHEEL_DIR_LF, OUTPUT);
@@ -37,6 +36,9 @@ void setup() {
   writeWheelDirection(WHEEL_FORWARDS, WHEEL_FORWARDS);
 
   afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY); //makes PB3 work
+
+  //Initialize the holder
+  clawMotor.attach(PUCK_CLAW);
 }
 
 void loop() {
@@ -52,14 +54,14 @@ void loop() {
       SetDelta();
       CurrentState++;
     }
+    openClaw();
   }
   //-------------------------------Drive center of line and turn off the mothership-------------------------------
   else if(CurrentState == 2){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    
-    favorLineFollow(FULL_SPEED*6/7, LINE_STRICTNESS, false, 3);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3);
     if(TimeInState > 3000){
       TimeInState = 0;
       CurrentState++; 
@@ -70,57 +72,46 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    //lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,1);
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
-      if(millis()-lastLoopTime>=TIME_IN_HOLDER){
+      closeClaw();
+      CurrentState++;
+      TimeInState=0;
+      /*if(millis() - lastLoopTime >= TIME_IN_HOLDER){
         CurrentState++;
         TimeInState = 0;
       }
-    }else{
-      lastLoopTime=millis();
     }
-  }
-  //Maybe state for in between the two pucks to carefully drive without surving
- //Venteral Side up: 0 is right sensor 7 is the left
- //Top Down 0 on left, 7 on right.
-  else if(CurrentState == 4){
-    display.sendNum(CurrentState);
-    TimeInState += DeltaTime();
-    SetDelta();
-    if(amountSeen==0){
-     favorLineFollow(FULL_SPEED,LINE_STRICTNESS,false, 0); 
-    }else if(firstLineIndex<6){
-      //lineFollow(FULL_SPEED*3/4,LINE_STRICTNESS,lastLineIndex-1,lastLineIndex-1);
-      favorLineFollow(FULL_SPEED,LINE_STRICTNESS, false, firstLineIndex+1);
-    }else{
-      CurrentState++;
-      TimeInState = 0;
+    else{
+        lastLoopTime = millis();*/
     }
   }
   //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
-  else if(CurrentState == 5){
+  else if(CurrentState == 4){
+    if(TimeInState>100) openClaw();
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    //lineFollow(FULL_SPEED, LINE_STRICTNESS,7,6);
-     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,6);
+     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,7);
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
-      if(millis()-lastLoopTime>=TIME_IN_HOLDER){
+      closeClaw();
+      TimeInState=0;
+      CurrentState++;
+      /*if(millis()-lastLoopTime>=TIME_IN_HOLDER){
         TimeInState = 0;
         CurrentState++;
       }
     }else{
-      lastLoopTime=millis();
+      lastLoopTime=millis();*/
     }
   }
   //---------------------------------------------------drive centered on the line back to mothership------------------------------------
-  else if(CurrentState==6){
+  else if(CurrentState==5){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED *7/8, LINE_STRICTNESS*2, false, 3);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS*2, false, 3);
     if(amountSeen == 0){
       writeToWheels(0,0);
       TimeInState = 0;
@@ -129,6 +120,6 @@ void loop() {
   }
   // this stage should not be used emergency stage
   else{
-    display.sendNum(7);
+    display.sendNum(6);
   }
 }
