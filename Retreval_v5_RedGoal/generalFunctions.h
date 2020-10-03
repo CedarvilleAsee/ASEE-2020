@@ -13,14 +13,14 @@ void closeClaw(){
   if(clawOpen){
     clawOpen=false;
     //Code to close the holder
-    clawMotor.write(0);
+    clawMotor.write(OPEN_ANGLE);
   }
 }
 void openClaw(){
   if(!clawOpen){
     clawOpen=true;
     //Code to open the holder
-    clawMotor.write(70);
+    clawMotor.write(CLOSED_ANGLE);
   }
 }
 
