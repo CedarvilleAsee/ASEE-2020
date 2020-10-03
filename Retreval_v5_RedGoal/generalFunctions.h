@@ -9,3 +9,18 @@ bool delayState(int ms) {
   }
   return false;
 }
+void closeClaw(){
+  if(clawOpen){
+    clawOpen=false;
+    //Code to close the holder
+    clawMotor.write(0);
+  }
+}
+void openClaw(){
+  if(!clawOpen){
+    clawOpen=true;
+    //Code to open the holder
+    clawMotor.write(70);
+  }
+}
+
