@@ -29,6 +29,7 @@ int LINE_SENSOR[] = {PA4, PA5, PA6, PA7, PB3, PA15, PB10, PB11};
 // Puck sensors
 const int LEFT_PUCK = PA0;
 const int RIGHT_PUCK = PA1;
+const int PUCK_CLAW = PA2;
 
 //Analog
 
