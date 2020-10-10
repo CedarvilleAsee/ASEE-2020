@@ -23,4 +23,3 @@ void openClaw(){
     clawMotor.write(CLOSED_ANGLE);
   }
 }
-

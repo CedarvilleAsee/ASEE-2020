@@ -44,6 +44,10 @@ void setup() {
 void loop() {
   
   readLine();
+  if(CurrentState == 1){
+    clawMotor.write(180);
+    return;  
+  }
   
   //waiting state
   if(CurrentState == 1){
