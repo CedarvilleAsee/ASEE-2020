@@ -44,10 +44,7 @@ void setup() {
 void loop() {
   
   readLine();
-  if(CurrentState == 1){
-    clawMotor.write(180);
-    return;  
-  }
+
   
   //waiting state
   if(CurrentState == 1){
@@ -76,7 +73,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    lineFollow(FULL_SPEED, LINE_STRICTNESS,2,1);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
       CurrentState++;
@@ -96,7 +93,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,7);
+     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,8);
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       closeClaw();

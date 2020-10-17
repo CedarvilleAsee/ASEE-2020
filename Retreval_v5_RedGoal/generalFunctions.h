@@ -1,4 +1,4 @@
-bool delayState(int ms) {
+/*bool delayState(int ms) {
   static int milliseconds = -1;
   if(milliseconds == -1) {
     milliseconds = millis();
@@ -8,7 +8,7 @@ bool delayState(int ms) {
     return true;
   }
   return false;
-}
+}*/
 void closeClaw(){
   if(clawOpen){
     clawOpen=false;

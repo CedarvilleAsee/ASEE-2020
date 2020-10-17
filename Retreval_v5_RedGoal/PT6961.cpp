@@ -108,7 +108,7 @@ void PT6961::sendDigits(char digit1, char digit2, char digit3, char digit4, char
   digitalWrite(_CS,HIGH);    
 }
 
-void PT6961::sendMessage(int message)
+/*void PT6961::sendMessage(int message)
 {
   char lineDisp[4];
   if(message == PICKUP_RIGHT) {
@@ -164,4 +164,4 @@ void PT6961::sendMessage(int message)
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC6);
   shiftOut(_DIN, _CLK, LSBFIRST, lineDisp[3]);
   digitalWrite(_CS,HIGH);    
-}
+}*/

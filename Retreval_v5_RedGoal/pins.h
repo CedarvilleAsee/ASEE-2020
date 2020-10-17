@@ -35,8 +35,8 @@ const int PUCK_CLAW = PA2;
 
 //afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY); //makes PB3 work
 
-const int FRONT_SENSOR = PA3;
-const int FORK_SENSOR = PA2;
+//const int FRONT_SENSOR = PA3;
+//const int FORK_SENSOR = PA2;
 
 const int CLAW_SENSOR_RIGHT = PA0;
 const int CLAW_SENSOR_LEFT  = PA1;

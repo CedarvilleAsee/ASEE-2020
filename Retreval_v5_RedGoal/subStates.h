@@ -6,7 +6,7 @@
 
 // State 0
 //  Waits until the button on board is pushed, go to next statez
-bool waitState() {
+/*bool waitState() {
   //for centering robot
   display.sendNum(sensorCounter, 0);
   //keeps the robot still
@@ -17,5 +17,5 @@ bool waitState() {
     return true;
   }
   return false;
-}
+}*/
 #endif

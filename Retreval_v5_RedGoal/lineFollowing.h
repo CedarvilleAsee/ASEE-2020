@@ -66,7 +66,7 @@ void writeToWheels(int ls, int rs) {
   analogWrite(WHEEL_SPEED_R, abs(rs));
 }
 
-bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
+/*bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
   if (amountSeen == 0) {//what to do if no line is seen
     //floor it and pray? Consider Circling 
     writeToWheels(ts, ts);
@@ -77,9 +77,9 @@ bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
     writeToWheels(leftSpeed, rightSpeed);
   }
   return false;
-}
+}*/
 
-//if (favorRight) cen=3 else cen=4 (that is, for getting the favored line to center)
+
 void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 3){
   //Sees no lines, use what the center is to guess a direction to turn
   if(amountSeen == 0){
