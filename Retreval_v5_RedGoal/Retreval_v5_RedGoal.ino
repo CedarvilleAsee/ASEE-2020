@@ -39,12 +39,14 @@ void setup() {
 
   //Initialize the holder
   clawMotor.attach(PUCK_CLAW);
+  clawMotor.write(180);
 }
 
 void loop() {
   
   readLine();
-
+  
+  //Debug Section
   
   //waiting state
   if(CurrentState == 1){
