@@ -1,0 +1,205 @@
+Old code
+
+//to do: 
+//  *serial print/ledprint prediction and measured values, have a way to recalibrate. 
+//  *add Example1_ReadDistance code into this code; need to be able to run it. Update blank stuff with these values. 
+//  *add in sates (wait on mission/calibrate ; wait for mini return ; launch pucks)
+
+
+#include <Servo.h>                          //Library used to control servos
+
+//Pin definitions----------------------------------------------------------------------------------------------------------------------------------------------------
+#define LEFT_SERVO -1
+#define CENTER_SERVO -1
+#define RIGHT_SERVO -1
+
+#define redButton -1
+#define blueButton -1
+
+#define redMiniRobotStartLED -1
+#define blueMiniRobotStartLED -1
+
+#define redDistanceSensorPin -1
+#define blueDistanceSensorPin -1
+
+
+//Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
+#define TIME_OPEN 3000                      //The amount of time in millis the gate stays open
+#define TIME_CLOSED                         //The amount of time in millis the gate stays closed
+
+
+//Global variables---------------------------------------------------------------------------------------------------------------------------------------------------
+boolean redRun;                             //True if the red button was pressed, false if the blue button was pressed.
+
+int runColor = -1;                          //An attempt to replce ^^^, -1 = undecided, 1 = red, 0 = blue. NOTE: Probably not neccessary?
+
+int state = -1;                             //Track where in the code program should be NOTE: Probably going to be made into a local variable
+
+unsigned int redGateTime;                   //The time the gate last was open? NOTE: Probably not neccessary?
+unsigned int blueGateTime;                  //Same as above
+
+boolean isOpenRed = false;                  //True if the red gate is open, false if the red gate is closed
+boolean isOpenBlue = false;                 //True if the blue gate is open, false if the blue gate is closed
+
+Servo rightServo;
+Servo leftServo;
+Servo centerServo; 
+
+//********** Constants
+const int NO_RUN = -1;
+const int RED_RUN = 1;                  //Notice, RED_RUN == true, BLUE_RUN == false; maintains the above form
+const int BLUE_RUN = 0;
+
+const int TIME_OPEN = 3000;             //how long the gate stays open
+const int TIME_CLOSE = 2000;            //how long the gate stays closed
+
+const int SERVO_START = 90;
+const int LAUNCH_RIGHT = 60; //these depend on oreintation of servo. Adjust as needed 
+const int LAUNCH_LEFT = 120;
+
+const int GATE_OPEN_DIST = -1;  //need experimental values
+const int GATE_CLOSED_DIST = -1;
+
+void setup() 
+{
+  Serial.begin(115200);
+  Serial.println(F("Serial OK"));
+
+  initializePins();
+}
+
+void loop() 
+{
+  
+  /*if(runColor == NO_RUN){ //Wait for someone to push the red button or the blue button. 
+    int dist = -1; //read from distance sensor
+    initGateSateRed(dist);
+    initGateSateBlue(dist);
+    selectRun();     
+    state = 0;
+  }else{
+    //these must always run to keep the time.
+    redGateState();
+    blueGateState();
+    //the rest of the code. Inits and selectRun must finsih before moving on. 
+    if(state == 0){
+     
+    }*//
+
+    
+    
+  }
+
+  
+  //Do the rest of the robot stuff
+}
+
+void initializePins()
+{
+    pinMode(redButton, INPUT_PULLUP);
+    pinMode(blueButton, INPUT_PULLUP);
+    
+    pinMode(redMiniRobotStartLED, OUTPUT);
+    pinMode(blueMiniRobotStartLED, OUTPUT);
+
+    //init servos
+    leftServo.attach(LEFT_SERVO);
+    leftServo.write(SERVO_START);
+    rightServo.attach(RIGHT_SERVO);
+    rightServo.write(SERVO_START);
+    centerServo.attach(CENTER_SERVO);
+    centerServo.write(SERVO_START);
+
+}
+
+int selectRun()
+{
+  
+}
+
+
+//Needs revising
+void initGateSateRed(int distance){ //calibrate 
+  if(distance > GATE_OPEN_DIST){
+    isOpenRed = true; //catch it at least once open
+  }else{if(isOpenRed){
+    //had it open, it should have just closed
+     if(distance <= GATE_CLOSED_DIST){
+      redGateTime = millis();
+      isOpenRed = false;
+     }  
+    }
+  }
+}
+
+//Needs revising
+void initGateSateBlue(int distance){ //calibrate 
+  if(distance > GATE_OPEN_DIST){
+    isOpenBlue = true; //catch it at least once open
+  }else{if(isOpenBlue){
+    //had it open, it should have just closed
+     if(distance <= GATE_CLOSED_DIST){
+      blueGateTime = millis();
+      isOpenBlue = false;
+     }  
+    }
+  }
+}
+
+//add a confrim function to check that the above works. Also blink LEDs so can see if lines up properly
+
+//must always run or else will loose spot
+bool redGateState(){ //returns isOpen. Adjust later for canShoot; don't fire within 1/3 sec of closing
+//********* check this against the gate timming to make sure it is the same 
+  int howLong = millis() - redGateTime;
+  if(isOpenRed){
+    if(howLong > TIME_OPEN){ //see if open 3 seconds so far
+      redGateTime = millis() + (howLong - TIME_OPEN); //if it was longer than 3 sec, offset the time
+      isOpenRed = false; 
+    }
+  } else{ //it was closed
+    if(howLong > TIME_CLOSE){ //se if closed for 2 seconds so far
+      redGateTime = millis() + (howLong - TIME_CLOSE); //will be a bit off each time, so need to ofset by how much larger millis was than gameTime
+      isOpenRed = true;
+    }
+  }
+
+ return isOpenRed;
+}
+
+bool blueGateState(){ //returns isOpen. Adjust later for canShoot; don't fire within 1/3 sec of closing
+    int howLong = millis() - blueGateTime;
+  if(isOpenBlue){
+    if(howLong > TIME_OPEN){ //see if open 3 seconds so far
+      blueGateTime = millis() + (howLong - TIME_OPEN); //if it was longer than 3 sec, offset the time
+      isOpenBlue = false; 
+    }
+  } else{ //it was closed
+    if(howLong > TIME_CLOSE){ //se if closed for 2 seconds so far
+      blueGateTime = millis() + (howLong - TIME_CLOSE); //will be a bit off each time, so need to ofset by how much larger millis was than gameTime
+      isOpenBlue = true;
+    }
+  }
+
+ return isOpenBlue;
+}
+
+bool launchPucks(bool isRed){ //launch red or blue side. Returns true when they are launched
+  //servos defaulted to 90
+  if(isRed){
+    //this depends on servo orientation. adjust as needed 
+    rightServo.write(LAUNCH_RIGHT);
+    leftServo.write(LAUNCH_LEFT);
+    
+    //launch black
+    centerServo.write(LAUNCH_RIGHT); //may need to delay this 
+    
+  }else{ //is blue
+    rightServo.write(LAUNCH_LEFT);
+    leftServo.write(LAUNCH_RIGHT);
+  }
+
+}
+
+
+

@@ -1,3 +1,5 @@
+// Retrieval bot - drives by blue goalie, red puck in right hand
+
 #include <Arduino.h>
 #include <Servo.h>
 #include "pins.h"
@@ -38,8 +40,10 @@ void setup() {
 }
 
 void loop() {
-  
-  static int state = 1;
+  if(digitalRead(BUTTON_2) == 0){
+    CurrentState = 0;
+  }
+  //static int state = 1;
   readLine();
 
   //waiting state
@@ -55,12 +59,12 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    if(TimeInState < 3){
+    if(TimeInState < 2000){
       //lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       writeToWheels(FULL_SPEED, FULL_SPEED/2);
     }
     //Exit conditions
-    else if(sensors[4] == 1){
+    if(sensors[4] == 1){
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
       TimeInState = 0;
       SetDelta();
@@ -72,31 +76,34 @@ void loop() {
       lineFollow(FULL_SPEED, LINE_STRICTNESS, 4, 3);
     }
   }
-  //-------------------------------pick up the first puck. Stage should be short-------------------------------------
+  //-------------------------------pick up the first puck on the inside housing. Stage should be short-------------------------------------
+ //Venteral Side up: 0 is right sensor 7 is the left
+ //Top Down 0 on left, 7 on right.
   else if(CurrentState == 3){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-      lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);
-    if (TimeInState >= 3100){
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,5,6);
+    if (TimeInState >= 3100 || RIGHT_PUCK == 1){
       if (CurrentState == 3){
         CurrentState ++;
       }
       TimeInState = 0;
     }
   }
-  //-----------------------------------------turn to miss the goal and pick up the next puck---------------------------------------
-  else if(CurrentState == 4){//(too short and tracking wrong side)
+  //-----------------------------------------turn to miss the goal and pick up the next puck of the outside housing ---------------------------------------
+  else if(CurrentState == 4){
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    if (TimeInState < 2000){  //haven't passed the goal yet
-      lineFollow(FULL_SPEED, LINE_STRICTNESS,4,5);
-    }
-    else if (TimeInState < 3000){                   //has passed the goal
-      lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
-    }
-    else{
+    //if (TimeInState < 2000){  //haven't passed the goal yet
+    lineFollow(FULL_SPEED, LINE_STRICTNESS,1,2);
+    //}
+    //else if (TimeInState < 3000){                   //has passed the goal
+    //  lineFollow(FULL_SPEED, LINE_STRICTNESS,2,3);
+    //}
+    //else{
+    if(TimeInState == 3000 || LEFT_PUCK == 1){
       TimeInState = 0;
       lineFollow(FULL_SPEED, LINE_STRICTNESS,3,4);
       CurrentState++;

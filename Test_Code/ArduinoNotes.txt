@@ -1,0 +1,8 @@
+Arduino Notes
+Sparkfun TOF Default Address:  0x29 (modified to 0x30) 
+	- change using setI2CAddress(int addr), is right shifted, before begin ranging
+Adafruit 128x64 Display Addr:  0x3D
+The way the code is currently set up is to read one than the other, 
+Also, if the robot crosses the sensor line, we could have a problem.
+Drive shut pins to reset while each address is changed - will have to be done at beginning
+We could mux the two sensors.

@@ -1,0 +1,175 @@
+//Helper functions---------------------------------------------------------------------------------------------------------------------------------------------------
+boolean redIsOpen()
+{
+  return (((millis() - redTime) % 5000) > 2000);
+}
+
+boolean blueIsOpen()
+{
+  return (((millis() - blueTime) % 5000) > 2000);
+}
+
+void updateStateLED()
+{
+  digitalWrite(redStatusLED, redIsOpen());
+  digitalWrite(blueStatusLED, blueIsOpen());
+}
+
+
+//Main functions-----------------------------------------------------------------------------------------------------------------------------------------------------
+void initializePins()                           //Setup all pins
+{
+    pinMode(redButton, INPUT_PULLUP);
+    pinMode(blueButton, INPUT_PULLUP);
+    pinMode(prestartButton, INPUT_PULLUP);
+    
+    pinMode(redMiniRobotStartLED, OUTPUT);
+    pinMode(blueMiniRobotStartLED, OUTPUT);
+
+//    leftServo.attach(LEFT_SERVO);
+//    leftServo.write(SERVO_START);
+//    rightServo.attach(RIGHT_SERVO);
+//    rightServo.write(SERVO_START);
+//    centerServo.attach(CENTER_SERVO);
+//    centerServo.write(SERVO_START);
+
+}
+
+// Don't look at gates at all until prestart button is pressed. This prevents people setting up from getting in the way and causing a false reading.
+void waitForPrestart()
+{
+  while(digitalRead(prestartButton) == HIGH)    // While the prestart button has not been pressed
+  {
+    //do nothing
+  }
+}
+
+// Get the timing and state of the red gate
+void setupStateRed()
+{
+  int distance = redGate.getDistance();
+  while(distance < RED_DISTANCE)                // Wait for the gate to open
+  {
+    distance = redGate.getDistance();
+  }
+  while(distance > RED_DISTANCE)                // While gate is open
+  {
+    redTime = millis();
+    distance = redGate.getDistance();
+  }
+}
+
+// Get the timing and state of the blue gate
+void setupStateBlue()
+{
+  int distance = blueGate.getDistance();
+  while(distance < BLUE_DISTANCE)                // Wait for the gate to open
+  {
+    distance = blueGate.getDistance();
+  }
+  while(distance > BLUE_DISTANCE)                // While gate is open
+  {
+    blueTime = millis();
+    distance = blueGate.getDistance();
+  }
+}
+
+void selectRedOrBlue()
+{
+  while(true)                               // Run this code until a break. A break will happen when a selection is made.
+  {
+    if(digitalRead(redButton) == LOW)       // If the red button is pressed
+    {
+      redRun = true;
+      break;
+    }
+
+    if(digitalRead(blueButton) == LOW)      // If the blue button is pressed
+    {
+      redRun = false;
+      break;
+    }
+  }
+}
+
+void sendGoToGetters()                      //activate side robots
+{
+  
+}
+
+void waitForReturn()
+{
+  while(digitalRead(puckSensor1) || digitalRead(puckSensor2) || digitalRead(puckSensor3) || digitalRead(puckSensor4))
+  {
+    // Do nothing until all of the pucks have returned
+  }
+  delay(100);
+}
+
+void launchProperPucks()
+{
+  bool redFired , blueFired = false;
+
+  // set these to true either after a set amount of time or sensor reading (if using a sensor)
+  bool canFireRed , canFireBlue = false;
+  
+  if (isOpen(redTime) && redRun && !redFired)             // if able to launch red puck and red button was pressed
+  { 
+    leftServo.write(OPEN_ANGLE);
+    redFired = true;
+    
+    while (leftServo != OPEN_ANGLE)                       // if servo is done opening, reset position to closed
+    {
+      if(abs(leftServo.read() - OPEN_ANGLE) <= 1)
+      {
+        leftServo.write(CLOSED_ANGLE);
+      }
+    }
+  }
+  else if(isOpen(redTime) && !redRun && !redFired)        // if able to launch red puck and red button was pressed
+  {
+    //redFired = true;
+  }
+
+  if (isOpen(blueTime) && redRun && !blueFired)           // if able to launch blue puck and red button was pressed
+  {
+    rightServo.write(OPEN_ANGLE);
+    blueFired = true;
+    
+    while (rightServo != OPEN_ANGLE)                       // if servo is done opening, reset position to closed
+    {
+      if(abs(rightServo.read() - OPEN_ANGLE) <= 1)
+      {
+        rightServo.write(CLOSED_ANGLE);
+      }
+    }
+  }
+  else if (isOpen(blueTime) && !redRun && !blueFired0     // if able to launch blue puck and red button was pressed 
+  {
+    //blueFired = true;
+  }
+
+  if(isOpen(redTime)                                      // if able to launch black puck
+  {
+    centerServo.write(OPEN_ANGLE);
+    
+    if(leftServo.read() == OPEN_ANGLE)
+    {
+      leftServo.write(CLOSED_ANGLE);
+    }
+    
+  }
+}
+
+bool isOpen(int millisTime)
+{
+  if((millis() + redTime) % (TIME_OPEN + TIME_CLOSED) > 2000 + CLOSE_MARGIN && (millis() + redTime) % (TIME_OPEN + TIME_CLOSED) < 5000 - OPEN_MARGIN )
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
