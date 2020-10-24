@@ -5,7 +5,7 @@
 //Puck Constants
 const int PUCK_RECIEVED = 300;
 //const int TIME_IN_HOLDER = 333;
-const int OPEN_ANGLE = 180;
+const int OPEN_ANGLE = 135;
 const int CLOSED_ANGLE = 95;
 
 
