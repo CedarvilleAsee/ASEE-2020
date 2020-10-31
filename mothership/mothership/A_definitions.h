@@ -55,8 +55,12 @@
 
 
 //I don't remember what these are for, looks like the distance of the actual gate? So if you see further than this, the gate must be open? 
+         //(I believe they were for what the dist sensor would read when the gate was closed. I don't think it will work for us, though -Noah)
 #define RED_DISTANCE 300
 #define BLUE_DISTANCE -1
+
+//how long to keep heat on wire before it will melt
+#define MELT_WIRE_TIME 300 //FIXME: need to get actual time
 
 //Servo Constants----------------------------------------------------------------------------------------------------------------------------------------------------
 //#define rampLaunchServoAngle 50

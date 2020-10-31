@@ -22,6 +22,13 @@ boolean redRun;                             //True if the red button was pressed
 unsigned long redTime;                      //The time in which the red gate was first seen down
 unsigned long blueTime;                     //The time in which the blue gate was first seen down
 
+unsigned long redLaunchTime = -1;           //how long have heated the red puck lines 
+bool redLaunched = false;                   //make sure have not launched the red pucks already
+unsigned long blueLaunchTime = -1;           //how long have heated the blue puck lines 
+bool blueLaunched = false;                   //make sure have not launched blue pucks already
+unsigned long blackLaunchTime = -1;         //how long have heated the black puck line 
+bool blackLaunched = false;                 //make sure have not launched black puck already
+
 SFEVL53L1X redGate;
 SFEVL53L1X blueGate;
 

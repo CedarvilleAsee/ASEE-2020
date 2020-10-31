@@ -81,9 +81,7 @@ void checkSensorValidity()
   Serial.println(F("Sensors appear valid!"));
 }
 
-/*
- * Launch the red puck when the gate is safely open. This method checks if the gate is in the proper position, and once it is, launches the puck
- */ 
+
 //simple functions to handle pinouts for each puck
 //red left puck
 void launchRedL()     { digitalWrite(in1A1st, HIGH); digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
@@ -102,17 +100,35 @@ void launchBlueR()    { digitalWrite(in1B2nd, HIGH); digitalWrite(in2B2nd, LOW);
 void disconnectBlueR(){ digitalWrite(in1B2nd, LOW);  digitalWrite(in2B2nd, LOW); digitalWrite(pwmB2nd, HIGH); }
 //GET DONE - Needs electrical to be complete
 
-//returns if it activated the wire
+/*
+ * Launch the red puck when the gate is safely open. This method checks if the gate is in the proper position, and once it is, launches the puck
+ * Launching takes a certain amount of time, so this function will need to be called repeatedly for MELT_WIRE_TIME. Returns true when wire is melted
+ */ 
 bool launchRedPuck()
 {
-  //Melt the wire
-  if(redSafeToLaunch()){
-    launchRedL();
-    launchRedR();
-    //FIXME: get the right amount of time to hold this for
-    return true;
+  //Melt the wire if safe to and have not already
+  if(redSafeToLaunch() && !redLaunched){
+    //set up timming if have not already
+    if(redLaunchTime == -1){
+//FIXME: does this need called once or every cycle?
+       redLaunchTime = millis();
+       launchRedL();
+       launchRedR();
+    }
+    if(millis() - redLaunchTime >= MELT_WIRE_TIME){
+      //turn off wires and make sure they won't turn on again.
+      disconnectRedL();
+      disconnectRedR();
+      redLaunched = true;      
+    }
+    
+    //still not cut, so return false
+    return false;
   }
-  return false;
+  //if here, heat needs to be off, and don't know if launched yet or not
+  disconnectRedL();
+  disconnectRedR();
+  return redLaunched; 
 }
 
 
@@ -121,15 +137,61 @@ bool launchRedPuck()
  * Launch the blue puck when the gate is safely open. This method checks if the gate is in the proper position, and once it is, launches the puck
  */
 //GET DONE - Needs electrical to be complete
-void launchBluePuck()
+bool launchBluePuck()
 {
-  while(blueSafeToLaunch() == false)
-  {
-    //Do nothing until safe to launch
+  //Melt the wire if safe to and have not already
+  if(blueSafeToLaunch() && !blueLaunched){
+    //set up timming if have not already
+    if(blueLaunchTime == -1){
+//FIXME: does this need called once or every cycle?
+       blueLaunchTime = millis();
+       launchBlueL();
+       launchBlueR();
+    }
+    if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
+      //turn off wires and make sure they won't turn on again.
+      disconnectBlueL();
+      disconnectBlueR();
+      blueLaunched = true;      
+    }
+    
+    //still not cut, so return false
+    return false;
   }
-  //Melt the wire
+  //if here, heat needs to be off, and don't know if launched yet or not
+  disconnectBlueL();
+  disconnectBlueR();
+  return blueLaunched; 
 }
 
+/*
+ * Launch the black puck when the gate is safely open. This method checks if the gate is in the proper position, and once it is, launches the puck. 
+ * Note that this cannot fire at the same time as the red right puck due to hardware limitations. 
+ */
+bool launchBlackPuck()
+{
+  //Melt the wire if safe to and have not already
+//FIXME: black points at the red gate, right?
+  if(redSafeToLaunch() && !blackLaunched){
+    //set up timming if have not already
+    if(blackLaunchTime == -1){
+//FIXME: does this need called once or every cycle?
+       blackLaunchTime = millis();
+       launchBlack();
+    }
+    if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
+      //turn off wires and make sure they won't turn on again.
+      disconnectBlack();
+      blackLaunched = true;      
+    }
+    
+    //still not cut, so return false
+    return false;
+  }
+  //if here, heat needs to be off, and don't know if launched yet or not
+  disconnectBlack();
+  return blueLaunched; 
+}
 
 //Main functions-----------------------------------------------------------------------------------------------------------------------------------------------------
 
