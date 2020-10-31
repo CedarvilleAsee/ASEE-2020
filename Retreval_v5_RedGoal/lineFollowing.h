@@ -80,7 +80,7 @@ void writeToWheels(int ls, int rs) {
 }*/
 
 
-void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 3){
+void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 3,int stable = -7){
   //Sees no lines, use what the center is to guess a direction to turn
   if(amountSeen == 0){
     //Test: 1 not enough, 7 very sharp
@@ -91,10 +91,16 @@ void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 
     }
     return;
   }
+  //-7 is a sentitent value for same as cen
+  if(stable==-7) stable=cen;
   //Diff is the difference between the central index (cen) and the index of the line it's following
   int diff;
-  if(favorRight) diff = lastLineIndex - cen;
-  else diff = firstLineIndex - cen;
+  if(favorRight)
+    if(abs(lastLineIndex - cen)>abs(lastLineIndex - stable)) diff = lastLineIndex - stable;
+    else diff = lastLineIndex - cen;
+  else
+    if(abs(firstLineIndex - cen)>abs(firstLineIndex - stable)) diff = firstLineIndex - stable;
+    else diff = firstLineIndex - cen;
   
   //If diff is negative, it will turn to the left, if postive: turn left
   int rightSpeed = ts + diff * strictness;
