@@ -39,7 +39,6 @@ void setup() {
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(135);
 }
-int testangle = 135;
 
 void loop() {
   
