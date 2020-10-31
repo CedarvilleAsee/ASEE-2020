@@ -1,5 +1,8 @@
-// Code Update As of 4.25.2020
-// View comments for functional work
+/**
+ * To do: setup individual sensors (both distance sensors need to work)
+ * Setup whatever sensors we are using for puck detecting
+ * Servo or whatever we need to launch the robots
+ */
 
 
 #include <Servo.h>                          //Library used to control servos
@@ -9,51 +12,48 @@
 #include <vl53l1x_class.h>                  //Used for the range sensors
 #include <vl53l1_error_codes.h>             //Used for the range sensors
 
+#include <Wire.h>
+#include "SparkFun_VL53L1X.h"
 //Global variables---------------------------------------------------------------------------------------------------------------------------------------------------
 Servo rampServo;
 
 boolean redRun;                             //True if the red button was pressed, false if the blue button was pressed.
 
-unsigned long redTime;                      //The time in which the red gate first switched open to closed
-unsigned long blueTime;                     //The time in which the blue gate first switched open to closed
+unsigned long redTime;                      //The time in which the red gate was first seen down
+unsigned long blueTime;                     //The time in which the blue gate was first seen down
 
-SFEVL53L1X redGate; // distance sensors??
+SFEVL53L1X redGate;
 SFEVL53L1X blueGate;
 
 //Handle multiple tabs-----------------------------------------------------------------------------------------------------------------------------------------------
 #include "A_definitions.h"                  //The definitions used by the program. If you need to change a number, it's probably in here. This must go before any other #include
-
 #include "B_functions.h"                    //Functions called thorughout the program
 
 void setup() 
 {
-//  Serial.begin(115200);
-//  Serial.println(F("Serial OK"));
-    pinMode(LED_BUILTIN, OUTPUT);
-    SERVO_1.attach(9);
-    SERVO_CENTER.attach(10);
-    SERVO_2.attach(11);
-    RAMP_SERVO.attach(12)
+  Serial.begin(115200);
+  Serial.println(F("Serial OK"));
 
   Wire.begin();                             //Open i2c for distance sensors
-  redGate.begin();                          //Initialize red gate sensor
-  blueGate.begin();                         //Initialize blue gate sensor
 
   initializePins();
+  initializeSensors();
+  checkSensorValidity();
 }
 
-int loopCounter = 0;
 void loop() 
 {
-  //Don't do anything until the prestart button is pressed
-  if (loopCounter == 0) {
-    waitForPrestart();
-    setupStateRed();              //Get the timing of the red gate
-    setupStateBlue();             //Get the timing of the blue gates
-    selectRedOrBlue(); 
-    loopCounter++;
+  Serial.println(F("Main loop started"));
+  //waitForPrestart();            //Don't do anything until the prestart button is pressed
+  //setupStateRed();              //Get the timing of the red gate
+  //setupStateBlue();             //Get the timing of the blue gates
+  //selectRedOrBlue();            //Wait for the red or blue button to be pressed
+  //sendGoToGetters();            //Tell the retrieval robots to go (move the servo to lower the ramps)
+  //waitForReturn();              //Wait for the retrieval robots to return and drop the pucks into the holes
+  //launchProperPucks();          //Launch the pucks in appropriate order
+  Serial.println(F("Main loop finsished"));
+  while(1)
+  {
+    //Stop
   }
- //Wait for the red or blue button to be pressed
-  sendGoToGetters();              //Tell the retrieval robots to go
-  launchProperPucks();          //Launch the pucks in appropriate order
 }
