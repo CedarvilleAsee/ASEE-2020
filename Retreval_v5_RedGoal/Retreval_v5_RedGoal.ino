@@ -8,7 +8,6 @@
 #include "globals.h"
 #include "generalFunctions.h"
 #include "lineFollowing.h"
-#include "subStates.h"
 #include "Time.h"
 
 void setup() {
@@ -40,32 +39,14 @@ void setup() {
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(135);
 }
-int testangle = 135;
 
 void loop() {
   
   readLine();
   
   //Debug Section
-  /*display.sendNum(testangle);
-  if(digitalRead(BUTTON_1) == 0){
-    testangle -= 5;
-    clawMotor.write(testangle);
-    delay(500);
-  }
-  else if(digitalRead(BUTTON_2) == 0){
-    testangle += 5;
-    clawMotor.write(testangle);
-    delay(500);
-  }*/
-  /*if(clawOpen == false){
-    openClaw();  
-  }
-  else{
-    closeClaw();
-  }
-  delay(1000);
-  return;*/
+  //Debug();
+  //return;
   
   //waiting state
   if(CurrentState == 1){
@@ -142,6 +123,6 @@ void loop() {
   }
   // this stage should not be used emergency stage
   else{
-    display.sendNum(6);
+    //display.sendNum(6);
   }
 }
