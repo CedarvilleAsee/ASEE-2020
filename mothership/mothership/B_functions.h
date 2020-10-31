@@ -87,11 +87,16 @@ void checkSensorValidity()
 //GET DONE - Needs electrical to be complete
 void launchRedPuck()
 {
-  while(redSafeToLaunch() == false)
+  //FIXME: avoid blocking code, will need to call this function in the outer loop (don't want blue launch delayed by red)
+  /*while(!redSafeToLaunch())
   {
     //Do nothing until safe to launch
-  }
+  }*/
   //Melt the wire
+  if(redSafeToLaunch()){
+    //send the combination to
+    //In1:H, In2:H, PWN:H/L = Low, Low
+  }
 }
 
 /*
@@ -100,7 +105,7 @@ void launchRedPuck()
 //GET DONE - Needs electrical to be complete
 void launchBluePuck()
 {
-  while(blueSafeToLaucnh() == false)
+  while(blueSafeToLaunch() == false)
   {
     //Do nothing until safe to launch
   }
@@ -274,8 +279,9 @@ void launchProperPucks()
 {
   if(redRun)
   {
+    //ideally 
     launchRedPuck();
-    delay(100);
+    delay(100);       
     launchBluePuck();
   }
   else

@@ -6,9 +6,9 @@
 #define blueButton 36                         //The blue start button
 #define prestartButton 30                     //The pre-start button
 
-//These are likely going away
-//#define redMiniRobotStartLED -1               //The LED that signals the red mini robot to start
-//#define blueMiniRobotStartLED -1              //The LED that signals the blue mini robot to start
+//These are likely going away (need to be removed from code)
+#define redMiniRobotStartLED -1               //The LED that signals the red mini robot to start
+#define blueMiniRobotStartLED -1              //The LED that signals the blue mini robot to start
 
 #define redStatusLED 38                       //Shows the status of the red gate
 #define blueStatusLED 40                      //Shows the status of the blue gate
@@ -20,6 +20,17 @@
 
 #define xshutPin 41                           //Pin that disables one of the distance sensors to change the other's address
 
+#define redLaunchIn1  -1                      //the following pins are used for controlling the motor controller
+#define redLaunchIn2  -1                      //red pins map to the A set
+#define redLaunchPWM  -1
+#define redLaunchOut1    -1
+#define redLaunchOut2 -1
+
+#define blueLaunchIn1 -1                      //blue pins map to the B set
+#define blueLaunchIn2 -1                      
+#define blueLaunchPWM  -1
+#define blueLaunchOut1    -1
+#define blueLaunchOut2 -1
 
 //Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
 #define TIME_OPEN 3000                          //The amount of time in millis the gate stays open
