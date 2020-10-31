@@ -83,21 +83,39 @@ void checkSensorValidity()
 
 /*
  * Launch the red puck when the gate is safely open. This method checks if the gate is in the proper position, and once it is, launches the puck
- */
+ */ 
+//simple functions to handle pinouts for each puck
+//red left puck
+void launchRedL()     { digitalWrite(in1A1st, HIGH); digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
+void disconnectRedL() { digitalWrite(in1A1st, LOW);  digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
+//red right puck
+void launchRedR()     { digitalWrite(in1B1st, HIGH); digitalWrite(in2B1st, LOW);  digitalWrite(pwmB1st, HIGH); }
+void disconnectRedR() { digitalWrite(in1B1st, LOW);  digitalWrite(in2B1st, LOW);  digitalWrite(pwmB1st, HIGH); }
+//black puck
+void launchBlack()    { digitalWrite(in1B1st, LOW);  digitalWrite(in2B1st, HIGH); digitalWrite(pwmB1st, HIGH); }
+void disconnectBlack(){ disconnectRedR();} //is connected with Red right puck
+//blue left puck
+void launchBlueL()    { digitalWrite(in1A2nd, HIGH); digitalWrite(in2A2nd, LOW);  digitalWrite(pwmA2nd, HIGH); }
+void disconnectBlueL(){ digitalWrite(in1A2nd, LOW);  digitalWrite(in2A2nd, LOW);  digitalWrite(pwmA2nd, HIGH); }
+//blue right puck
+void launchBlueR()    { digitalWrite(in1B2nd, HIGH); digitalWrite(in2B2nd, LOW);  digitalWrite(pwmB2nd, HIGH); }
+void disconnectBlueR(){ digitalWrite(in1B2nd, LOW);  digitalWrite(in2B2nd, LOW); digitalWrite(pwmB2nd, HIGH); }
 //GET DONE - Needs electrical to be complete
-void launchRedPuck()
+
+//returns if it activated the wire
+bool launchRedPuck()
 {
-  //FIXME: avoid blocking code, will need to call this function in the outer loop (don't want blue launch delayed by red)
-  /*while(!redSafeToLaunch())
-  {
-    //Do nothing until safe to launch
-  }*/
   //Melt the wire
   if(redSafeToLaunch()){
-    //send the combination to
-    //In1:H, In2:H, PWN:H/L = Low, Low
+    launchRedL();
+    launchRedR();
+    //FIXME: get the right amount of time to hold this for
+    return true;
   }
+  return false;
 }
+
+
 
 /*
  * Launch the blue puck when the gate is safely open. This method checks if the gate is in the proper position, and once it is, launches the puck
@@ -134,6 +152,13 @@ void initializePins()
     pinMode(blueStatusLED, OUTPUT);
 
     pinMode(xshutPin, OUTPUT);
+
+    pinMode(in1A1st, OUTPUT);
+    pinMode(in2A1st, OUTPUT);
+    pinMode(pwmA1st, OUTPUT);
+    pinMode(in1B1st, OUTPUT);
+    pinMode(in2B1st, OUTPUT);
+    pinMode(pwmB1st, OUTPUT);
     
     Serial.println(F("Initializing finished!"));
 }

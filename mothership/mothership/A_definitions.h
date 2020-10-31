@@ -20,17 +20,25 @@
 
 #define xshutPin 41                           //Pin that disables one of the distance sensors to change the other's address
 
-#define redLaunchIn1  -1                      //the following pins are used for controlling the motor controller
-#define redLaunchIn2  -1                      //red pins map to the A set
-#define redLaunchPWM  -1
-#define redLaunchOut1    -1
-#define redLaunchOut2 -1
-
-#define blueLaunchIn1 -1                      //blue pins map to the B set
-#define blueLaunchIn2 -1                      
-#define blueLaunchPWM  -1
-#define blueLaunchOut1    -1
-#define blueLaunchOut2 -1
+//have to control motor controller pins directly. The suggested setup enables all 4 colored
+//pucks to launch indpendantly, though the black puck cannot launch at the same time as redR.
+//For red launch (and black)
+//Red L, mapped to out1A1st
+#define in1A1st -1 //Red L launch:  high | Disconect: low  
+#define in2A1st -1 //Red L launch:  low  | Disconect: low
+#define pwmA1st -1 //Red L launch:  high | Disconect: high
+//Red R, mapped to out1B1st  (also black on out2B1st) 
+#define in1B1st -1 //Red R launch:  high | Disconnect: low  ||| Black Launch: low  | Disconnect: low
+#define in2B1st -1 //Red R launch:  low  | Disconnect: low  ||| Black Launch: high | Disconnect: low
+#define pwmB1st -1 //Red R launch:  high | Disconnect: high ||| Black Launch: high | Disconnect: high
+//Blue L, mapped to out1A2nd
+#define in1A2nd -1 //Blue L launch: high | Disconect: low 
+#define in2A2nd -1 //Blue L launch: low  | Disconect: low 
+#define pwmA2nd -1 //Blue L launch: high | Disconect: high 
+//BlueR, mapped to out1B2nd
+#define in1B2nd -1 //Blue R launch: high | Disconect: low 
+#define in2B2nd -1 //Blue R launch: low  | Disconect: low 
+#define pwmB2nd -1 //Blue R launch: high | Disconect: high 
 
 //Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
 #define TIME_OPEN 3000                          //The amount of time in millis the gate stays open
