@@ -8,7 +8,6 @@
 #include "globals.h"
 #include "generalFunctions.h"
 #include "lineFollowing.h"
-#include "subStates.h"
 #include "Time.h"
 
 void setup() {
@@ -40,7 +39,6 @@ void setup() {
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(135);
 }
-int testangle = 135;
 
 void loop() {
   
