@@ -37,7 +37,7 @@ void setup() {
 
   //Initialize the holder
   clawMotor.attach(PUCK_CLAW);
-  clawMotor.write(135);
+  clawMotor.write(120);
 }
 
 void loop() {
@@ -64,7 +64,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3, 2);
     if(TimeInState > 3000){
       TimeInState = 0;
       CurrentState++; 
@@ -75,7 +75,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 1);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 2, 1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
       CurrentState++;
@@ -95,7 +95,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false,8);
+     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
@@ -123,6 +123,6 @@ void loop() {
   }
   // this stage should not be used emergency stage
   else{
-    //display.sendNum(6);
+    display.sendNum(6);
   }
 }
