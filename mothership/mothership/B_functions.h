@@ -81,7 +81,6 @@ void checkSensorValidity()
   Serial.println(F("Sensors appear valid!"));
 }
 
-
 //simple functions to handle pinouts for each puck
 //red left puck
 void launchRedL()     { digitalWrite(in1A1st, HIGH); digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
@@ -106,29 +105,32 @@ void disconnectBlueR(){ digitalWrite(in1B2nd, LOW);  digitalWrite(in2B2nd, LOW);
  */ 
 bool launchRedPuck()
 {
-  //Melt the wire if safe to and have not already
-  if(redSafeToLaunch() && !redLaunched){
-    //set up timming if have not already
-    if(redLaunchTime == -1){
-//FIXME: does this need called once or every cycle?
-       redLaunchTime = millis();
-       launchRedL();
-       launchRedR();
+  while(!redLaunched){
+  //FIXME: make this and other loop. 
+    //Melt the wire if safe to and have not already
+    if(redSafeToLaunch() && !redLaunched){
+      //set up timming if have not already
+      if(redLaunchTime == -1){
+  //FIXME: does this need called once or every cycle?
+         redLaunchTime = millis();
+         launchRedL();
+         launchRedR();
+      }
+      if(millis() - redLaunchTime >= MELT_WIRE_TIME){
+        //turn off wires and make sure they won't turn on again.
+        disconnectRedL();
+        disconnectRedR();
+        redLaunched = true;      
+      }
+      
+      //still not cut, so return false
+      return false;
     }
-    if(millis() - redLaunchTime >= MELT_WIRE_TIME){
-      //turn off wires and make sure they won't turn on again.
-      disconnectRedL();
-      disconnectRedR();
-      redLaunched = true;      
-    }
-    
-    //still not cut, so return false
-    return false;
+    //if here, heat needs to be off, and don't know if launched yet or not
+    disconnectRedL();
+    disconnectRedR();
+    return redLaunched; 
   }
-  //if here, heat needs to be off, and don't know if launched yet or not
-  disconnectRedL();
-  disconnectRedR();
-  return redLaunched; 
 }
 
 
@@ -139,29 +141,31 @@ bool launchRedPuck()
 //GET DONE - Needs electrical to be complete
 bool launchBluePuck()
 {
-  //Melt the wire if safe to and have not already
-  if(blueSafeToLaunch() && !blueLaunched){
-    //set up timming if have not already
-    if(blueLaunchTime == -1){
-//FIXME: does this need called once or every cycle?
-       blueLaunchTime = millis();
-       launchBlueL();
-       launchBlueR();
+  while(!blueLaunched){
+    //Melt the wire if safe to and have not already
+    if(blueSafeToLaunch() && !blueLaunched){
+      //set up timming if have not already
+      if(blueLaunchTime == -1){
+  //FIXME: does this need called once or every cycle?
+         blueLaunchTime = millis();
+         launchBlueL();
+         launchBlueR();
+      }
+      if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
+        //turn off wires and make sure they won't turn on again.
+        disconnectBlueL();
+        disconnectBlueR();
+        blueLaunched = true;      
+      }
+      
+      //still not cut, so return false
+      return false;
     }
-    if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
-      //turn off wires and make sure they won't turn on again.
-      disconnectBlueL();
-      disconnectBlueR();
-      blueLaunched = true;      
-    }
-    
-    //still not cut, so return false
-    return false;
+    //if here, heat needs to be off, and don't know if launched yet or not
+    disconnectBlueL();
+    disconnectBlueR();
+    return blueLaunched; 
   }
-  //if here, heat needs to be off, and don't know if launched yet or not
-  disconnectBlueL();
-  disconnectBlueR();
-  return blueLaunched; 
 }
 
 /*
@@ -170,29 +174,30 @@ bool launchBluePuck()
  */
 bool launchBlackPuck()
 {
-  //Melt the wire if safe to and have not already
-//FIXME: black points at the red gate, right?
-  if(redSafeToLaunch() && !blackLaunched){
-    //set up timming if have not already
-    if(blackLaunchTime == -1){
-//FIXME: does this need called once or every cycle?
-       blackLaunchTime = millis();
-       launchBlack();
+  while(!blackLaunched){
+    //Melt the wire if safe to and have not already
+  //FIXME: black points at the red gate, right?
+    if(redSafeToLaunch() && !blackLaunched){
+      //set up timming if have not already
+      if(blackLaunchTime == -1){
+  //FIXME: does this need called once or every cycle?
+         blackLaunchTime = millis();
+         launchBlack();
+      }
+      if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
+        //turn off wires and make sure they won't turn on again.
+        disconnectBlack();
+        blackLaunched = true;      
+      }
+      
+      //still not cut, so return false
+      return false;
     }
-    if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
-      //turn off wires and make sure they won't turn on again.
-      disconnectBlack();
-      blackLaunched = true;      
-    }
-    
-    //still not cut, so return false
-    return false;
+    //if here, heat needs to be off, and don't know if launched yet or not
+    disconnectBlack();
+    return blueLaunched; 
   }
-  //if here, heat needs to be off, and don't know if launched yet or not
-  disconnectBlack();
-  return blueLaunched; 
 }
-
 //Main functions-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
@@ -212,8 +217,8 @@ void initializePins()
 
     pinMode(redStatusLED, OUTPUT);
     pinMode(blueStatusLED, OUTPUT);
-
-    pinMode(xshutPin, OUTPUT);
+//FIXME: this line was not here, but we need it?
+    //pinMode(xshutPin, OUTPUT);
 
     pinMode(in1A1st, OUTPUT);
     pinMode(in2A1st, OUTPUT);
@@ -231,6 +236,11 @@ void initializePins()
 void initializeSensors()
 {
   Serial.println(F("Initializing sensors..."));
+  pinMode(xshutPin, OUTPUT);
+  blueGate.setI2CAddress(0x55);
+  Serial.println(redGate.getI2CAddress());
+  pinMode(xshutPin, INPUT);
+  Serial.println(blueGate.getI2CAddress());
   if(redGate.begin() != 0)        //Redgate.begin() returns 0 if sensor started properly
   {
     Serial.println(F("Red gate sensor failed to start. Check wiring?"));
@@ -239,9 +249,6 @@ void initializeSensors()
       digitalWrite(redStatusLED, ((millis() % 100) > 50));
     }
   }
-  /*pinMode(xshutPin, OUTPUT);
-  blueGate.setI2CAddress(0x54);
-  pinMode(xshutPin, INPUT);
   if(blueGate.begin() != 0)
   {
     Serial.println(F("Blue gate sensor failed to start. Check wiring?"));
@@ -249,7 +256,7 @@ void initializeSensors()
     {
       digitalWrite(blueStatusLED, ((millis() % 100) > 50));
     }
-  }*/
+  }
   Serial.println("Initializing complete!");
 }
 
@@ -261,7 +268,10 @@ void waitForPrestart()
   Serial.println(F("Waiting for prestart..."));
   while(digitalRead(prestartButton) == HIGH)    // While the prestart button has not been pressed
   {
-    //do nothing
+    Serial.print(F("Waiting for prestart...   Red sensor: "));
+    Serial.print(redGate.getDistance());
+    Serial.print(F("        Blue sensor: "));
+    Serial.println(blueGate.getDistance());
   }
   Serial.println(F("Start button pressed!"));
   checkSensorValidity();
@@ -299,11 +309,13 @@ void setupStateBlue()
   while(distance < BLUE_DISTANCE)                // Wait for the gate to open
   {
     distance = blueGate.getDistance();
+    digitalWrite(redStatusLED, redIsOpen());
   }
   while(distance > BLUE_DISTANCE)                // While gate is open
   {
     blueTime = millis();
     distance = blueGate.getDistance();
+    digitalWrite(redStatusLED, redIsOpen());
   }
   Serial.println(F("Blue gate state established!"));
 }
@@ -329,7 +341,7 @@ void selectRedOrBlue()
       redRun = false;
       break;
     }
-
+    
     digitalWrite(redStatusLED, redIsOpen());
     digitalWrite(blueStatusLED, blueIsOpen());
   }
@@ -366,7 +378,6 @@ void launchProperPucks()
 {
   if(redRun)
   {
-    //ideally 
     launchRedPuck();
     delay(100);       
     launchBluePuck();
