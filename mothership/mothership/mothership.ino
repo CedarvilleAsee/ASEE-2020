@@ -51,10 +51,10 @@ void setup()
 void loop() 
 {
   Serial.println(F("Main loop started"));
-  //waitForPrestart();            //Don't do anything until the prestart button is pressed
-  //setupStateRed();              //Get the timing of the red gate
-  //setupStateBlue();             //Get the timing of the blue gates
-  //selectRedOrBlue();            //Wait for the red or blue button to be pressed
+  waitForPrestart();            //Don't do anything until the prestart button is pressed
+  setupStateRed();              //Get the timing of the red gate
+  setupStateBlue();             //Get the timing of the blue gates
+  selectRedOrBlue();            //Wait for the red or blue button to be pressed
   //sendGoToGetters();            //Tell the retrieval robots to go (move the servo to lower the ramps)
   //waitForReturn();              //Wait for the retrieval robots to return and drop the pucks into the holes
   //launchProperPucks();          //Launch the pucks in appropriate order

@@ -81,7 +81,6 @@ void checkSensorValidity()
   Serial.println(F("Sensors appear valid!"));
 }
 
-
 //simple functions to handle pinouts for each puck
 //red left puck
 void launchRedL()     { digitalWrite(in1A1st, HIGH); digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
@@ -192,7 +191,6 @@ bool launchBlackPuck()
   disconnectBlack();
   return blueLaunched; 
 }
-
 //Main functions-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
@@ -212,8 +210,8 @@ void initializePins()
 
     pinMode(redStatusLED, OUTPUT);
     pinMode(blueStatusLED, OUTPUT);
-
-    pinMode(xshutPin, OUTPUT);
+//FIXME: this line was not here, but we need it?
+    //pinMode(xshutPin, OUTPUT);
 
     pinMode(in1A1st, OUTPUT);
     pinMode(in2A1st, OUTPUT);
@@ -231,6 +229,11 @@ void initializePins()
 void initializeSensors()
 {
   Serial.println(F("Initializing sensors..."));
+  pinMode(xshutPin, OUTPUT);
+  blueGate.setI2CAddress(0x55);
+  Serial.println(redGate.getI2CAddress());
+  pinMode(xshutPin, INPUT);
+  Serial.println(blueGate.getI2CAddress());
   if(redGate.begin() != 0)        //Redgate.begin() returns 0 if sensor started properly
   {
     Serial.println(F("Red gate sensor failed to start. Check wiring?"));
@@ -239,9 +242,6 @@ void initializeSensors()
       digitalWrite(redStatusLED, ((millis() % 100) > 50));
     }
   }
-  /*pinMode(xshutPin, OUTPUT);
-  blueGate.setI2CAddress(0x54);
-  pinMode(xshutPin, INPUT);
   if(blueGate.begin() != 0)
   {
     Serial.println(F("Blue gate sensor failed to start. Check wiring?"));
@@ -249,7 +249,7 @@ void initializeSensors()
     {
       digitalWrite(blueStatusLED, ((millis() % 100) > 50));
     }
-  }*/
+  }
   Serial.println("Initializing complete!");
 }
 
@@ -299,11 +299,13 @@ void setupStateBlue()
   while(distance < BLUE_DISTANCE)                // Wait for the gate to open
   {
     distance = blueGate.getDistance();
+    digitalWrite(redStatusLED, redIsOpen());
   }
   while(distance > BLUE_DISTANCE)                // While gate is open
   {
     blueTime = millis();
     distance = blueGate.getDistance();
+    digitalWrite(redStatusLED, redIsOpen());
   }
   Serial.println(F("Blue gate state established!"));
 }
@@ -329,7 +331,7 @@ void selectRedOrBlue()
       redRun = false;
       break;
     }
-
+    
     digitalWrite(redStatusLED, redIsOpen());
     digitalWrite(blueStatusLED, blueIsOpen());
   }
@@ -366,7 +368,6 @@ void launchProperPucks()
 {
   if(redRun)
   {
-    //ideally 
     launchRedPuck();
     delay(100);       
     launchBluePuck();
