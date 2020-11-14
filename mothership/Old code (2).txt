@@ -14,7 +14,7 @@ void updateStateLED()
   digitalWrite(redStatusLED, redIsOpen());
   digitalWrite(blueStatusLED, blueIsOpen());
 }
-
+// Hi mom
 
 //Main functions-----------------------------------------------------------------------------------------------------------------------------------------------------
 void initializePins()                           //Setup all pins
