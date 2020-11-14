@@ -108,4 +108,20 @@ void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 
   writeToWheels(leftSpeed,rightSpeed);
 }
 
+bool initalize = true;
+bool rotateTurn(float TimeDelta){
+  if(initalize){
+    //SetDelta(); this needs moved to suttable place
+    initalize = false;
+  }
+  if(TimeDelta >= 600){
+    writeToWheels(0,0);
+    return true;
+  }
+  else{
+    writeToWheels(-FULL_SPEED/4, (FULL_SPEED/4));
+    return false;  
+  }
+}
+
 #endif
