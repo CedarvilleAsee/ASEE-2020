@@ -1,6 +1,3 @@
-void Debug(){
-  
-}
 void closeClaw(){
   if(clawOpen){
     clawOpen = false;
@@ -14,4 +11,7 @@ void openClaw(){
     //Code to open the holder
     clawMotor.write(OPEN_ANGLE);
   }
+}
+void Debug(){
+ 
 }
