@@ -40,13 +40,23 @@ void setup() {
   clawMotor.write(120);
 }
 
+bool test = false;
+
 void loop() {
   
   readLine();
+  if(digitalRead(BUTTON_2) == 0){
+    CurrentState = 1;
+    writeToWheels(0,0);  
+  }
   
   //Debug Section
   //Debug();
-  //return;
+  
+  if(test == false){
+    test = rotateTurn();
+  }
+  return;
   
   //waiting state
   if(CurrentState == 1){
@@ -64,7 +74,7 @@ void loop() {
     display.sendNum(CurrentState);
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3, 2);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS*2, false, 3, 2);
     if(TimeInState > 3000){
       TimeInState = 0;
       CurrentState++; 
@@ -98,6 +108,7 @@ void loop() {
      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
+      favorLineFollow(FULL_SPEED/2, LINE_STRICTNESS, false, 7, 6);
       closeClaw();
       TimeInState=0;
       CurrentState++;
