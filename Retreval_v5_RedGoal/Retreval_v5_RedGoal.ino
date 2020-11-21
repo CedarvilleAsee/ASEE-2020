@@ -41,6 +41,7 @@ void setup() {
 }
 
 bool test = false;
+bool first = true;
 
 void loop() {
   
@@ -52,16 +53,20 @@ void loop() {
   
   //Debug Section
   //Debug();
-  
-  if(test == false){
-    test = rotateTurn();
+  /*if(first){
+    first=false;
+    SetDelta();
   }
-  return;
-  
+  if(test == false){
+    test = rotateTurn(DeltaTime());
+  }
+  return;*/
+  if(amountSeen>maxSeen) maxSeen=amountSeen;
+  display.sendNum(CurrentState);
   //waiting state
   if(CurrentState == 1){
 
-    display.sendNum(CurrentState);
+    
     if(digitalRead(BUTTON_1) == 0){
       TimeInState = 0;
       SetDelta();
@@ -71,7 +76,7 @@ void loop() {
   }
   //-------------------------------Drive center of line and turn off the mothership-------------------------------
   else if(CurrentState == 2){
-    display.sendNum(CurrentState);
+    
     TimeInState += DeltaTime();
     SetDelta();
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS*2, false, 3, 2);
@@ -82,7 +87,7 @@ void loop() {
   }
   //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
   else if(CurrentState==3){
-    display.sendNum(CurrentState);
+    
     TimeInState += DeltaTime();
     SetDelta();
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 2, 1);
@@ -102,7 +107,7 @@ void loop() {
   //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
   else if(CurrentState == 4){
     if(TimeInState>100) openClaw();
-    display.sendNum(CurrentState);
+    
     TimeInState += DeltaTime();
     SetDelta();
      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
@@ -112,6 +117,7 @@ void loop() {
       closeClaw();
       TimeInState=0;
       CurrentState++;
+      maxSeen=0;
       /*if(millis()-lastLoopTime>=TIME_IN_HOLDER){
         TimeInState = 0;
         CurrentState++;
@@ -122,11 +128,11 @@ void loop() {
   }
   //---------------------------------------------------drive centered on the line back to mothership------------------------------------
   else if(CurrentState==5){
-    display.sendNum(CurrentState);
+    
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS*2, false, 3);
-    if(amountSeen == 0){
+    favorLineFollow(FULL_SPEED, 2*LINE_STRICTNESS, false, 1, 2);
+    if(amountSeen==0){
       writeToWheels(0,0);
       TimeInState = 0;
       CurrentState = 1; 
