@@ -111,7 +111,7 @@ void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 
 bool initalize = true;
 bool rotateTurn(float TimeDelta){
   if(initalize){
-    //SetDelta(); this needs moved to suttable place
+    //SetDelta(); //this needs moved to suttable place
     initalize = false;
   }
   if(TimeDelta >= 600){
