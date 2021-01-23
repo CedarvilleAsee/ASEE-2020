@@ -47,16 +47,6 @@ void loop() {
     CurrentState = 1;
     writeToWheels(0,0);  
   }
-
-  if(test){
-    Reverse90Turn(_LEFT);
-    test = false;
-  }
-  else{
-    display.sendNum(77);
-    writeToWheels(0,0);
-    return;
-  }
   
   display.sendNum(CurrentState);
   TimeInState += DeltaTime();
@@ -98,26 +88,26 @@ void loop() {
     }
   }
   //---------------------------------------------------drive until in front of the mothership--------------------------------
-  else if(CurrentState==5){
+  else if(CurrentState == 5){
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1, 0);
-    if(TimeInState>5000){
+    if(TimeInState > 7000){
       TimeInState = 0;
       CurrentState++;
     }
   }
   //---------------------------Turn to the left to face mothership
-  else if(CurrentState==6){
-    writeToWheels(FULL_SPEED,-FULL_SPEED/2);
-    if(TimeInState>1000){
+  else if(CurrentState == 6){
+      Reverse90Turn(_LEFT);
       CurrentState++;
       TimeInState=0;
-    }
   }
   //---------------------------Drive straight into mothership
   else if(CurrentState==7){
-    if(TimeInState<700) writeToWheels(FULL_SPEED,FULL_SPEED);
+    if(TimeInState < 2000){
+      writeToWheels(FULL_SPEED,FULL_SPEED);
+    }
     else{
-      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,false,3,4);
+      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT,3,4);
       if(amountSeen==0){
         TimeInState=0;
         CurrentState=1;
