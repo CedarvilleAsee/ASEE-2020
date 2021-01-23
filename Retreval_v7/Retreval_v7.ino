@@ -1,5 +1,4 @@
 // Retrieval bot Drive By Red Goal 4/4/2020 10:01
-
 #include <Arduino.h>
 #include <Servo.h>
 #include "pins.h"
@@ -39,6 +38,7 @@ void setup() {
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(120);
 }
+bool test = true;
 
 void loop() {
   
@@ -46,6 +46,16 @@ void loop() {
   if(digitalRead(BUTTON_2) == 0){
     CurrentState = 1;
     writeToWheels(0,0);  
+  }
+
+  if(test){
+    Reverse90Turn(_LEFT);
+    test = false;
+  }
+  else{
+    display.sendNum(77);
+    writeToWheels(0,0);
+    return;
   }
   
   display.sendNum(CurrentState);
