@@ -1,5 +1,4 @@
 // Retrieval bot Drive By Red Goal 4/4/2020 10:01
-
 #include <Arduino.h>
 #include <Servo.h>
 #include "pins.h"
@@ -79,7 +78,7 @@ void loop() {
     
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS*2, false, 3, 2);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS*2, _LEFT, 3, 2);
     if(TimeInState > 3000){
       TimeInState = 0;
       CurrentState++; 
@@ -90,7 +89,7 @@ void loop() {
     
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 2, 1);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, _LEFT, 2, 1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
       CurrentState++;
@@ -110,10 +109,10 @@ void loop() {
     
     TimeInState += DeltaTime();
     SetDelta();
-     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
+     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, _LEFT, 8);
     //Exit Condition
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
-      favorLineFollow(FULL_SPEED/2, LINE_STRICTNESS, false, 7, 6);
+      favorLineFollow(FULL_SPEED/2, LINE_STRICTNESS, _LEFT, 7, 6);
       closeClaw();
       TimeInState=0;
       CurrentState++;
@@ -131,7 +130,7 @@ void loop() {
     
     TimeInState += DeltaTime();
     SetDelta();
-    favorLineFollow(FULL_SPEED, 2*LINE_STRICTNESS, false, 1, 2);
+    favorLineFollow(FULL_SPEED, 2*LINE_STRICTNESS, _LEFT, 1, 2);
     if(amountSeen==0){
       writeToWheels(0,0);
       TimeInState = 0;
