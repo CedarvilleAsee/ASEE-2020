@@ -1,6 +1,8 @@
 #ifndef LINEFOLLOWING
 #define LINEFOLLOWING
 
+#include "Time.h"
+
 // Populates the sensors[] variable so that we know amountSeen
 void readLine() {
   amountSeen = 0;
@@ -57,10 +59,12 @@ void writeToWheels(int ls, int rs) {
   }
 
   //Make sure it does not exceed max
+  if(rs < -255){rs = 254;}
+  if(ls < -255){ls = 254;}  
   if(ls > 255){ls = 255;} 
   if(rs > 255){rs = 255;}
-  if(rs < 0){rs = -255;}
-  if(ls < 0){ls = -255;} 
+  
+  //display.sendNum(rs);
 
   analogWrite(WHEEL_SPEED_L, abs(ls));
   analogWrite(WHEEL_SPEED_R, abs(rs));
@@ -108,20 +112,23 @@ void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 
   writeToWheels(leftSpeed,rightSpeed);
 }
 
-bool initalize = true;
-bool rotateTurn(float TimeDelta){
-  if(initalize){
-    //SetDelta(); //this needs moved to suttable place
-    initalize = false;
-  }
-  if(TimeDelta >= 600){
-    writeToWheels(0,0);
-    return true;
+bool Reverse90Turn(bool turnRight){
+  SetDelta();
+  int leftWheelSpeed;
+  int rightWheelSpeed;
+  if(!turnRight){
+    leftWheelSpeed = -FULL_SPEED/4;
+    rightWheelSpeed = -(FULL_SPEED-20);
   }
   else{
-    writeToWheels(-FULL_SPEED/4, (FULL_SPEED/4));
-    return false;  
+    leftWheelSpeed = -(FULL_SPEED-20);
+    rightWheelSpeed = -FULL_SPEED/4;
   }
+  display.sendNum(abs(leftWheelSpeed));
+  while(DeltaTime() < 3000){
+    writeToWheels(leftWheelSpeed, rightWheelSpeed);
+  }
+  return true;
 }
 
 #endif
