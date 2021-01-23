@@ -24,5 +24,7 @@ const int RIGHT_CLAW_CLOSE = 47;//47
 const int LEFT_CLAW_OPEN = 60;//85 open
 const int LEFT_CLAW_CLOSE = 110;//110;
 
+const int _LEFT = false;
+const int _RIGHT = true;
 
 #endif
