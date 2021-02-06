@@ -7,6 +7,7 @@ int firstLineIndex = -1;
 int lastLineIndex  = -1;
 int amountSeen     = 0;
 float TimeInState = 0;
+float TimeInLastState = 0;
 int CurrentState = 1;
 
 //delta time global
