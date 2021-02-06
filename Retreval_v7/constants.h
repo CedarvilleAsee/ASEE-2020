@@ -11,9 +11,9 @@ const int CLOSED_ANGLE = 60;
 
 //speed constants
 const int TURN_SPEED = 65;
-const int FULL_SPEED = 120;
-const int MAX_SPEED = 80;
-const int LINE_STRICTNESS = 20;
+const int FULL_SPEED = 250;
+const int MID_SPEED = 150;
+const int LINE_STRICTNESS = 50;
 
 // Dasch constants
 const bool WHEEL_FORWARDS   = true;
