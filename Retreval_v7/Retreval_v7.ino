@@ -51,6 +51,7 @@ void loop() {
   display.sendNum(CurrentState);
   TimeInState += DeltaTime();
   SetDelta();
+  
   //waiting state
   if(CurrentState == 1){
     if(digitalRead(BUTTON_1) == 0){
@@ -62,7 +63,7 @@ void loop() {
   }
   //-------------------------------Turn left off the mothership-------------------------------
   else if(CurrentState == 2){
-    writeToWheels(FULL_SPEED,FULL_SPEED/2);
+    writeToWheels(FULL_SPEED,(3*FULL_SPEED)/5);
     if(sensors[3] == HIGH){
       TimeInState = 0;
       CurrentState++; 
@@ -88,27 +89,29 @@ void loop() {
     }
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
-      TimeInState=0;
+      TimeInLastState = TimeInState;
+      TimeInState = 0;
       CurrentState++;
     }
   }
   //---------------------------------------------------drive until in front of the mothership--------------------------------
   else if(CurrentState == 5){
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1, 0);
-    if(TimeInState > 7000){
+    if(TimeInState > (6500 - TimeInLastState)){ //3700
       TimeInState = 0;
       CurrentState++;
     }
   }
   //---------------------------Turn to the left to face mothership
   else if(CurrentState == 6){
-      Reverse90Turn(_LEFT);
+      Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
       CurrentState++;
       TimeInState = 0;
+      SetDelta();
   }
   //---------------------------Drive straight into mothership
   else if(CurrentState == 7){
-    if(TimeInState < 2000){
+    if(TimeInState < 1000){
       writeToWheels(FULL_SPEED,FULL_SPEED);
     }
     else{
