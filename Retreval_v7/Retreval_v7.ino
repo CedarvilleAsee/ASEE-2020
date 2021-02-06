@@ -63,7 +63,7 @@ void loop() {
   }
   //-------------------------------Turn left off the mothership-------------------------------
   else if(CurrentState == 2){
-    writeToWheels(FULL_SPEED,(3*FULL_SPEED)/5);
+    writeToWheels(FULL_SPEED,FULL_SPEED/2);
     if(sensors[3] == HIGH){
       TimeInState = 0;
       CurrentState++; 
