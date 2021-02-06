@@ -79,7 +79,9 @@ void loop() {
   }
   //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
   else if(CurrentState == 4){
-    if(TimeInState>100) openClaw();
+    if(TimeInState > 100){ 
+      openClaw();
+    }
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
@@ -99,18 +101,18 @@ void loop() {
   else if(CurrentState == 6){
       Reverse90Turn(_LEFT);
       CurrentState++;
-      TimeInState=0;
+      TimeInState = 0;
   }
   //---------------------------Drive straight into mothership
-  else if(CurrentState==7){
+  else if(CurrentState == 7){
     if(TimeInState < 2000){
       writeToWheels(FULL_SPEED,FULL_SPEED);
     }
     else{
       favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT,3,4);
-      if(amountSeen==0){
-        TimeInState=0;
-        CurrentState=1;
+      if(amountSeen == 0){
+        TimeInState  = 0;
+        CurrentState = 1;
         writeToWheels(0,0);
       }
     }
