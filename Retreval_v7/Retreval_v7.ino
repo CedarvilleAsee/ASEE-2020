@@ -81,8 +81,11 @@ void loop() {
   else if(CurrentState == 4){
     if(TimeInState > 100){ 
       openClaw();
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
     }
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 8);
+    else{
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3);
+    }
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
       closeClaw();
       TimeInState=0;
