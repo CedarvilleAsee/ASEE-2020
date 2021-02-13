@@ -82,21 +82,34 @@ void checkSensorValidity()
 }
 
 //simple functions to handle pinouts for each puck
+//enable/disable firing (prevent fire hazard)
+void enableLaunch()   { 
+  digitalWrite(pwmA1st, HIGH);
+  digitalWrite(pwmB1st, HIGH);
+  digitalWrite(pwmA2nd, HIGH);
+  digitalWrite(pwmB2nd, HIGH);                             
+}
+void disableLaunch()   { 
+  digitalWrite(pwmA1st, LOW);
+  digitalWrite(pwmB1st, LOW);
+  digitalWrite(pwmA2nd, LOW);
+  digitalWrite(pwmB2nd, LOW);                             
+}
 //red left puck
-void launchRedL()     { digitalWrite(in1A1st, HIGH); digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
-void disconnectRedL() { digitalWrite(in1A1st, LOW);  digitalWrite(in2A1st, LOW);  digitalWrite(pwmA1st, HIGH); }
+void launchRedL()     { digitalWrite(in1A1st, HIGH); }
+void disconnectRedL() { digitalWrite(in1A1st, LOW);  }
 //red right puck
-void launchRedR()     { digitalWrite(in1B1st, HIGH); digitalWrite(in2B1st, LOW);  digitalWrite(pwmB1st, HIGH); }
-void disconnectRedR() { digitalWrite(in1B1st, LOW);  digitalWrite(in2B1st, LOW);  digitalWrite(pwmB1st, HIGH); }
+void launchRedR()     { digitalWrite(in2A1st, HIGH); }
+void disconnectRedR() { digitalWrite(in2A1st, LOW);  }
 //black puck
-void launchBlack()    { digitalWrite(in1B1st, LOW);  digitalWrite(in2B1st, HIGH); digitalWrite(pwmB1st, HIGH); }
-void disconnectBlack(){ disconnectRedR();} //is connected with Red right puck
+void launchBlack()    { digitalWrite(in1A2nd, HIGH); }
+void disconnectBlack(){ digitalWrite(in1A2nd, LOW ); } 
 //blue left puck
-void launchBlueL()    { digitalWrite(in1A2nd, HIGH); digitalWrite(in2A2nd, LOW);  digitalWrite(pwmA2nd, HIGH); }
-void disconnectBlueL(){ digitalWrite(in1A2nd, LOW);  digitalWrite(in2A2nd, LOW);  digitalWrite(pwmA2nd, HIGH); }
+void launchBlueL()    { digitalWrite(in1B1st, HIGH); }
+void disconnectBlueL(){ digitalWrite(in1B1st, LOW);  }
 //blue right puck
-void launchBlueR()    { digitalWrite(in1B2nd, HIGH); digitalWrite(in2B2nd, LOW);  digitalWrite(pwmB2nd, HIGH); }
-void disconnectBlueR(){ digitalWrite(in1B2nd, LOW);  digitalWrite(in2B2nd, LOW); digitalWrite(pwmB2nd, HIGH); }
+void launchBlueR()    { digitalWrite(in2B1st, HIGH); }
+void disconnectBlueR(){ digitalWrite(in2B1st, LOW);  }
 //GET DONE - Needs electrical to be complete
 
 /*
