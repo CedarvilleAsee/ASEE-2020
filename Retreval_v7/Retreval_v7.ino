@@ -63,10 +63,19 @@ void loop() {
   }
   //-------------------------------Turn left off the mothership-------------------------------
   else if(CurrentState == 2){
-    writeToWheels(FULL_SPEED,FULL_SPEED/2);
-    if(sensors[3] == HIGH){
+    
+    if(amountSeen == 0){
+      substateFlag = 1;
+      writeToWheels((FULL_SPEED),(FULL_SPEED)/10);
+    }
+    else if(substateFlag == 1 && sensors[3] == HIGH){
+    //if(sensors[3] == HIGH){
+      substateFlag = 0;
       TimeInState = 0;
       CurrentState++; 
+    }
+    else{
+      writeToWheels(FULL_SPEED,(4*FULL_SPEED)/5);  
     }
   }
   //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
@@ -96,8 +105,8 @@ void loop() {
   }
   //---------------------------------------------------drive until in front of the mothership--------------------------------
   else if(CurrentState == 5){
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1, 0);
-    if(TimeInState > (6500 - TimeInLastState)){ //3700
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0, 0);
+    if(TimeInState > (5600 - TimeInLastState)){ //3700
       TimeInState = 0;
       CurrentState++;
     }
@@ -107,18 +116,35 @@ void loop() {
       Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
       CurrentState++;
       TimeInState = 0;
+      substateFlag = 0;
       SetDelta();
   }
   //---------------------------Drive straight into mothership
   else if(CurrentState == 7){
-    if(TimeInState < 1000){
+    if(substateFlag == 0){
       writeToWheels(FULL_SPEED,FULL_SPEED);
+      if(amountSeen >= 7){
+        substateFlag++;  
+      }
+    }
+    else if(substateFlag == 1){
+        writeToWheels(FULL_SPEED,FULL_SPEED);
+        if(amountSeen == 0){
+          substateFlag++;  
+        }
+    }
+    else if(substateFlag == 2){
+      writeToWheels(FULL_SPEED,FULL_SPEED);
+      if(amountSeen >= 1){
+        substateFlag++;
+      }
     }
     else{
-      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT,3,4);
+      favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS,_LEFT,3,4);
       if(amountSeen == 0){
         TimeInState  = 0;
         CurrentState = 1;
+        substateFlag = 0;
         writeToWheels(0,0);
       }
     }
