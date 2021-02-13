@@ -57,8 +57,10 @@ void loop()
   selectRedOrBlue();            //Wait for the red or blue button to be pressed
   //sendGoToGetters();            //Tell the retrieval robots to go (move the servo to lower the ramps)
   //waitForReturn();              //Wait for the retrieval robots to return and drop the pucks into the holes
+  enableLaunch(); //enable firing
   //launchProperPucks();          //Launch the pucks in appropriate order
   Serial.println(F("Main loop finsished"));
+  disableLaunch(); //disable firing 
   while(1)
   {
     //Stop

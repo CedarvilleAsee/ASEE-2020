@@ -46,22 +46,23 @@
 //#define rampLaunchServoAngle 50
 
 //Motor controller constants----------------------------------------------------------------------------------------
-//have to control motor controller pins directly. The suggested setup enables all 4 colored
-//pucks to launch indpendantly, though the black puck cannot launch at the same time as redR.
-//For red launch (and black)
-//Red L, mapped to out1A1st
-#define in1A1st -1 //Red L launch:  high | Disconect: low  
-#define in2A1st -1 //Red L launch:  low  | Disconect: low
-#define pwmA1st -1 //Red L launch:  high | Disconect: high
-//Red R, mapped to out1B1st  (also black on out2B1st) 
-#define in1B1st -1 //Red R launch:  high | Disconnect: low  ||| Black Launch: low  | Disconnect: low
-#define in2B1st -1 //Red R launch:  low  | Disconnect: low  ||| Black Launch: high | Disconnect: low
-#define pwmB1st -1 //Red R launch:  high | Disconnect: high ||| Black Launch: high | Disconnect: high
+//have to control motor controller pins directly.
+//The motor controller has been changed to enable more direct control
+//Can control up to 8 conections
+//all pwm pins should be on to enable launch
+//**Red Pucks**
+#define in1A1st -1 //Red L
+#define in2A1st -1 //Red R
+#define pwmA1st -1 //Enables Red L and Red R
+//**Blue Pucks**
+#define in1B1st -1 //Blue L
+#define in2B1st -1 //Blue R
+#define pwmB1st -1 //Enable Blue L and Blue R
 //Blue L, mapped to out1A2nd
-#define in1A2nd -1 //Blue L launch: high | Disconect: low 
-#define in2A2nd -1 //Blue L launch: low  | Disconect: low 
-#define pwmA2nd -1 //Blue L launch: high | Disconect: high 
+#define in1A2nd -1 //Black
+#define in2A2nd -1 //unused launch
+#define pwmA2nd -1 //Enable Black
 //BlueR, mapped to out1B2nd
-#define in1B2nd -1 //Blue R launch: high | Disconect: low 
-#define in2B2nd -1 //Blue R launch: low  | Disconect: low 
-#define pwmB2nd -1 //Blue R launch: high | Disconect: high 
+#define in1B2nd -1 //unused
+#define in2B2nd -1 //unused
+#define pwmB2nd -1 //enable unused
