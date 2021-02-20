@@ -190,14 +190,14 @@ bool launchBlackPuck()
   while(!blackLaunched){
     //Melt the wire if safe to and have not already
   //FIXME: black points at the red gate, right?
-    if(redSafeToLaunch() && !blackLaunched){
+    if(blueSafeToLaunch() && !blackLaunched){             //Assuming the black launches on the blue side
       //set up timming if have not already
       if(blackLaunchTime == -1){
   //FIXME: does this need called once or every cycle?
          blackLaunchTime = millis();
          launchBlack();
       }
-      if(millis() - blueLaunchTime >= MELT_WIRE_TIME){
+      if(millis() - blackLaunchTime >= MELT_WIRE_TIME){
         //turn off wires and make sure they won't turn on again.
         disconnectBlack();
         blackLaunched = true;      
@@ -208,7 +208,7 @@ bool launchBlackPuck()
     }
     //if here, heat needs to be off, and don't know if launched yet or not
     disconnectBlack();
-    return blueLaunched; 
+    return blackLaunched; 
   }
 }
 //Main functions-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -293,6 +293,7 @@ void waitForPrestart()
 /*
  * Get the timing for the red gate and its status.
  */
+//FIXME: it might be better if based this off of a seperate open and closed dist... 
 void setupStateRed()
 {
   Serial.println(F("Checking red gate state..."));
@@ -322,7 +323,7 @@ void setupStateBlue()
   while(distance < BLUE_DISTANCE)                // Wait for the gate to open
   {
     distance = blueGate.getDistance();
-    digitalWrite(redStatusLED, redIsOpen());
+    digitalWrite(redStatusLED, redIsOpen());     //show red info while setting up blue
   }
   while(distance > BLUE_DISTANCE)                // While gate is open
   {
@@ -389,16 +390,19 @@ void waitForReturn()
  */
 void launchProperPucks()
 {
+ //puck launching is nonblocking, so have to loop here
   if(redRun)
   {
-    launchRedPuck();
-    delay(100);       
-    launchBluePuck();
+    //returns true when it is launched
+    while(!launchRedPuck()){/*Do nothing*/}
+    delay(100);
+    while(!launchBluePuck()){/*Do Nothing*/}    
   }
   else
-  {
-    launchBluePuck();
+  { 
+    //returns true when it is launched
+    while(!launchBluePuck()){/*Do nothing*/}
     delay(100);
-    launchRedPuck();  
+    while(!launchRedPuck()){/*Do Nothing*/}   
   }
 }
