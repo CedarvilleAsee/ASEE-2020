@@ -190,7 +190,7 @@ bool launchBlackPuck()
   while(!blackLaunched){
     //Melt the wire if safe to and have not already
   //FIXME: black points at the red gate, right?
-    if(blueSafeToLaunch() && !blackLaunched){             //Assuming the black launches on the blue side
+    if(redSafeToLaunch() && !blackLaunched){             //Assuming the black launches on the red side
       //set up timming if have not already
       if(blackLaunchTime == -1){
   //FIXME: does this need called once or every cycle?
@@ -370,6 +370,9 @@ void sendGoToGetters()                      //activate side robots
 {
   digitalWrite(redMiniRobotStartLED, HIGH);
   digitalWrite(blueMiniRobotStartLED, HIGH);
+
+  //knock down ramp with servo
+  tipper.write(TIP_LAUNCH_ANGLE);
 }
 
 /*
@@ -377,12 +380,23 @@ void sendGoToGetters()                      //activate side robots
  */
 void waitForReturn()
 {
+  //FIXME: these sensors have not been added yet. My need to switch to a timed weight. 
   while(digitalRead(puckSensor1) && digitalRead(puckSensor2) && digitalRead(puckSensor3) && digitalRead(puckSensor4))
   {
     digitalWrite(redStatusLED, redIsOpen());
     digitalWrite(blueStatusLED, blueIsOpen());
   }
-  delay(100);
+  delay(100); //FIXME: consider removing this
+
+  //if we end up needing timming:
+  /*unsigned long start = millis();
+  
+  while(millis() - start < <however long this takes>){
+    digitalWrite(redStatusLED, redIsOpen());
+    digitalWrite(blueStatusLED, blueIsOpen());
+  }
+  */
+  
 }
 
 /*
