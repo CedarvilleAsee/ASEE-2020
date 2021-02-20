@@ -59,7 +59,7 @@ void loop() {
       SetDelta();
       CurrentState++;
     }
-    openClaw();
+    //openClaw();
   }
   //-------------------------------Turn left off the mothership-------------------------------
   else if(CurrentState == 2){
