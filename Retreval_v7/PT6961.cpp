@@ -4,19 +4,35 @@
   Released into the public domain.
 */
 #include "constants.h"
-
-//0 - A
-//1 - B
-//2 - C
-//3 - D
-//4 - E
-//5 - F
-//6 - G
-//7 - Colon
-
 #include "Arduino.h"
 #include "PT6961.h"
 
+/*
+Intstruction:
+The Seven Segment Display hensforth refered to as 7SD opertates as a shift register. The _CS pin must be set low for the 7SD to start listening to the data pin.
+Then a code needs to be shifted to the 7SD to tell which digit to write the value. The next code that is shifted to the 7SD will then be writen to the specifed digit.
+The code for refernecing the digits are as follows:
+
+  Digit 1: 0xC0
+  Digit 2: 0xC2
+  Digit 3: 0xC4
+  Digit 4: 0xC6
+
+The reason for not using the odd numbers has yet to be discovered.
+
+To write a value to the 7SD the code following the digit code needs to be a hex code where each bit corrisponds to one of the sections of the individual digit the most
+significant bit is ignored. The lights are high active. The following graphic shows which bit each section corrisponds to, each letter corrispoinds to a bit of the 8 bit binary number:
+
+  ~gfe dcba   
+                  (This diagram is from of the orientation of the small dot light on the bottom)
+   a
+   _
+ f|_|b   center seg = g
+ e|_|c
+   d
+
+To turn on the colon bit was or (|) with the code 0x80 with the first and second digit. The first digit turns on the top dot of the colon, and the second digit turns on the lower dot.
+*/
 PT6961::PT6961(int DIN, int CLK, int CS)
 {
   pinMode(DIN, OUTPUT);
@@ -57,9 +73,11 @@ void PT6961::sendCmd(char cmd)
 
 void PT6961::sendDigit(char digit, char val)
 {
+  //Send the _CS pin Low for the seven seg to being listening to the data pin
   digitalWrite(_CS,LOW);
   shiftOut(_DIN, _CLK, LSBFIRST, digit);
   shiftOut(_DIN, _CLK, LSBFIRST, val);
+  //Send the Pin high for it to stop listening
   digitalWrite(_CS,HIGH);    
 }
 
@@ -75,7 +93,7 @@ void PT6961::sendNum(int num, char colon)
 
 void PT6961::sendDigits(char digit1, char digit2, char digit3, char digit4, char colon)
 {
-
+  
   const char DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
   
   digitalWrite(_CS,LOW);
