@@ -13,6 +13,7 @@
 #define redStatusLED 40                       //Shows the status of the red gate
 #define blueStatusLED 38                      //Shows the status of the blue gate
 
+//These may not be added to the robot
 #define puckSensor1 -1                        //Sensor that sees puck 1
 #define puckSensor2 -1                        //Sensor that sees puck 2
 #define puckSensor3 -1                        //Sensor that sees puck 3
@@ -20,6 +21,7 @@
 
 #define xshutPin 41                           //Pin that disables one of the distance sensors to change the other's address
 
+#define tipperPin-1                             //pin for the servo which tips open the ramps.
 
 //Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
 #define TIME_OPEN 3000                          //The amount of time in millis the gate stays open
@@ -43,7 +45,12 @@
 #define MELT_WIRE_TIME 300 //FIXME: need to get actual time
 
 //Servo Constants----------------------------------------------------------------------------------------------------------------------------------------------------
-//#define rampLaunchServoAngle 50
+#define TIP_LAUNCH_ANGLE 50   //FIXME: find the angles needed experimentally 
+#define TIP_START_ANGLE  100
+
+//Globals: 
+Servo tipper;
+
 
 //Motor controller constants----------------------------------------------------------------------------------------
 //have to control motor controller pins directly.

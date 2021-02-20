@@ -36,6 +36,7 @@ SFEVL53L1X blueGate;
 #include "A_definitions.h"                  //The definitions used by the program. If you need to change a number, it's probably in here. This must go before any other #include
 #include "B_functions.h"                    //Functions called thorughout the program
 
+
 void setup() 
 {
   Serial.begin(115200);
@@ -46,6 +47,10 @@ void setup()
   initializePins();
   initializeSensors();
   checkSensorValidity();
+
+  //set up tipper servo
+  tipper.attach(tipperPin);
+  tipper.write(TIP_START_ANGLE);
 }
 
 void loop() 
