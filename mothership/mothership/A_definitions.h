@@ -40,7 +40,7 @@
 #define RED_DISTANCE 300
 #define BLUE_DISTANCE 300
 
-#define MELT_WIRE_TIME 10
+#define MELT_WIRE_TIME 800
 
 #define extendedPosition 130                     //The position the servo is in when the arms are extended (to knock down ramp)
 #define compressedPosition 25                    //The position the servo is in when the arms are not extended (starting position)
@@ -52,18 +52,18 @@
 //Can control up to 8 conections
 //all pwm pins should be on to enable launch
 //**Red Pucks**
-#define in1A1st -1 //Red L
-#define in2A1st -1 //Red R
-#define pwmA1st -1 //Enables Red L and Red R
+#define in1A1st 36 //Red L
+#define in2A1st 34 //Red R
+#define pwmA1st 8 //Enables Red L and Red R
 //**Blue Pucks**
-#define in1B1st -1 //Blue L
-#define in2B1st -1 //Blue R
-#define pwmB1st -1 //Enable Blue L and Blue R
+#define in1B1st 26 //Blue L
+#define in2B1st 28 //Blue R
+#define pwmB1st 7 //Enable Blue L and Blue R
 //Blue L, mapped to out1A2nd
-#define in1A2nd -1 //Black
-#define in2A2nd -1 //unused launch
-#define pwmA2nd -1 //Enable Black
+#define in1A2nd 37 //Black
+#define in2A2nd 35 //unused launch
+#define pwmA2nd 2 //Enable Black
 //BlueR, mapped to out1B2nd
-#define in1B2nd -1 //unused
-#define in2B2nd -1 //unused
-#define pwmB2nd -1 //enable unused
+#define in1B2nd 27 //unused
+#define in2B2nd 29 //unused
+#define pwmB2nd 3 //enable unused

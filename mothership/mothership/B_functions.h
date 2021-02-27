@@ -51,6 +51,7 @@ void updateStateLED(){
  * Check that sensors are giving values that make sense, and if any of them are not, print an error to the serial monitor, flash an LED, and stop the code.
  */
 void checkSensorValidity(){
+  #ifndef NOSENSOR
   Serial.println(F("Checking sensor validity..."));
   redGate.startRanging();
   blueGate.startRanging();
@@ -68,6 +69,7 @@ void checkSensorValidity(){
     }
   }
   Serial.println(F("Sensors appear valid!"));
+  #endif
 }
 
 void enableLaunch(){ 
@@ -114,10 +116,10 @@ void launchRedPuck(){
     //Do nothing until safe to launch
   }
   launchRedL();
-  delay(ONTIME);
+  delay(MELT_WIRE_TIME);
   disconnectRedL();
   launchRedR();
-  delay(ONTIME);
+  delay(MELT_WIRE_TIME);
   disconnectRedR();
 }
 
@@ -130,10 +132,10 @@ void launchBluePuck(){
     //Do nothing until safe to launch
   }
   launchBlueL();
-  delay(ONTIME);
+  delay(MELT_WIRE_TIME);
   disconnectBlueL();
   launchBlueR();
-  delay(ONTIME);
+  delay(MELT_WIRE_TIME);
   disconnectBlueR();
 }
 
@@ -142,7 +144,7 @@ void launchBlackPuck(){
     //Do nothing until safe to launch
   }
   launchBlack();
-  delay(ONTIME);
+  delay(MELT_WIRE_TIME);
   disconnectBlack();
 }
 
@@ -182,6 +184,7 @@ void initializePins(){
  * Initialize all sensors and detect errors if they come up. Indicate these errors by printing them to the serial monitor and flashing an LED. Stops code if an error occurs.
  */
 void initializeSensors(){
+  #ifndef NOSENSOR
   Serial.println(F("Initializing sensors..."));
   pinMode(xshutPin, OUTPUT);
   blueGate.setI2CAddress(0x55);
@@ -201,6 +204,7 @@ void initializeSensors(){
     }
   }
   Serial.println("Initializing complete!");
+  #endif
 }
 
 /*
