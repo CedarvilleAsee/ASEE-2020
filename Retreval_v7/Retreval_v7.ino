@@ -48,7 +48,8 @@ void loop() {
     writeToWheels(0,0);  
   }
   
-  display.sendNum(CurrentState);
+  display.sendDigit(CurrentState, 0);
+  display.sendDigit(0, 1);
   TimeInState += DeltaTime();
   SetDelta();
   
@@ -59,7 +60,7 @@ void loop() {
       SetDelta();
       CurrentState++;
     }
-    //openClaw();
+    openClaw();
   }
   //-------------------------------Turn left off the mothership-------------------------------
   else if(CurrentState == 2){
@@ -140,7 +141,7 @@ void loop() {
       }
     }
     else{
-      favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS,_LEFT,3,4);
+      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT,3,4);
       if(amountSeen == 0){
         TimeInState  = 0;
         CurrentState = 1;
