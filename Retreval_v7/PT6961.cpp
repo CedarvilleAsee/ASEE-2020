@@ -8,7 +8,7 @@
 #include "PT6961.h"
 
 /*
-Intstruction:
+Description:
 The Seven Segment Display hensforth refered to as 7SD opertates as a shift register. The _CS pin must be set low for the 7SD to start listening to the data pin.
 Then a code needs to be shifted to the 7SD to tell which digit to write the value. The next code that is shifted to the 7SD will then be writen to the specifed digit.
 The code for refernecing the digits are as follows:
@@ -33,6 +33,7 @@ significant bit is ignored. The lights are high active. The following graphic sh
 
 To turn on the colon bit was or (|) with the code 0x80 with the first and second digit. The first digit turns on the top dot of the colon, and the second digit turns on the lower dot.
 */
+
 PT6961::PT6961(int DIN, int CLK, int CS)
 {
   pinMode(DIN, OUTPUT);
@@ -45,10 +46,10 @@ PT6961::PT6961(int DIN, int CLK, int CS)
 
 void PT6961::initDisplay()
 {
-  sendCmd(_DISPLAY_6X12);
-  sendCmd(_AUTO_INCREMENT);
+  sendCmd_Advanced(_DISPLAY_6X12);
+  sendCmd_Advanced(_AUTO_INCREMENT);
   initRAM();
-  sendCmd(_DISPLAY_14_16);
+  sendCmd_Advanced(_DISPLAY_14_16);
 }
 
 // Initializes RAM to all zeros
@@ -64,14 +65,14 @@ void PT6961::initRAM()
 }
 
 // Use to send command based on enumeration
-void PT6961::sendCmd(char cmd)
+void PT6961::sendCmd_Advanced(char cmd)
 {
   digitalWrite(_CS,LOW);
   shiftOut(_DIN, _CLK, LSBFIRST, cmd);
   digitalWrite(_CS,HIGH);  
 }
 
-void PT6961::sendDigit(char digit, char val)
+void PT6961::sendDigit_Advanced(char digit, char val)
 {
   //Send the _CS pin Low for the seven seg to being listening to the data pin
   digitalWrite(_CS,LOW);
@@ -81,7 +82,18 @@ void PT6961::sendDigit(char digit, char val)
   digitalWrite(_CS,HIGH);    
 }
 
-void PT6961::sendNum(int num, char colon)
+void PT6961::sendDigit(unsigned int number, unsigned int index){
+  char digit = validateIndex(index);        //Clean input and translate to 7SD codes
+  char val   = translateNumber(number);
+  
+  digitalWrite(_CS, LOW);                   //Send pin low so 7SD begings listening to data pin
+  shiftOut(_DIN, _CLK, LSBFIRST, digit);     //Shifts to the least most significant bit to the adress specifed
+  shiftOut(_DIN, _CLK, LSBFIRST, val);       //shifts the number to the digit that was speifed in the last shift
+  digitalWrite(_CS, HIGH);                  //Send pin low so 7SD stops listening and system resets
+  
+}
+
+void PT6961::sendNum(unsigned int num, char colon)
 {
   int digit1 = num / 1000;
   int digit2 = (num % 1000) / 100;
@@ -94,92 +106,57 @@ void PT6961::sendNum(int num, char colon)
 void PT6961::sendDigits(char digit1, char digit2, char digit3, char digit4, char colon)
 {
   
-  const char DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
+  //const char DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
   
   digitalWrite(_CS,LOW);
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC0);
   
   if(colon == 1)
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, DISP[digit1] | 0x80);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit1] | 0x80);
   }
   else
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, DISP[digit1]);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit1]);
   }
 
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC2);
 
   if(colon == 1)  
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, DISP[digit2] | 0x80);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit2] | 0x80);
   }
   else
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, DISP[digit2]);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit2]);
   }
   
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC4);
-  shiftOut(_DIN, _CLK, LSBFIRST, DISP[digit3]);
+  shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit3]);
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC6);
-  shiftOut(_DIN, _CLK, LSBFIRST, DISP[digit4]);
+  shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit4]);
   digitalWrite(_CS,HIGH);    
 }
-
-/*void PT6961::sendMessage(int message)
-{
-  char lineDisp[4];
-  if(message == PICKUP_RIGHT) {
-    lineDisp[0] = 0x73; //P
-    lineDisp[1] = 0x00;
-    lineDisp[2] = 0x00;
-    lineDisp[3] = 0x50; //r
+char PT6961::validateIndex(unsigned int index){
+  if(index > 3){
+    return 0xC6;
   }
-  else if(message == PICKUP_LEFT) {
-    lineDisp[0] = 0x73; //P
-    lineDisp[1] = 0x00;
-    lineDisp[2] = 0x00;
-    lineDisp[3] = 0x38; //L
+  else if(index == 2){
+    return 0xC4;
   }
-  else if(message == PICKUP_EMPTY) {
-    lineDisp[0] = 0x73; //P
-    lineDisp[1] = 0x00;
-    lineDisp[2] = 0x00; 
-    lineDisp[3] = 0x79; //E
+  else if(index == 1){
+    return 0xC2;  
   }
-  else if(message == DEPOSITING) {
-    lineDisp[0] = 0x5E; //D
-    lineDisp[1] = 0x79; //E
-    lineDisp[2] = 0x73; //P
-    lineDisp[3] = 0x3F; //O
+  else{
+    return 0xC0;  
   }
-  else if(message == DONE) {
-    lineDisp[0] = 0x5E; //D
-    lineDisp[1] = 0x3F; //O
-    lineDisp[2] = 0x54; //n
-    lineDisp[3] = 0x79; //E
-  }
-  else if(message == RACQUETBALL) {
-    lineDisp[0] = 0x7C; //b
-    lineDisp[1] = 0x77; //A
-    lineDisp[2] = 0x38; //L
-    lineDisp[3] = 0x38; //L
-  }
-
-  
-  
-  digitalWrite(_CS,LOW);
-  shiftOut(_DIN, _CLK, LSBFIRST, 0xC0);
-  
-  shiftOut(_DIN, _CLK, LSBFIRST, lineDisp[0]);
-
-  shiftOut(_DIN, _CLK, LSBFIRST, 0xC2);
-
-  shiftOut(_DIN, _CLK, LSBFIRST, lineDisp[1]);
-  
-  shiftOut(_DIN, _CLK, LSBFIRST, 0xC4);
-  shiftOut(_DIN, _CLK, LSBFIRST, lineDisp[2]);
-  shiftOut(_DIN, _CLK, LSBFIRST, 0xC6);
-  shiftOut(_DIN, _CLK, LSBFIRST, lineDisp[3]);
-  digitalWrite(_CS,HIGH);    
-}*/
+}
+char PT6961::translateNumber(unsigned int num){
+    int decNumber = num % 10;
+    return _DISP[decNumber];
+      
+}
+char PT6961::translateCharater(char val){
+  //TODO
+  return val;
+}
