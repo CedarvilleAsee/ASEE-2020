@@ -16,11 +16,16 @@ class PT6961
     PT6961(int DIN, int CLK, int CS);
     void initDisplay();
     void initRAM();
-    void sendCmd(char cmd);
-    void sendDigit(char digit, char val);
-    void sendNum(int num, char colon = 0);
+    void sendCmd_Advanced(char cmd);                  //sends code comands does not right to display  - Advanced Interface
+    void sendDigit_Advanced(char digit, char val);    //writes to a single digit                      - Advanced Interface code comands required
+
+    //All methodes truncate if data is larger than display
+    void sendDigit(unsigned int number, unsigned int index = 0);         //writes a single digit number to the display   - simple interface
+    void sendNum(unsigned int num, char colon = 0);                     //writes a four digit number to the display     - simple interface
+    void sendChar(char charater, unsigned int index);                   //writes a single charater to display           - simple interface
+    void sendMessage(int message);                                      //writes a four digit message to the screen     - simple interface
+
     void sendDigits(char digit1, char digit2, char digit3, char digit4, char colon = 0);
-    void sendMessage(int message);
 	
     const static char _DISPLAY_6X12 = 0x02;
     const static char _DISPLAY_7X11 = 0x03;
@@ -37,11 +42,15 @@ class PT6961
     const static char _DISPLAY_14_16 = 0x8F;
 	
   private:
-  
+    char validateIndex(unsigned int index);
+    char translateNumber(unsigned int num);
+    char translateCharater(char val);
+    
 	  int _DIN;
     int _CLK;
     int _CS;
-	
+    const char _DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
+	  //char[] _AsciiLookUpTable = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6C, 0x7C, 0x07, 0x7F, 0x6F};                                         // inprogress
 };
 
 #endif
