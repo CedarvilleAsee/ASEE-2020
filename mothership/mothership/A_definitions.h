@@ -1,10 +1,7 @@
 //Pin definitions----------------------------------------------------------------------------------------------------------------------------------------------------
-
-//Servo pins are defined B_functions.h as (servoname).attach(pinNumber)
-
-#define redButton 35                          //The red start button
-#define blueButton 36                         //The blue start button
-#define prestartButton 30                     //The pre-start button
+#define redButton 32                          //The red start button
+#define blueButton 30                         //The blue start button
+#define prestartButton 53                     //The pre-start button
 
 //These are likely going away (need to be removed from code)
 #define redMiniRobotStartLED -1               //The LED that signals the red mini robot to start
@@ -13,15 +10,26 @@
 #define redStatusLED 40                       //Shows the status of the red gate
 #define blueStatusLED 38                      //Shows the status of the blue gate
 
-//These may not be added to the robot
-#define puckSensor1 -1                        //Sensor that sees puck 1
-#define puckSensor2 -1                        //Sensor that sees puck 2
-#define puckSensor3 -1                        //Sensor that sees puck 3
-#define puckSensor4 -1                        //Sensor that sees puck 4
+#define robotSensor1 -1                        //Sensor that sees robot 1
+#define robotSensor2 -1                        //Sensor that sees robot 2
 
 #define xshutPin 41                           //Pin that disables one of the distance sensors to change the other's address
 
-#define tipperPin-1                             //pin for the servo which tips open the ramps.
+#define servoPin 9                            //Pin the servo is plugged into
+
+/*
+#define redLaunchIn1  -1                      //the following pins are used for controlling the motor controller
+#define redLaunchIn2  -1                      //red pins map to the A set
+#define redLaunchPWM  -1
+#define redLaunchOut1    -1
+#define redLaunchOut2 -1
+
+#define blueLaunchIn1 -1                      //blue pins map to the B set
+#define blueLaunchIn2 -1                      
+#define blueLaunchPWM  -1
+#define blueLaunchOut1    -1
+#define blueLaunchOut2 -1
+*/
 
 //Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
 #define TIME_OPEN 3000                          //The amount of time in millis the gate stays open
@@ -29,27 +37,13 @@
 #define CLOSE_MARGIN 0                          //The amount of time to wait after the gate begins opening
 #define OPEN_MARGIN 0                           //The amount of time to not fire right before gate closes
 
-//I think these are going to be removed
-//#define RED_GATE_OPEN_DIST -1                 //The value the distance sensor will see when the gate is open
-//#define RED_GATE_CLOSED_DIST -1               //The value the distance sensor will see when the gate is closed
-
-//#define BLUE_GATE_OPEN_DIST -1                //The value the distance sensor will see when the gate is open
-//#define BLUE_GATE_CLOSED_DIST -1              //The value the distance sensor will see when the gate is closed
-
-
-//I don't remember what these are for, looks like the distance of the actual gate? So if you see further than this, the gate must be open? 
 #define RED_DISTANCE 300
 #define BLUE_DISTANCE 300
 
-//how long to keep heat on wire before it will melt
-#define MELT_WIRE_TIME 300 //FIXME: need to get actual time
+#define MELT_WIRE_TIME 10
 
-//Servo Constants----------------------------------------------------------------------------------------------------------------------------------------------------
-#define TIP_LAUNCH_ANGLE 50   //FIXME: find the angles needed experimentally 
-#define TIP_START_ANGLE  100
-
-//Globals: 
-Servo tipper;
+#define extendedPosition 130                     //The position the servo is in when the arms are extended (to knock down ramp)
+#define compressedPosition 25                    //The position the servo is in when the arms are not extended (starting position)
 
 
 //Motor controller constants----------------------------------------------------------------------------------------
