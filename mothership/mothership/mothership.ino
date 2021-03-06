@@ -1,3 +1,4 @@
+
 #define NOSENSOR
 
 #include <Servo.h>                          //Library used to control servos
@@ -58,20 +59,21 @@ void loop()
   }
   */
   enableLaunch();
-  delay(10000);
-    Serial.println("Red button");
-    digitalWrite(redStatusLED, HIGH);
-    launchRedPuck();
-    digitalWrite(redStatusLED, LOW);
-    Serial.println("Blue button");
-    digitalWrite(blueStatusLED, HIGH);
-    launchBluePuck();
-    digitalWrite(blueStatusLED, LOW);
-  disableLaunch();
+  delay(1000);
+  Serial.println("Red button");
+  digitalWrite(redStatusLED, HIGH);
+  launchRedPuck();
+  digitalWrite(redStatusLED, LOW);
+  Serial.println("Blue button");
+  digitalWrite(blueStatusLED, HIGH);
+  launchBluePuck();
+  digitalWrite(blueStatusLED, LOW);
+  /*disableLaunch();
   while(1)
   {
     
-  }
+  }*/
+
 
 
   

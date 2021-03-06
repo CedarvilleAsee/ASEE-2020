@@ -1,7 +1,7 @@
 //Pin definitions----------------------------------------------------------------------------------------------------------------------------------------------------
 #define redButton 32                          //The red start button
 #define blueButton 30                         //The blue start button
-#define prestartButton 53                     //The pre-start button
+#define prestartButton -1                     //The pre-start button
 
 //These are likely going away (need to be removed from code)
 #define redMiniRobotStartLED -1               //The LED that signals the red mini robot to start
@@ -40,7 +40,8 @@
 #define RED_DISTANCE 300
 #define BLUE_DISTANCE 300
 
-#define MELT_WIRE_TIME 800
+#define MELT_WIRE_TIME 200
+
 
 #define extendedPosition 130                     //The position the servo is in when the arms are extended (to knock down ramp)
 #define compressedPosition 25                    //The position the servo is in when the arms are not extended (starting position)
@@ -67,3 +68,7 @@
 #define in1B2nd 27 //unused
 #define in2B2nd 29 //unused
 #define pwmB2nd 3 //enable unused
+
+//Standby
+#define STBY1st 33
+#define STBY2nd 31
