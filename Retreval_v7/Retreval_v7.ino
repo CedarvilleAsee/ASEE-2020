@@ -47,16 +47,21 @@ void loop() {
     CurrentState = 1;
     writeToWheels(0,0);  
   }
+
   
-  display.sendDigit(CurrentState, 0);
-  display.sendDigit(0, 1);
+  
+  
   TimeInState += DeltaTime();
   SetDelta();
+
+  display.sendDigit(CurrentState, 0);
+  display.sendDigit(0, 1);
   
   //waiting state
   if(CurrentState == 1){
     if(digitalRead(BUTTON_1) == 0){
       TimeInState = 0;
+      substateFlag = 0;
       SetDelta();
       CurrentState++;
     }
@@ -64,25 +69,40 @@ void loop() {
   }
   //-------------------------------Turn left off the mothership-------------------------------
   else if(CurrentState == 2){
-    
-    if(amountSeen == 0){
-      substateFlag = 1;
-      writeToWheels((FULL_SPEED),(FULL_SPEED)/10);
+    if(substateFlag == 0){
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS,_RIGHT, 3, 2);
+      if(amountSeen == 0){
+        substateFlag = 1;  
+      }
     }
-    else if(substateFlag == 1 && sensors[3] == HIGH){
-    //if(sensors[3] == HIGH){
-      substateFlag = 0;
-      TimeInState = 0;
-      CurrentState++; 
+    else if(substateFlag == 1){
+      writeToWheels((FULL_SPEED),(FULL_SPEED));
+      if(amountSeen == 7){
+        substateFlag = 2;  
+      }
     }
-    else{
-      writeToWheels(FULL_SPEED,(4*FULL_SPEED)/5);  
+    else if(substateFlag == 2){
+      writeToWheels((FULL_SPEED - 50),(FULL_SPEED - 50));
+      if(amountSeen == 0){
+        substateFlag = 3;
+      }
+    }
+    else if(substateFlag == 3){
+      //90 degree turn
+      writeToWheels((FULL_SPEED - 50), -100);
+      //Exit Conditions
+      if(sensors[3] == HIGH){
+        substateFlag = 0;
+        TimeInState = 0;
+        CurrentState++; 
+      }
     }
   }
   //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
-  else if(CurrentState==3){
+  else if(CurrentState == 3){
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 2, 1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
+      //display.sendNum(TimeInState);
       closeClaw();
       CurrentState++;
       TimeInState=0;
@@ -98,6 +118,7 @@ void loop() {
       favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3);
     }
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
+      //display.sendNum(TimeInState);
       closeClaw();
       TimeInLastState = TimeInState;
       TimeInState = 0;
@@ -107,7 +128,8 @@ void loop() {
   //---------------------------------------------------drive until in front of the mothership--------------------------------
   else if(CurrentState == 5){
     favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0, 0);
-    if(TimeInState > (5600 - TimeInLastState)){ //3700
+    if(TimeInState > (5550 - TimeInLastState)){ //3700
+      //display.sendNum(TimeInState);
       TimeInState = 0;
       CurrentState++;
     }
