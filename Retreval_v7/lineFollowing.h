@@ -132,15 +132,15 @@ bool Reverse90Turn(bool turnRight){
   int leftWheelSpeed;
   int rightWheelSpeed;
   if(!turnRight){
-    leftWheelSpeed = -MID_SPEED/4;
-    rightWheelSpeed = -(MID_SPEED+10);
+    leftWheelSpeed = -FULL_SPEED/4;
+    rightWheelSpeed = -(FULL_SPEED);
   }
   else{
-    leftWheelSpeed = -(MID_SPEED+10);
-    rightWheelSpeed = -MID_SPEED/4;
+    leftWheelSpeed = -(FULL_SPEED);
+    rightWheelSpeed = -FULL_SPEED/4;
   }
   display.sendNum(abs(leftWheelSpeed));
-  while(DeltaTime() < 2500){
+  while(DeltaTime() < 1400){
     writeToWheels(leftWheelSpeed, rightWheelSpeed);
   }
   return true;
