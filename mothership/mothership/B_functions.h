@@ -76,14 +76,18 @@ void enableLaunch(){
   digitalWrite(pwmA1st, HIGH);
   digitalWrite(pwmB1st, HIGH);
   digitalWrite(pwmA2nd, HIGH);
-  digitalWrite(pwmB2nd, HIGH);                             
+  digitalWrite(pwmB2nd, HIGH);   
+  digitalWrite(STBY1st, HIGH);
+  digitalWrite(STBY2nd, HIGH);                       
 }
 
 void disableLaunch(){ 
   digitalWrite(pwmA1st, LOW);
   digitalWrite(pwmB1st, LOW);
   digitalWrite(pwmA2nd, LOW);
-  digitalWrite(pwmB2nd, LOW);                             
+  digitalWrite(pwmB2nd, LOW);
+  digitalWrite(STBY1st, LOW);
+  digitalWrite(STBY2nd, LOW) ;                              
 }
 
 //red left puck
@@ -112,9 +116,11 @@ void disconnectBlueR(){ digitalWrite(in2B1st, LOW);  }
  */
 //GET DONE - Needs electrical to be complete
 void launchRedPuck(){
+  #ifndef NOSENSOR
   while(redSafeToLaunch() == false){
     //Do nothing until safe to launch
   }
+  #endif
   launchRedL();
   delay(MELT_WIRE_TIME);
   disconnectRedL();
@@ -128,9 +134,11 @@ void launchRedPuck(){
  */
 //GET DONE - Needs electrical to be complete
 void launchBluePuck(){
+  #ifndef NOSENSOR
   while(blueSafeToLaunch() == false){
     //Do nothing until safe to launch
   }
+  #endif
   launchBlueL();
   delay(MELT_WIRE_TIME);
   disconnectBlueL();
@@ -140,9 +148,11 @@ void launchBluePuck(){
 }
 
 void launchBlackPuck(){
+  #ifndef NOSENSOR
   while(redSafeToLaunch() == false){
     //Do nothing until safe to launch
   }
+  #endif
   launchBlack();
   delay(MELT_WIRE_TIME);
   disconnectBlack();
@@ -159,7 +169,7 @@ void initializePins(){
 
     pinMode(redButton, INPUT_PULLUP);
     pinMode(blueButton, INPUT_PULLUP);
-    pinMode(prestartButton, INPUT_PULLUP);
+    //pinMode(prestartButton, INPUT_PULLUP);
     
     pinMode(redMiniRobotStartLED, OUTPUT);
     pinMode(blueMiniRobotStartLED, OUTPUT);
@@ -176,6 +186,16 @@ void initializePins(){
     pinMode(in1B1st, OUTPUT);
     pinMode(in2B1st, OUTPUT);
     pinMode(pwmB1st, OUTPUT);
+
+    pinMode(in1A2nd, OUTPUT);
+    pinMode(in2A2nd, OUTPUT);
+    pinMode(pwmA2nd, OUTPUT);
+    pinMode(in1B2nd, OUTPUT);
+    pinMode(in2B2nd, OUTPUT);
+    pinMode(pwmB2nd, OUTPUT);
+
+    pinMode(STBY1st, OUTPUT);
+    pinMode(STBY2nd, OUTPUT);
     
     Serial.println(F("Initializing finished!"));
 }
