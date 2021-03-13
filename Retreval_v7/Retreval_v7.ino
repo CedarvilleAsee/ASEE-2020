@@ -41,16 +41,12 @@ void setup() {
 bool test = true;
 
 void loop() {
-  
   readLine();
   if(digitalRead(BUTTON_2) == 0){
     CurrentState = 1;
     writeToWheels(0,0);  
   }
 
-  
-  
-  
   TimeInState += DeltaTime();
   SetDelta();
 
@@ -100,7 +96,7 @@ void loop() {
   }
   //-------------------------------pick up the first puck on the Outside housing. Stage should be short-------------------------------------
   else if(CurrentState == 3){
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS,false, 2, 1);
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 2, 1);
     if (analogRead(LEFT_PUCK) <= PUCK_RECIEVED){
       //display.sendNum(TimeInState);
       closeClaw();
@@ -108,7 +104,7 @@ void loop() {
       TimeInState=0;
     }
   }
-  //-----------------------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------------------
+  //---------------------------turn to miss the goal and pick up the next puck of the Inside housing ---------------------------
   else if(CurrentState == 4){
     if(TimeInState > 100){ 
       openClaw();
@@ -118,32 +114,43 @@ void loop() {
       favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3);
     }
     if(analogRead(RIGHT_PUCK) <= PUCK_RECIEVED){
-      //display.sendNum(TimeInState);
       closeClaw();
       TimeInLastState = TimeInState;
       TimeInState = 0;
       CurrentState++;
     }
   }
-  //---------------------------------------------------drive until in front of the mothership--------------------------------
+  //------------------------------------------Pause State between picking up the last puck -----------------------------------
   else if(CurrentState == 5){
-    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0, 0);
-    if(TimeInState > (5550 - TimeInLastState)){ //3700
-      //display.sendNum(TimeInState);
-      TimeInState = 0;
-      CurrentState++;
+    if(TimeInState > 100 && TimeInState < 200){
+      openClaw();  
     }
+    favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 4, 3);
+    if(TimeInState > 500){
+      closeClaw();
+      CurrentState++;
+      TimeInLastState += TimeInState;
+      TimeInState = 0;
+    }  
+  }
+  //---------------------------------------------------drive until in front of the mothership---------------------------------
+  else if(CurrentState == 6){
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0, 0);
+      if(TimeInState > (5450 - TimeInLastState)){ //3700
+        TimeInState = 0;
+        CurrentState++;
+      }
   }
   //---------------------------Turn to the left to face mothership
-  else if(CurrentState == 6){
+  else if(CurrentState == 7){
       Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
       CurrentState++;
       TimeInState = 0;
       substateFlag = 0;
       SetDelta();
   }
-  //---------------------------Drive straight into mothership
-  else if(CurrentState == 7){
+  //---------------------------Drive straight into mothership-------------------------------------
+  else if(CurrentState == 8){
     if(substateFlag == 0){
       writeToWheels(FULL_SPEED,FULL_SPEED);
       if(amountSeen >= 7){
@@ -158,13 +165,13 @@ void loop() {
     }
     else if(substateFlag == 2){
       writeToWheels(FULL_SPEED,FULL_SPEED);
-      if(amountSeen >= 1){
+      if(amountSeen >= 2){
         substateFlag++;
       }
     }
     else{
-      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT,3,4);
-      if(amountSeen == 0){
+      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT, 3, 4);
+      if(/*sensors[3] == LOW && sensors[4] == LOW && amountSeen == 6*/ amountSeen == 0){
         TimeInState  = 0;
         CurrentState = 1;
         substateFlag = 0;
