@@ -32,6 +32,6 @@ const int RIGHT_PUCK = PA1;
 const int PUCK_CLAW = PA2;
 
 //Whisker Sensor
-const int WHISKER = PA3;
+const int WHISKER = PB9;
 
 #endif
