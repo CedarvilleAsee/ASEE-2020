@@ -1,6 +1,5 @@
-// Retrieval bots
-//Working on half battery 3/20/21
-//Doesn't detect mothership to remount, uses timing based off of first puck pick up
+//Retrieval bots
+//Has a "whisker" used to detect mothership
 #include <Arduino.h>
 #include <Servo.h>
 #include "pins.h"
@@ -137,11 +136,18 @@ void loop() {
   }
   //---------------------------------------------------drive until in front of the mothership---------------------------------
   else if(CurrentState == 6){
-      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0, 0);
-      if(TimeInState > (5450 - TimeInLastState)){ //3700
-        TimeInState = 0;
+    //Whisker will be high before and after hitting the mothership
+    if(digitalRead(WHISKER)==1)
+      if(substateFlag==1){
         CurrentState++;
-      }
+        TimeInState = 0;
+        substateFlag = 0;
+        SetDelta();
+      }else favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0);
+    else{
+      substateFlag=1;
+      favorLineFollow(FULL_SPEED*7/8, LINE_STRICTNESS, false, 0);    
+    }
   }
   //---------------------------Turn to the left to face mothership
   else if(CurrentState == 7){
