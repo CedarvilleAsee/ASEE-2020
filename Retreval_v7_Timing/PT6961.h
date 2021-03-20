@@ -23,7 +23,7 @@ class PT6961
     void sendDigit(unsigned int number, unsigned int index = 0);         //writes a single digit number to the display   - simple interface
     void sendNum(unsigned int num, char colon = 0);                     //writes a four digit number to the display     - simple interface
     void sendChar(char charater, unsigned int index);                   //writes a single charater to display           - simple interface
-    void sendMessage(int message);                                      //writes a four digit message to the screen     - simple interface
+    void sendMessage(String message);                                      //writes a four digit message to the screen     - simple interface
 
     void sendDigits(char digit1, char digit2, char digit3, char digit4, char colon = 0);
 	
@@ -50,8 +50,8 @@ class PT6961
     int _CLK;
     int _CS;
     const char _DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
-	  char[] _AsciiLookUpTable = {0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x3D, 0x76, 0x30, 0x1E, 0x76, 0x38, 0x55, 0x54, 0x5C, 0x73, 0x67, 0x50, 0x6D, 0x78, 0x3E, 0x1C, 0x1D, 0x36, 0x6E, 0x49};
-    // Translation:              A      d     C     d     E     F     G     H     I     J     K     L     m     n     O     P     q     r     S     t     U     v     w     X     y     Z
+	  char _AsciiLookUpTable[26] = {0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x3D, 0x76, 0x30, 0x1E, 0x76, 0x38, 0x55, 0x54, 0x5C, 0x73, 0x67, 0x50, 0x6D, 0x78, 0x3E, 0x1C, 0x1D, 0x36, 0x6E, 0x49};
+    // Translation:              A      b     C     d     E     F     G     H     I     J     K     L     m     n     O     P     q     r     S     t     U     v     w     X     y     Z
 };
 
 #endif
