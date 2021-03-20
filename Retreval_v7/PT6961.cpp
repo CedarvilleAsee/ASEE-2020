@@ -154,7 +154,6 @@ char PT6961::validateIndex(unsigned int index){
 char PT6961::translateNumber(unsigned int num){
     int decNumber = num % 10;
     return _DISP[decNumber];
-      
 }
 char PT6961::translateCharater(char val){
   //TODO
