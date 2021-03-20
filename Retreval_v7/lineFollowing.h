@@ -19,32 +19,25 @@ void readLine() {
       firstLineIndex = i;
     }
   }
-  int lowerBits = 0x00;
-  int upperBits = 0x00;
-  
-  if(sensors[7] == 1){ upperBits += 0x08;  }
-  if(sensors[6] == 1){ upperBits += 0x10;  }
-  if(sensors[5] == 1){ upperBits += 0x20;  }
-  if(sensors[4] == 1){ upperBits += 0x01;  }
-  
-  if(sensors[3] == 1){ lowerBits += 0x01;  }
-  if(sensors[2] == 1){ lowerBits += 0x02;  }
-  if(sensors[1] == 1){ lowerBits += 0x04;  }
-  if(sensors[0] == 1){ lowerBits += 0x08;  }
-
-  display.sendDigit_Advanced(0xC4, upperBits);
-  display.sendDigit_Advanced(0xc6, lowerBits);
 
   //Debug print out to display. Combides sensors into pairs and gives them each there own digit.
   //a one means only one sensor in the pair is on, a 2 means both senors are on, and a 0 mean none of the sensors are on
-  if(false){
-    int readout = 0;
-    readout += sensors[0] + sensors[1];
-    readout += (sensors[2] + sensors[3])*10;
-    readout += (sensors[4] + sensors[5])*100;
-    readout += (sensors[6] + sensors[7])*1000;
-    display.sendNum(readout);
-    delay(1000);
+  if(Debug){
+    int lowerBits = 0x00;
+    int upperBits = 0x00;
+    
+    if(sensors[7] == 1){ upperBits += 0x08;  }
+    if(sensors[6] == 1){ upperBits += 0x10;  }
+    if(sensors[5] == 1){ upperBits += 0x20;  }
+    if(sensors[4] == 1){ upperBits += 0x01;  }
+    
+    if(sensors[3] == 1){ lowerBits += 0x01;  }
+    if(sensors[2] == 1){ lowerBits += 0x02;  }
+    if(sensors[1] == 1){ lowerBits += 0x04;  }
+    if(sensors[0] == 1){ lowerBits += 0x08;  }
+  
+    display.sendDigit_Advanced(0xC4, upperBits);
+    display.sendDigit_Advanced(0xc6, lowerBits);
   }
 }
 
