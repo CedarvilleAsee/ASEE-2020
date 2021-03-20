@@ -1,4 +1,6 @@
-// Retrieval bot Drive By Red Goal 4/4/2020 10:01
+// Retrieval bots
+//Working on half battery 3/20/21
+//Doesn't detect mothership to remount, uses timing based off of first puck pick up
 #include <Arduino.h>
 #include <Servo.h>
 #include "pins.h"
