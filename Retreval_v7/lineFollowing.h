@@ -20,8 +20,7 @@ void readLine() {
     }
   }
 
-  //Debug print out to display. Combides sensors into pairs and gives them each there own digit.
-  //a one means only one sensor in the pair is on, a 2 means both senors are on, and a 0 mean none of the sensors are on
+  //Debug print out to display. writes the sensors into a pattern around the outer eadge of to digits of the seven segment display.
   if(Debug){
     int lowerBits = 0x00;
     int upperBits = 0x00;
