@@ -4,7 +4,6 @@
   Released into the public domain.
 */
 #include "constants.h"
-#include "Arduino.h"
 #include "PT6961.h"
 
 /*
@@ -93,8 +92,7 @@ void PT6961::sendDigit(unsigned int number, unsigned int index){
   
 }
 
-void PT6961::sendNum(unsigned int num, char colon)
-{
+void PT6961::sendNum(unsigned int num, char colon){
   int digit1 = num / 1000;
   int digit2 = (num % 1000) / 100;
   int digit3 = (num % 100) / 10;
@@ -103,39 +101,49 @@ void PT6961::sendNum(unsigned int num, char colon)
   sendDigits(digit1,digit2,digit3,digit4,colon);
 }
 
-void PT6961::sendDigits(char digit1, char digit2, char digit3, char digit4, char colon)
-{
-  
-  //const char DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
-  
+void PT6961::sendDigits(char digit1, char digit2, char digit3, char digit4, char colon) {  
   digitalWrite(_CS,LOW);
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC0);
   
   if(colon == 1)
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit1] | 0x80);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit4] | 0x80);
   }
   else
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit1]);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit4]);
   }
 
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC2);
 
   if(colon == 1)  
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit2] | 0x80);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit3] | 0x80);
   }
   else
   {
-    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit2]);
+    shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit3]);
   }
   
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC4);
-  shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit3]);
+  shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit2]);
   shiftOut(_DIN, _CLK, LSBFIRST, 0xC6);
-  shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit4]);
+  shiftOut(_DIN, _CLK, LSBFIRST, _DISP[digit1]);
   digitalWrite(_CS,HIGH);    
+}
+void PT6961::sendChar(char charater, unsigned int index){
+  char digit = validateIndex(index);        //Clean input and translate to 7SD codes
+  char val   = translateCharater(charater);
+  
+  digitalWrite(_CS, LOW);                   //Send pin low so 7SD begings listening to data pin
+  shiftOut(_DIN, _CLK, LSBFIRST, digit);     //Shifts to the least most significant bit to the adress specifed
+  shiftOut(_DIN, _CLK, LSBFIRST, val);       //shifts the number to the digit that was speifed in the last shift
+  digitalWrite(_CS, HIGH);           
+}
+void PT6961::sendMessage(String message){
+  for(int i = 0; i < message.length() && i < 4; i++){
+    sendChar(message[i], i);
+  }
 }
 char PT6961::validateIndex(unsigned int index){
   if(index > 3){
@@ -156,6 +164,21 @@ char PT6961::translateNumber(unsigned int num){
     return _DISP[decNumber];
 }
 char PT6961::translateCharater(char val){
-  //TODO
+  int index = 0;
+  if((val >= 'A' && val <= 'Z')){
+    index = val - 'A';
+    val = _AsciiLookUpTable[index];
+  }
+  else if(val >= 'a' && val <= 'z'){
+    index = val - 'a';
+    val = _AsciiLookUpTable[index];
+  }
+  else if(val >= '0' && val <= '9'){
+    index = val - '0';
+    val = _DISP[index];
+  }
+  else{
+    val = 0x40;
+  }
   return val;
 }
