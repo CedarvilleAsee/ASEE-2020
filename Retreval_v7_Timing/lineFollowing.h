@@ -77,24 +77,9 @@ void writeToWheels(int ls, int rs) {
   analogWrite(WHEEL_SPEED_R, abs(rs));
 }
 
-/*bool lineFollow(int ts, int strictness, int cen1 = 4, int cen2 = 3) {
-  if (amountSeen == 0) {//what to do if no line is seen
-    //floor it and pray? Consider Circling 
-    writeToWheels(ts, ts);
-  }else{
-    int rightSpeed = ts + (lastLineIndex - cen1) * strictness;
-    int leftSpeed = ts - (firstLineIndex - cen2) * strictness;
-    //display.sendNum( (leftSpeed*1000) + (rightSpeed * 100) + (lastLineIndex)*10 + firstLineIndex);
-    writeToWheels(leftSpeed, rightSpeed);
-  }
-  return false;
-}*/
-
-
 void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 3,int stable = -7){
   //Sees no lines, use what the center is to guess a direction to turn
   if(amountSeen == 0){
-    //Test: 1 not enough, 7 very sharp
     if(cen<4){//Turn left
       writeToWheels(ts+4*strictness,ts-4*strictness);
     }else{//Turn right
