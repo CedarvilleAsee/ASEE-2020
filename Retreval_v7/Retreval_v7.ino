@@ -171,7 +171,7 @@ void loop() {
     }
     else{
       favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT, 3, 4);
-      if(/*sensors[3] == LOW && sensors[4] == LOW && amountSeen == 6*/ amountSeen == 0){
+      if(sensors[2] == LOW && sensors[3] == LOW && sensors[4] == LOW && sensors[5] == LOW && amountSeen == 4){
         TimeInState  = 0;
         CurrentState = 1;
         substateFlag = 0;
