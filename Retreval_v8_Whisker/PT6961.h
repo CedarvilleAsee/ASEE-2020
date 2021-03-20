@@ -23,7 +23,7 @@ class PT6961
     void sendDigit(unsigned int number, unsigned int index = 0);         //writes a single digit number to the display   - simple interface
     void sendNum(unsigned int num, char colon = 0);                     //writes a four digit number to the display     - simple interface
     void sendChar(char charater, unsigned int index);                   //writes a single charater to display           - simple interface
-    void sendMessage(int message);                                      //writes a four digit message to the screen     - simple interface
+    void sendMessage(String message);                                      //writes a four digit message to the screen     - simple interface
 
     void sendDigits(char digit1, char digit2, char digit3, char digit4, char colon = 0);
 	
