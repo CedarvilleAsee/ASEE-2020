@@ -143,10 +143,10 @@ void loop() {
         TimeInState = 0;
         substateFlag = 0;
         SetDelta();
-      }else favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 0);
+      }else favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3,4);
     else{
       substateFlag=1;
-      favorLineFollow(FULL_SPEED*7/8, LINE_STRICTNESS, false, 0);    
+      favorLineFollow(FULL_SPEED*7/8, LINE_STRICTNESS, false, 3,4);    
     }
   }
   //---------------------------Turn to the left to face mothership
