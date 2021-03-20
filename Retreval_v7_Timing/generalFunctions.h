@@ -12,6 +12,3 @@ void openClaw(){
     clawMotor.write(OPEN_ANGLE);
   }
 }
-void Debug(){
- 
-}
