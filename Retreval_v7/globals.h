@@ -1,6 +1,8 @@
 #ifndef GLOBALS
 #define GLOBALS
 
+bool Debug = true;
+
 //Line following
 int sensors[8]     = {0};
 int firstLineIndex = -1;
