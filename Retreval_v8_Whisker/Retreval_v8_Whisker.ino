@@ -39,9 +39,12 @@ void setup() {
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(120);
 }
-bool test = true;
 
 void loop() {
+  
+  int w = digitalRead(WHISKER);
+  display.sendDigit(w, 1);
+
   readLine();
   if(digitalRead(BUTTON_2) == 0){
     CurrentState = 1;
@@ -52,7 +55,7 @@ void loop() {
   SetDelta();
 
   display.sendDigit(CurrentState, 0);
-  display.sendDigit(0, 1);
+  //display.sendDigit(0, 1);
   
   //waiting state
   if(CurrentState == 1){
@@ -60,7 +63,8 @@ void loop() {
       TimeInState = 0;
       substateFlag = 0;
       SetDelta();
-      CurrentState++;
+      //CurrentState++;
+      CurrentState = 6;
     }
     openClaw();
   }
@@ -137,11 +141,11 @@ void loop() {
   //---------------------------------------------------drive until in front of the mothership---------------------------------
   else if(CurrentState == 6){
     //Whisker will be high before and after hitting the mothership
-    if(digitalRead(WHISKER) == LOW && substateFlag == 0){
+    if(digitalRead(WHISKER) == HIGH && substateFlag == 0){
       TimeInState = 0;
       substateFlag = 1;
     }
-    else if(substateFlag == 1 && TimeInState == 1000){
+    else if(substateFlag == 1 && TimeInState == 500){
       //exit conditions
       CurrentState++;
       TimeInState = 0;
@@ -151,6 +155,7 @@ void loop() {
     else{
       favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3,4);    
     }
+    display.sendDigit(w, 1);
   }
   //---------------------------Turn to the left to face mothership
   else if(CurrentState == 7){
@@ -192,6 +197,6 @@ void loop() {
   }
   // this stage should not be used emergency stage
   else{
-    display.sendNum(7);
+    display.sendDigit(9, 0);
   }
 }
