@@ -24,6 +24,7 @@ class PT6961
     void sendNum(unsigned int num, char colon = 0);                     //writes a four digit number to the display     - simple interface
     void sendChar(char charater, unsigned int index);                   //writes a single charater to display           - simple interface
     void sendMessage(String message);                                      //writes a four digit message to the screen     - simple interface
+    void shiftChar(char charater);
 
     void sendDigits(char digit1, char digit2, char digit3, char digit4, char colon = 0);
 	
@@ -31,6 +32,7 @@ class PT6961
     const static char _DISPLAY_7X11 = 0x03;
     const static char _AUTO_INCREMENT = 0x40;
     const static char _FIXED_ADDRESS = 0x44;
+    //Dimming and turn of Display Commands
     const static char _DISPLAY_OFF = 0x80;
     const static char _DISPLAY_1_16 = 0x88;
     const static char _DISPLAY_2_16 = 0x89;
@@ -49,9 +51,10 @@ class PT6961
 	  int _DIN;
     int _CLK;
     int _CS;
+    char _Buffer[3];
     const char _DISP[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71, 0x61};
-	  char _AsciiLookUpTable[26] = {0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x3D, 0x76, 0x30, 0x1E, 0x76, 0x38, 0x55, 0x54, 0x5C, 0x73, 0x67, 0x50, 0x6D, 0x78, 0x3E, 0x1C, 0x1D, 0x36, 0x6E, 0x49};
-    // Translation:              A      b     C     d     E     F     G     H     I     J     K     L     m     n     O     P     q     r     S     t     U     v     w     X     y     Z
+	  const char _AsciiLookUpTable[26] = {0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x3D, 0x76, 0x30, 0x1E, 0x75, 0x38, 0x55, 0x54, 0x5C, 0x73, 0x67, 0x50, 0x6D, 0x78, 0x3E, 0x1C, 0x1D, 0x36, 0x6E, 0x49};
+    // Translation:                      A      b     C     d     E     F     G     H     I     J     K     L     m     n     O     P     q     r     S     t     U     v     w     X     y     Z
 };
 
 #endif
