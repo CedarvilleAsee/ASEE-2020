@@ -137,16 +137,19 @@ void loop() {
   //---------------------------------------------------drive until in front of the mothership---------------------------------
   else if(CurrentState == 6){
     //Whisker will be high before and after hitting the mothership
-    if(digitalRead(WHISKER)==1)
-      if(substateFlag==1){
-        CurrentState++;
-        TimeInState = 0;
-        substateFlag = 0;
-        SetDelta();
-      }else favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3,4);
+    if(digitalRead(WHISKER) == LOW && substateFlag == 0){
+      TimeInState = 0;
+      substateFlag = 1;
+    }
+    else if(substateFlag == 1 && TimeInState == 1000){
+      //exit conditions
+      CurrentState++;
+      TimeInState = 0;
+      substateFlag = 0;
+      SetDelta();
+    }
     else{
-      substateFlag=1;
-      favorLineFollow(FULL_SPEED*7/8, LINE_STRICTNESS, false, 3,4);    
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3,4);    
     }
   }
   //---------------------------Turn to the left to face mothership
