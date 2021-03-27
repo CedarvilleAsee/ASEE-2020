@@ -116,7 +116,6 @@ bool Reverse90Turn(bool turnRight){
     leftWheelSpeed = -(FULL_SPEED);
     rightWheelSpeed = -FULL_SPEED/4;
   }
-  display.sendNum(abs(leftWheelSpeed));
   while(DeltaTime() < 1400){
     writeToWheels(leftWheelSpeed, rightWheelSpeed);
   }
