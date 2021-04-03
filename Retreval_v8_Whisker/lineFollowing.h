@@ -92,10 +92,10 @@ void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 
   //Diff is the difference between the central index (cen) and the index of the line it's following
   int diff;
   if(favorRight)
-    if(abs(lastLineIndex - cen)>abs(lastLineIndex - stable)) diff = lastLineIndex - stable;
+    if(abs(lastLineIndex - cen) > abs(lastLineIndex - stable)) diff = lastLineIndex - stable;
     else diff = lastLineIndex - cen;
   else
-    if(abs(firstLineIndex - cen)>abs(firstLineIndex - stable)) diff = firstLineIndex - stable;
+    if(abs(firstLineIndex - cen) > abs(firstLineIndex - stable)) diff = firstLineIndex - stable;
     else diff = firstLineIndex - cen;
   
   //If diff is negative, it will turn to the left, if postive: turn left
