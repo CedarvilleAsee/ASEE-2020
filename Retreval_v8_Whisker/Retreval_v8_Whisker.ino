@@ -38,6 +38,7 @@ void setup() {
   //Initialize the holder
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(120);
+  //attachInterrupt(WHISKER, whiskerInteruptHandler, HIGH);
 }
 
 void loop() {
@@ -60,11 +61,12 @@ void loop() {
   //waiting state
   if(CurrentState == 1){
     if(digitalRead(BUTTON_1) == 0){
+      interrupts();
       TimeInState = 0;
       substateFlag = 0;
       SetDelta();
       //CurrentState++;
-      CurrentState = 6;
+      CurrentState++;
     }
     openClaw();
   }
@@ -136,6 +138,7 @@ void loop() {
       CurrentState++;
       TimeInLastState += TimeInState;
       TimeInState = 0;
+      substateFlag = 0;
     }  
   }
   //---------------------------------------------------drive until in front of the mothership---------------------------------
@@ -144,29 +147,29 @@ void loop() {
     if(digitalRead(WHISKER) == HIGH && substateFlag == 0){
       TimeInState = 0;
       substateFlag = 1;
-    }
-    else if(substateFlag == 1 && TimeInState == 500){
-      //exit conditions
+    } //now in interupt
+    else if(digitalRead(WHISKER) == LOW && substateFlag == 1 && TimeInState >= 300){
+      //start turn
+      Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
       CurrentState++;
       TimeInState = 0;
       substateFlag = 0;
       SetDelta();
     }
     else{
-      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, 3,4);    
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1);    
     }
-    display.sendDigit(w, 1);
   }
   //---------------------------Turn to the left to face mothership
-  else if(CurrentState == 7){
-      Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
+  /*else if(CurrentState == 7){
+      
       CurrentState++;
       TimeInState = 0;
       substateFlag = 0;
       SetDelta();
-  }
+  }*/
   //---------------------------Drive straight into mothership-------------------------------------
-  else if(CurrentState == 8){
+  else if(CurrentState == 7){
     if(substateFlag == 0){
       writeToWheels(FULL_SPEED,FULL_SPEED);
       if(amountSeen >= 7){
@@ -186,7 +189,7 @@ void loop() {
       }
     }
     else{
-      favorLineFollow(FULL_SPEED,LINE_STRICTNESS,_LEFT, 3, 4);
+      favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS,_RIGHT, 3, 4);
       if(sensors[2] == LOW && sensors[3] == LOW && sensors[4] == LOW && sensors[5] == LOW && amountSeen == 4){
         TimeInState  = 0;
         CurrentState = 1;
