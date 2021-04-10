@@ -39,12 +39,17 @@ void setup() {
   clawMotor.attach(PUCK_CLAW);
   clawMotor.write(120);
   //attachInterrupt(WHISKER, whiskerInteruptHandler, HIGH);
+
+  unsigned int Time = millis();
+  while(millis()<Time+1234){
+    display.sendNum(millis());
+  }
 }
 
 void loop() {
   
-  int w = digitalRead(WHISKER);
-  display.sendDigit(w, 1);
+  //int w = digitalRead(WHISKER);
+  //display.sendDigit(w, 1);
 
   readLine();
   if(digitalRead(BUTTON_2) == 0){
@@ -170,27 +175,32 @@ void loop() {
   }*/
   //---------------------------Drive straight into mothership-------------------------------------
   else if(CurrentState == 7){
+    display.sendDigit(substateFlag,1);
+    //Drive until it seens the line on the board
     if(substateFlag == 0){
       writeToWheels(FULL_SPEED,FULL_SPEED);
       if(amountSeen >= 7){
         substateFlag++;  
       }
     }
+    //Drives in over the line
     else if(substateFlag == 1){
         writeToWheels(FULL_SPEED,FULL_SPEED);
         if(amountSeen == 0){
           substateFlag++;  
         }
     }
+    //Drives until it sees the line on the ramp
     else if(substateFlag == 2){
       writeToWheels(FULL_SPEED,FULL_SPEED);
       if(amountSeen >= 2){
         substateFlag++;
       }
     }
+    //Follow the line up on the mothership
     else{
       favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS,_RIGHT, 3, 4);
-      if(sensors[2] == LOW && sensors[3] == LOW && sensors[4] == LOW && sensors[5] == LOW && amountSeen == 4){
+      if(senseEnd()){
         TimeInState  = 0;
         CurrentState = 1;
         substateFlag = 0;
