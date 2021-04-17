@@ -103,6 +103,31 @@ void favorLineFollow(int ts, int strictness, bool favorRight = false, int cen = 
   int leftSpeed  = ts - diff * strictness;
   writeToWheels(leftSpeed,rightSpeed);
 }
+void straightLineFollow(int ts, int strictness, int cen = 3,int stable = -7){
+
+  //TODDO rewrite this
+    
+  //Sees no lines, use what the center is to guess a direction to turn
+  if(amountSeen == 0){
+    writeToWheels(FULL_SPEED/4,FULL_SPEED/4);
+    return;
+  }
+  //-7 is a sentitent value for same as cen
+  if(stable==-7) stable=cen;
+  //Diff is the difference between the central index (cen) and the index of the line it's following
+  /*int diff;
+  if(favorRight)
+    if(abs(lastLineIndex - cen) > abs(lastLineIndex - stable)) diff = lastLineIndex - stable;
+    else diff = lastLineIndex - cen;
+  else
+    if(abs(firstLineIndex - cen) > abs(firstLineIndex - stable)) diff = firstLineIndex - stable;
+    else diff = firstLineIndex - cen;*/
+  
+  //If diff is negative, it will turn to the left, if postive: turn left
+  int rightSpeed = ts * strictness;
+  int leftSpeed  = ts* strictness;
+  writeToWheels(leftSpeed,rightSpeed);
+}
 
 bool Reverse90Turn(bool turnRight){
   SetDelta();
