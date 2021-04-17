@@ -48,8 +48,8 @@ void setup() {
 
 void loop() {
   
-  //int w = digitalRead(WHISKER);
-  //display.sendDigit(w, 1);
+  int w = digitalRead(WHISKER);
+  display.sendDigit(w, 1);
 
   readLine();
   if(digitalRead(BUTTON_2) == 0){
@@ -70,7 +70,6 @@ void loop() {
       TimeInState = 0;
       substateFlag = 0;
       SetDelta();
-      //CurrentState++;
       CurrentState++;
     }
     openClaw();
@@ -146,14 +145,14 @@ void loop() {
       substateFlag = 0;
     }  
   }
-  //---------------------------------------------------drive until in front of the mothership---------------------------------
+  //---------------------------------------------------drive until in front of the mothership the exicute a reverse 90 turn ---------------------------------
   else if(CurrentState == 6){
     //Whisker will be high before and after hitting the mothership
     if(digitalRead(WHISKER) == HIGH && substateFlag == 0){
       TimeInState = 0;
       substateFlag = 1;
     } //now in interupt
-    else if(digitalRead(WHISKER) == LOW && substateFlag == 1 && TimeInState >= 300){
+    else if(digitalRead(WHISKER) == LOW && substateFlag == 1 && TimeInState >= 600){
       //start turn
       Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
       CurrentState++;
@@ -165,14 +164,6 @@ void loop() {
       favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1);    
     }
   }
-  //---------------------------Turn to the left to face mothership
-  /*else if(CurrentState == 7){
-      
-      CurrentState++;
-      TimeInState = 0;
-      substateFlag = 0;
-      SetDelta();
-  }*/
   //---------------------------Drive straight into mothership-------------------------------------
   else if(CurrentState == 7){
     display.sendDigit(substateFlag,1);
@@ -195,16 +186,21 @@ void loop() {
       writeToWheels(FULL_SPEED,FULL_SPEED);
       if(amountSeen >= 2){
         substateFlag++;
+        TimeInState = 0;
       }
     }
     //Follow the line up on the mothership
     else{
-      favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS,_RIGHT, 3, 4);
-      if(senseEnd()){
-        TimeInState  = 0;
-        CurrentState = 1;
-        substateFlag = 0;
-        writeToWheels(0,0);
+      if(TimeInState >= 400){
+        straightLineFollow(FULL_SPEED/2, LINE_STRICTNESS - 10, 3, 4);
+        //favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS - 10,_RIGHT, 3, 4);
+        if(senseEnd()){
+          TimeInState  = 0;
+          CurrentState = 1;
+          substateFlag = 0;
+          writeToWheels(0,0);
+          openClaw(10);
+        }
       }
     }
   }
