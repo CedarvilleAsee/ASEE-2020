@@ -145,12 +145,6 @@ void PT6961::sendMessage(String message){
     sendChar(message[i], i);
   }
 }
-void PT6961::shiftChar(char charater){
-  sendMessage(_Buffer + charater);
-  _Buffer[0] = _Buffer[1];
-  _Buffer[1] = _Buffer[2];
-  _Buffer[3] = charater;
-}
 char PT6961::validateIndex(unsigned int index){
   if(index >= 3){
     return 0xC6;
