@@ -5,11 +5,11 @@ void closeClaw(){
     clawMotor.write(CLOSED_ANGLE);
   }
 }
-void openClaw(){
+void openClaw(int reduce = 0){
   if(!clawOpen){
     clawOpen = true;
     //Code to open the holder
-    clawMotor.write(OPEN_ANGLE);
+    clawMotor.write(OPEN_ANGLE - reduce);
   }
 }
 
@@ -23,5 +23,6 @@ bool senseEnd(){
   if(sensors[5]==HIGH) return false;
   if(sensors[6]==LOW) return false;
   if(sensors[7]==LOW) return false;
+  delay(200);
   return true;
 }
