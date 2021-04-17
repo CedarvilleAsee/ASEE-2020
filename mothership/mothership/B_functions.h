@@ -58,6 +58,7 @@ void checkSensorValidity(){
   delay(500);
   if(redGate.getDistance() == 0){      //If sensor always reads 0, it is messed up
     Serial.println(F("Red sensor reading 0 always. Check wiring and sensor clearance"));
+  //TODO: try ussing sensor.begin to fix sensor...
     while(1){
       digitalWrite(redStatusLED, ((millis() % 100) > 50));         //Flash LED and stop program
     }
@@ -73,42 +74,42 @@ void checkSensorValidity(){
 }
 
 void enableLaunch(){ 
-  digitalWrite(pwmA1st, HIGH);
-  digitalWrite(pwmB1st, HIGH);
-  digitalWrite(pwmA2nd, HIGH);
-  digitalWrite(pwmB2nd, HIGH);   
+  digitalWrite(redEnablePin, HIGH);
+  digitalWrite(blueEnablePin, HIGH);
+  digitalWrite(enableBlackPin, HIGH);
+  //digitalWrite(pwmB2nd, HIGH);   //Unused enable
   digitalWrite(STBY1st, HIGH);
   digitalWrite(STBY2nd, HIGH);                       
 }
 
 void disableLaunch(){ 
-  digitalWrite(pwmA1st, LOW);
-  digitalWrite(pwmB1st, LOW);
-  digitalWrite(pwmA2nd, LOW);
-  digitalWrite(pwmB2nd, LOW);
+  digitalWrite(redEnablePin, LOW);
+  digitalWrite(blueEnablePin, LOW);
+  digitalWrite(enableBlackPin, LOW);
+  //digitalWrite(pwmB2nd, LOW); //unused enable
   digitalWrite(STBY1st, LOW);
   digitalWrite(STBY2nd, LOW) ;                              
 }
 
 //red left puck
-void launchRedL()     { digitalWrite(in1A1st, HIGH); }
-void disconnectRedL() { digitalWrite(in1A1st, LOW);  }
+void launchRedL()     { digitalWrite(redLeft, HIGH); }
+void disconnectRedL() { digitalWrite(redLeft, LOW);  }
 
 //red right puck
-void launchRedR()     { digitalWrite(in2A1st, HIGH); }
-void disconnectRedR() { digitalWrite(in2A1st, LOW);  }
+void launchRedR()     { digitalWrite(redRight, HIGH); }
+void disconnectRedR() { digitalWrite(redRight, LOW);  }
 
 //black puck
-void launchBlack()    { digitalWrite(in1A2nd, HIGH); }
-void disconnectBlack(){ digitalWrite(in1A2nd, LOW ); } 
+void launchBlack()    { digitalWrite(black, HIGH); }
+void disconnectBlack(){ digitalWrite(black, LOW ); } 
 
 //blue left puck
-void launchBlueL()    { digitalWrite(in1B1st, HIGH); }
-void disconnectBlueL(){ digitalWrite(in1B1st, LOW);  }
+void launchBlueL()    { digitalWrite(blueLeft, HIGH); }
+void disconnectBlueL(){ digitalWrite(blueLeft, LOW);  }
 
 //blue right puck
-void launchBlueR()    { digitalWrite(in2B1st, HIGH); }
-void disconnectBlueR(){ digitalWrite(in2B1st, LOW);  }
+void launchBlueR()    { digitalWrite(blueRight, HIGH); }
+void disconnectBlueR(){ digitalWrite(blueRight, LOW);  }
 
 
 /*
@@ -180,19 +181,19 @@ void initializePins(){
     rampServo.attach(servoPin);
     rampServo.write(compressedPosition);
 
-    pinMode(in1A1st, OUTPUT);
-    pinMode(in2A1st, OUTPUT);
-    pinMode(pwmA1st, OUTPUT);
-    pinMode(in1B1st, OUTPUT);
-    pinMode(in2B1st, OUTPUT);
-    pinMode(pwmB1st, OUTPUT);
+    pinMode(redLeft, OUTPUT);
+    pinMode(redRight, OUTPUT);
+    pinMode(redEnablePin, OUTPUT);
+    pinMode(blueLeft, OUTPUT);
+    pinMode(blueRight, OUTPUT);
+    pinMode(blueEnablePin, OUTPUT);
 
-    pinMode(in1A2nd, OUTPUT);
+    pinMode(black, OUTPUT);
     pinMode(in2A2nd, OUTPUT);
-    pinMode(pwmA2nd, OUTPUT);
+    pinMode(enableBlackPin, OUTPUT);
     pinMode(in1B2nd, OUTPUT);
     pinMode(in2B2nd, OUTPUT);
-    pinMode(pwmB2nd, OUTPUT);
+    //pinMode(pwmB2nd, OUTPUT); //unused enable
 
     pinMode(STBY1st, OUTPUT);
     pinMode(STBY2nd, OUTPUT);
@@ -203,26 +204,37 @@ void initializePins(){
 /*
  * Initialize all sensors and detect errors if they come up. Indicate these errors by printing them to the serial monitor and flashing an LED. Stops code if an error occurs.
  */
-void initializeSensors(){
+void initializeSensors(boolean stopIfFail){
   #ifndef NOSENSOR
   Serial.println(F("Initializing sensors..."));
   pinMode(xshutPin, OUTPUT);
+  delay(20);
   blueGate.setI2CAddress(0x55);
+  delay(20);
   Serial.println(redGate.getI2CAddress());
   pinMode(xshutPin, INPUT);
+  delay(20);
   Serial.println(blueGate.getI2CAddress());
   if(redGate.begin() != 0){        //Redgate.begin() returns 0 if sensor started properly
     Serial.println(F("Red gate sensor failed to start. Check wiring?"));
-    while(1){                      //Stop the program and flash the led fast.
-      digitalWrite(redStatusLED, ((millis() % 100) > 50));
+    if(stopIfFail == true)
+    {
+      while(1){                      //Stop the program and flash the led fast.
+        digitalWrite(redStatusLED, ((millis() % 100) > 50));
+      }
     }
   }
   if(blueGate.begin() != 0){
     Serial.println(F("Blue gate sensor failed to start. Check wiring?"));
-    while(1){
-      digitalWrite(blueStatusLED, ((millis() % 100) > 50));
+    if(stopIfFail == true)
+    {
+      while(1){
+        digitalWrite(blueStatusLED, ((millis() % 100) > 50));
+      }
     }
   }
+  //redGate.setDistanceModeShort();
+  //blueGate.setDistanceModeShort();
   Serial.println("Initializing complete!");
   #endif
 }
@@ -251,10 +263,12 @@ void setupStateRed(){
   int distance = redGate.getDistance();
   while(distance < RED_DISTANCE){                // Wait for the gate to open
     distance = redGate.getDistance();
+    Serial.println("RED (waiting for open): " + distance);
   }
   while(distance > RED_DISTANCE){                // While gate is open
     redTime = millis();
     distance = redGate.getDistance();
+    Serial.println("RED (waiting for close): " + distance); 
   }
   redGate.clearInterrupt();
   redGate.stopRanging();
@@ -269,11 +283,13 @@ void setupStateBlue(){
   int distance = blueGate.getDistance();
   while(distance < BLUE_DISTANCE){                // Wait for the gate to open
     distance = blueGate.getDistance();
+    Serial.println("Blue (waiting for open): " + distance);
     digitalWrite(redStatusLED, redIsOpen());
   }
   while(distance > BLUE_DISTANCE){                // While gate is open
     blueTime = millis();
     distance = blueGate.getDistance();
+    Serial.println("Blue (waiting for close): " + distance);
     digitalWrite(redStatusLED, redIsOpen());
   }
   Serial.println(F("Blue gate state established!"));
