@@ -1,7 +1,7 @@
 //Pin definitions----------------------------------------------------------------------------------------------------------------------------------------------------
 #define redButton 32                          //The red start button
 #define blueButton 30                         //The blue start button
-#define prestartButton 30                     //The pre-start button
+#define prestartButton 32                     //The pre-start button
 
 //These are likely going away (need to be removed from code)
 #define redMiniRobotStartLED -1               //The LED that signals the red mini robot to start
@@ -34,13 +34,13 @@
 //Constants for running----------------------------------------------------------------------------------------------------------------------------------------------
 #define TIME_OPEN 3000                          //The amount of time in millis the gate stays open
 #define TIME_CLOSED 2000                        //The amount of time in millis the gate stays closed
-#define CLOSE_MARGIN 200                          //The amount of time to wait after the gate begins opening
-#define OPEN_MARGIN 200                           //The amount of time to not fire right before gate closes
+#define CLOSE_MARGIN 0 //200                          //The amount of time to wait after the gate begins opening
+#define OPEN_MARGIN  0 //200                           //The amount of time to not fire right before gate closes
 
 #define RED_DISTANCE 300
 #define BLUE_DISTANCE 550
 
-#define MELT_WIRE_TIME 125
+#define MELT_WIRE_TIME 200
 
 
 #define extendedPosition 130                     //The position the servo is in when the arms are extended (to knock down ramp)
