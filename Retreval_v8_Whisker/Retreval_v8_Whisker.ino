@@ -148,11 +148,13 @@ void loop() {
   //---------------------------------------------------drive until in front of the mothership the exicute a reverse 90 turn ---------------------------------
   else if(CurrentState == 6){
     //Whisker will be high before and after hitting the mothership
-    if(digitalRead(WHISKER) == HIGH && substateFlag == 0){
+    //if(digitalRead(WHISKER) == HIGH && substateFlag == 0){
+    if(whisker() && substateFlag == 0){
       TimeInState = 0;
       substateFlag = 1;
     } //now in interupt
-    else if(digitalRead(WHISKER) == LOW && substateFlag == 1 && TimeInState >= 600){
+    //else if(digitalRead(WHISKER) == LOW && substateFlag == 1 && TimeInState >= 600){
+    else if(!whisker() && substateFlag == 1 && TimeInState >= 500){
       //start turn
       Reverse90Turn(_LEFT); //Function Blocks does not return till turn is complete
       CurrentState++;
@@ -161,7 +163,7 @@ void loop() {
       SetDelta();
     }
     else{
-      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1);    
+      favorLineFollow(FULL_SPEED, LINE_STRICTNESS, false, -1);
     }
   }
   //---------------------------Drive straight into mothership-------------------------------------
@@ -183,7 +185,7 @@ void loop() {
     }
     //Drives until it sees the line on the ramp
     else if(substateFlag == 2){
-      writeToWheels(FULL_SPEED,FULL_SPEED);
+      writeToWheels(FULL_SPEED/2,FULL_SPEED/2);
       if(amountSeen >= 2){
         substateFlag++;
         TimeInState = 0;
@@ -192,14 +194,15 @@ void loop() {
     //Follow the line up on the mothership
     else{
       if(TimeInState >= 400){
-        straightLineFollow(FULL_SPEED/2, LINE_STRICTNESS - 10, 3, 4);
+        straightLineFollow(FULL_SPEED/4, LINE_STRICTNESS - 10);
         //favorLineFollow(FULL_SPEED/2,LINE_STRICTNESS - 10,_RIGHT, 3, 4);
         if(senseEnd()){
+          delay(500);
           TimeInState  = 0;
           CurrentState = 1;
           substateFlag = 0;
           writeToWheels(0,0);
-          openClaw(10);
+          openClaw(20);
         }
       }
     }
