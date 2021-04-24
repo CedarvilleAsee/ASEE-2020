@@ -26,3 +26,26 @@ bool senseEnd(){
   delay(200);
   return true;
 }
+
+bool whisker(){
+  if(digitalRead(WHISKER) == LOW){
+    return false;  
+  }
+  delay(10);
+  if(digitalRead(WHISKER) == LOW){
+    return false;  
+  }
+  delay(10);
+  if(digitalRead(WHISKER) == LOW){
+    return false;
+  }
+  delay(10);
+  if(digitalRead(WHISKER) == LOW){
+    return false;  
+  }
+  delay(10);
+  if(digitalRead(WHISKER) == LOW){
+    return false;  
+  }
+  return true;
+}
